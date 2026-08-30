@@ -110,7 +110,8 @@ export default defineType({
               name: 'images',
               title: 'Images',
               type: 'array',
-              description: 'Gallery for this digital product (first image is used as primary where a single image is shown).',
+              description:
+                'Gallery for this digital product (first image is used as primary and for try-on). Click Publish on this page after adding images — drafts are not visible on the storefront.',
               options: { layout: 'grid' },
               of: [
                 defineArrayMember({

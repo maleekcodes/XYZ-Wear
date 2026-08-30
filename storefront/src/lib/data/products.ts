@@ -3,7 +3,10 @@ import { HttpTypes } from "@medusajs/types"
 import { cache } from "react"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { sortProducts } from "@lib/util/sort-products"
+import { PRODUCT_DETAIL_FIELDS } from "@lib/util/product-options"
 import { getRegion } from "./regions"
+
+const liveFetch = { next: { tags: ["products"], revalidate: 0 } } as const
 
 export const getProductsById = cache(async function ({
   ids,
@@ -17,10 +20,9 @@ export const getProductsById = cache(async function ({
       {
         id: ids,
         region_id: regionId,
-        fields:
-          "*variants.calculated_price,+variants.inventory_quantity,*categories,*collection,*images,+thumbnail",
+        fields: PRODUCT_DETAIL_FIELDS,
       },
-      { next: { tags: ["products"] } }
+      liveFetch
     )
     .then(({ products }) => products)
 })
@@ -34,10 +36,9 @@ export const getProductByHandle = cache(async function (
       {
         handle,
         region_id: regionId,
-        fields:
-          "*variants.calculated_price,+variants.inventory_quantity,*categories,*collection,*images,+thumbnail",
+        fields: PRODUCT_DETAIL_FIELDS,
       },
-      { next: { tags: ["products"] } }
+      liveFetch
     )
     .then(({ products }) => products[0])
 })
@@ -72,7 +73,8 @@ export const getProductsList = cache(async function ({
         limit,
         offset,
         region_id: region.id,
-        fields: "*variants.calculated_price",
+        fields:
+          "*variants.calculated_price,*variants.options,*options,*images,+thumbnail,+metadata",
         ...queryParams,
       },
       { next: { tags: ["products"] } }
@@ -156,7 +158,7 @@ export const getPhysicalStoreCatalogProducts = cache(async function ({
     queryParams: {
       limit: 100,
       fields:
-        "*variants.calculated_price,*categories,*collection,*images,+thumbnail",
+        "*variants.calculated_price,*variants.options,*options,*categories,*collection,*images,+thumbnail,+metadata",
     },
     countryCode,
   })

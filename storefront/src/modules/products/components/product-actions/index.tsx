@@ -20,6 +20,16 @@ const PhysicalProductTryOn = dynamic(
 )
 import { addToCart } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
+import { productMetadataString } from "@lib/util/physical-product-copy"
+import {
+  defaultAppearanceValue,
+  isAppearanceOption,
+  isSizeOption,
+  optionValuesInOrder,
+  productHasSelectableOptions,
+} from "@lib/util/product-options"
+import { useProductColor } from "@modules/products/components/product-color-context"
+import SizeGuide from "@modules/products/components/size-guide"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -38,24 +48,57 @@ const optionsAsKeymap = (variantOptions: any) => {
   }, {})
 }
 
+function defaultOptions(
+  product: HttpTypes.StoreProduct
+): Record<string, string | undefined> {
+  const defaults: Record<string, string> = {}
+  for (const option of product.options || []) {
+    const values = optionValuesInOrder(option)
+    if (!option.title || values.length === 0) continue
+    if (values.length === 1) {
+      defaults[option.title] = values[0]
+    }
+    if (isAppearanceOption(option.title)) {
+      defaults[option.title] = defaultAppearanceValue(product) ?? values[0]
+    }
+  }
+  if (product.variants?.length === 1) {
+    Object.assign(defaults, optionsAsKeymap(product.variants[0].options) ?? {})
+  }
+  return defaults
+}
+
 export default function ProductActions({
   product,
   region,
   disabled,
   tryOnEnabled,
 }: ProductActionsProps) {
-  const [options, setOptions] = useState<Record<string, string | undefined>>({})
+  const [options, setOptions] = useState<Record<string, string | undefined>>(
+    () => defaultOptions(product)
+  )
   const [isAdding, setIsAdding] = useState(false)
   const router = useRouter()
   const countryCode = useParams().countryCode as string
+  const colorCtx = useProductColor()
+  const setColor = colorCtx?.setColor
 
-  // If there is only 1 variant, preselect the options
   useEffect(() => {
-    if (product.variants?.length === 1) {
-      const variantOptions = optionsAsKeymap(product.variants[0].options)
-      setOptions(variantOptions ?? {})
+    setOptions((prev) => ({ ...defaultOptions(product), ...prev }))
+  }, [product.variants, product.options])
+
+  // Keep gallery in sync with the selected / default color
+  useEffect(() => {
+    const colorKey = Object.keys(options).find((key) =>
+      isAppearanceOption(key)
+    )
+    const selected =
+      (colorKey ? options[colorKey] : undefined) ??
+      defaultAppearanceValue(product)
+    if (selected) {
+      setColor?.(selected)
     }
-  }, [product.variants])
+  }, [options, product, setColor])
 
   const selectedVariant = useMemo(() => {
     if (!product.variants || product.variants.length === 0) {
@@ -68,12 +111,14 @@ export default function ProductActions({
     })
   }, [product.variants, options])
 
-  // update the options when a variant is selected
   const setOptionValue = (title: string, value: string) => {
     setOptions((prev) => ({
       ...prev,
       [title]: value,
     }))
+    if (isAppearanceOption(title)) {
+      setColor?.(value)
+    }
   }
 
   // check if the selected variant is in stock
@@ -134,9 +179,10 @@ export default function ProductActions({
           />
         </div>
 
-        {(product.variants?.length ?? 0) > 1 && (
+        {productHasSelectableOptions(product) && (
           <div className="flex flex-col gap-y-5">
             {(product.options || []).map((option) => {
+              const isSize = isSizeOption(option.title)
               return (
                 <div key={option.id}>
                   <OptionSelect
@@ -144,6 +190,16 @@ export default function ProductActions({
                     current={options[option.title ?? ""]}
                     updateOption={setOptionValue}
                     title={option.title ?? ""}
+                    hint={
+                      isSize
+                        ? productMetadataString(product, "size_info")
+                        : null
+                    }
+                    note={
+                      isSize
+                        ? productMetadataString(product, "size_info_detail")
+                        : null
+                    }
                     data-testid="product-options"
                     disabled={!!disabled || isAdding}
                   />
@@ -168,6 +224,7 @@ export default function ProductActions({
             ? "Out of stock"
             : "Add to bag"}
         </Button>
+        <SizeGuide product={product} />
         <MobileActions
           product={product}
           variant={selectedVariant}

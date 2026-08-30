@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { isLineCollectionHandle } from "@lib/util/line-collections"
 import { buildPageMetadata } from "@lib/seo/metadata"
 import { getGlobalSeoSettings } from "@lib/seo/sanity"
 import { SITE_NAME } from "@lib/seo/site"
@@ -16,6 +17,8 @@ type Props = {
     sortBy?: SortOptions
     page?: string
     featured?: string
+    collection?: string
+    view?: string
   }>
 }
 
@@ -30,9 +33,9 @@ export async function generateStaticParams() {
     regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
   )
 
-  const categoryHandles = product_categories.map(
-    (category: any) => category.handle
-  )
+  const categoryHandles = product_categories
+    .filter((category: StoreProductCategory) => !isLineCollectionHandle(category.handle))
+    .map((category: StoreProductCategory) => category.handle)
 
   const staticParams = countryCodes
     ?.map((countryCode: string | undefined) =>
@@ -76,7 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CategoryPage({ params, searchParams }: Props) {
-  const [{ category, countryCode }, { sortBy, page, featured }] =
+  const [{ category, countryCode }, { sortBy, page, featured, collection, view }] =
     await Promise.all([params, searchParams])
 
   const { product_categories } = await getCategoryByHandle(category)
@@ -92,6 +95,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       page={page}
       countryCode={countryCode}
       featuredHandle={featured}
+      collectionHandle={collection}
+      viewHandle={view}
     />
   )
 }

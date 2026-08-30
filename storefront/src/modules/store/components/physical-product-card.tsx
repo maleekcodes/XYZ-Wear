@@ -22,6 +22,8 @@ export type PhysicalProductCardProps = {
     imageUrl?: string | null
   }[]
   isLatest?: boolean
+  compact?: boolean
+  fitLabel?: string | null
 }
 
 export function PhysicalProductCard({
@@ -35,6 +37,8 @@ export function PhysicalProductCard({
   priceIsSale,
   swatches,
   isLatest,
+  compact,
+  fitLabel,
 }: PhysicalProductCardProps) {
   const swatchItems = swatches?.slice(0, 5) ?? []
   const [activeSwatch, setActiveSwatch] = useState(0)
@@ -63,7 +67,7 @@ export function PhysicalProductCard({
   return (
     <LocalizedClientLink
       href={`/products/${handle}`}
-      className="block h-full min-h-[520px]"
+      className={`block h-full ${compact ? "min-h-[360px] max-w-[20rem]" : "min-h-[520px]"}`}
       data-testid="product-wrapper"
     >
       <motion.div
@@ -72,7 +76,11 @@ export function PhysicalProductCard({
         viewport={{ once: true }}
         whileHover={{ y: -5 }}
         transition={{ duration: 0.4 }}
-        className="group bg-concrete p-4 md:p-5 flex flex-col justify-between min-h-[520px] h-full border border-transparent hover:border-neutral-200 transition-colors"
+        className={`group bg-concrete flex flex-col justify-between h-full border border-transparent hover:border-neutral-200 transition-colors ${
+          compact
+            ? "min-h-[360px] p-3"
+            : "min-h-[520px] p-4 md:p-5"
+        }`}
       >
         <div className="flex justify-between items-start">
           <div className="flex flex-wrap items-center gap-1.5">
@@ -93,8 +101,12 @@ export function PhysicalProductCard({
           </span>
         </div>
 
-        <div className="flex-grow flex items-start justify-center py-4">
-          <div className="relative w-full max-w-[28rem] aspect-[3/4] bg-white shadow-sm border border-neutral-100 overflow-hidden">
+        <div className={`flex-grow flex items-start justify-center ${compact ? "py-3" : "py-4"}`}>
+          <div
+            className={`relative w-full aspect-[3/4] bg-white shadow-sm border border-neutral-100 overflow-hidden ${
+              compact ? "max-w-[14rem]" : "max-w-[28rem]"
+            }`}
+          >
             {previewImage ? (
               <Image
                 src={previewImage}
@@ -116,7 +128,7 @@ export function PhysicalProductCard({
           <div className="flex justify-between items-end gap-3 mb-4">
             <div className="min-w-0">
               <h3
-                className="text-lg font-bold tracking-tight truncate"
+                className={`font-bold tracking-tight truncate ${compact ? "text-sm" : "text-lg"}`}
                 data-testid="product-title"
               >
                 {title}
@@ -161,7 +173,7 @@ export function PhysicalProductCard({
           </div>
 
           <div className="pt-4 border-t border-neutral-200/60 flex justify-between items-center gap-2 text-[10px] uppercase tracking-widest text-neutral-400">
-            <span>Regular Fit</span>
+            <span>{fitLabel}</span>
             <span className="text-right tabular-nums normal-case tracking-normal">
               {priceIsSale && originalPriceFormatted && (
                 <span

@@ -3,12 +3,100 @@
 import { HttpTypes } from "@medusajs/types"
 
 import Accordion from "@modules/products/components/product-tabs/accordion"
-import Back from "@modules/common/icons/back"
-import FastDelivery from "@modules/common/icons/fast-delivery"
-import Refresh from "@modules/common/icons/refresh"
+import { productMetadataString } from "@lib/util/physical-product-copy"
 
 type Props = {
   product: HttpTypes.StoreProduct
+}
+
+function Spec({
+  label,
+  value,
+}: {
+  label: string
+  value: string | null | undefined
+}) {
+  if (!value) return null
+  return (
+    <div>
+      <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">
+        {label}
+      </span>
+      <p className="mt-1 whitespace-pre-line text-deepBlack">{value}</p>
+    </div>
+  )
+}
+
+function DescriptionBody({ product }: { product: HttpTypes.StoreProduct }) {
+  const composition = productMetadataString(product, "composition")
+  const fabricWeight = productMetadataString(product, "fabric_weight")
+  const designDetails = productMetadataString(product, "design_details")
+  const typeLabel =
+    productMetadataString(product, "type_label") ?? product.type?.value
+  const coreId = productMetadataString(product, "core_product_id")
+  const itemNumber = productMetadataString(product, "item_number")
+  const fit = productMetadataString(product, "fit")
+  const care = productMetadataString(product, "care")
+  const origin = product.origin_country
+    ? product.origin_country === "GB"
+      ? "Made in England"
+      : product.origin_country
+    : null
+
+  const hasStructured = Boolean(
+    composition || fabricWeight || designDetails || coreId || fit || care
+  )
+  const overview = productMetadataString(product, "overview")
+
+  if (!hasStructured) {
+    return product.description ? (
+      <p className="whitespace-pre-line">{product.description}</p>
+    ) : (
+      <p className="text-neutral-400">No description available.</p>
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-8">
+      {overview && (
+        <p className="whitespace-pre-line">{overview}</p>
+      )}
+      <section className="flex flex-col gap-4">
+        <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
+          Details & Materials
+        </h4>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Spec label="Composition" value={composition} />
+          <Spec label="Fabric weight" value={fabricWeight} />
+          <Spec label="Type" value={typeLabel} />
+          <Spec label="Country of origin" value={origin} />
+          <Spec label="Core product ID" value={coreId} />
+          <Spec label="Item number" value={itemNumber} />
+        </div>
+        {designDetails && (
+          <Spec label="Design details" value={designDetails} />
+        )}
+      </section>
+
+      {fit && (
+        <section className="flex flex-col gap-4">
+          <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
+            Dimension
+          </h4>
+          <Spec label="Fit" value={fit} />
+        </section>
+      )}
+
+      {care && (
+        <section className="flex flex-col gap-4">
+          <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
+            Details & Care
+          </h4>
+          <p className="whitespace-pre-line text-deepBlack">{care}</p>
+        </section>
+      )}
+    </div>
+  )
 }
 
 export default function ProductDetailAccordions({ product }: Props) {
@@ -24,11 +112,7 @@ export default function ProductDetailAccordions({ product }: Props) {
             className="pb-8 pt-2 text-sm font-light leading-relaxed text-neutral-600"
             data-testid="product-description"
           >
-            {product.description ? (
-              <p className="whitespace-pre-line">{product.description}</p>
-            ) : (
-              <p className="text-neutral-400">No description available.</p>
-            )}
+            <DescriptionBody product={product} />
           </div>
         </Accordion.Item>
 
@@ -36,50 +120,42 @@ export default function ProductDetailAccordions({ product }: Props) {
           <div className="pb-8 pt-2 text-small-regular">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-x-12">
               <div className="flex flex-col gap-y-4">
-                <div>
-                  <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">
-                    Material
-                  </span>
-                  <p className="mt-1 text-deepBlack">
-                    {product.material ? product.material : "—"}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">
-                    Country of origin
-                  </span>
-                  <p className="mt-1 text-deepBlack">
-                    {product.origin_country ? product.origin_country : "—"}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">
-                    Type
-                  </span>
-                  <p className="mt-1 text-deepBlack">
-                    {product.type ? product.type.value : "—"}
-                  </p>
-                </div>
+                <Spec
+                  label="Material"
+                  value={
+                    product.material ??
+                    productMetadataString(product, "composition")
+                  }
+                />
+                <Spec
+                  label="Country of origin"
+                  value={
+                    product.origin_country === "GB"
+                      ? "Made in England"
+                      : product.origin_country
+                  }
+                />
+                <Spec
+                  label="Type"
+                  value={
+                    productMetadataString(product, "type_label") ??
+                    product.type?.value
+                  }
+                />
               </div>
               <div className="flex flex-col gap-y-4">
-                <div>
-                  <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">
-                    Weight
-                  </span>
-                  <p className="mt-1 text-deepBlack">
-                    {product.weight ? `${product.weight} g` : "—"}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">
-                    Dimensions
-                  </span>
-                  <p className="mt-1 text-deepBlack">
-                    {product.length && product.width && product.height
-                      ? `${product.length}L × ${product.width}W × ${product.height}H`
-                      : "—"}
-                  </p>
-                </div>
+                <Spec
+                  label="Fabric weight"
+                  value={productMetadataString(product, "fabric_weight")}
+                />
+                <Spec
+                  label="Core product ID"
+                  value={productMetadataString(product, "core_product_id")}
+                />
+                <Spec
+                  label="Item number"
+                  value={productMetadataString(product, "item_number")}
+                />
               </div>
             </div>
           </div>
@@ -90,45 +166,25 @@ export default function ProductDetailAccordions({ product }: Props) {
           headingSize="medium"
           value="shipping"
         >
-          <div className="pb-8 pt-2 text-small-regular">
-            <div className="grid grid-cols-1 gap-y-8">
-              <div className="flex items-start gap-x-3">
-                <FastDelivery />
-                <div>
-                  <span className="font-semibold text-deepBlack">
-                    Fast delivery
-                  </span>
-                  <p className="mt-1 max-w-md text-neutral-600">
-                    Your package will arrive in 3–5 business days at your pick
-                    up location or in the comfort of your home.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-x-3">
-                <Refresh />
-                <div>
-                  <span className="font-semibold text-deepBlack">
-                    Simple exchanges
-                  </span>
-                  <p className="mt-1 max-w-md text-neutral-600">
-                    Is the fit not quite right? We&apos;ll exchange your product
-                    for a new one.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-x-3">
-                <Back />
-                <div>
-                  <span className="font-semibold text-deepBlack">
-                    Easy returns
-                  </span>
-                  <p className="mt-1 max-w-md text-neutral-600">
-                    Return your product for a refund. We&apos;ll do our best to
-                    keep returns hassle-free.
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="flex flex-col gap-6 pb-8 pt-2 text-sm font-light leading-relaxed text-neutral-600">
+            <section>
+              <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
+                Shipping
+              </h4>
+              <p className="mt-3 whitespace-pre-line">
+                {productMetadataString(product, "shipping_copy") ??
+                  "Delivery times are estimates and may vary depending on location, customs, and external factors.\n\nEstimated delivery times:\nUnited Kingdom: 1–3 business days\nEurope: 3–5 business days\nInternational: 5–7 business days"}
+              </p>
+            </section>
+            <section>
+              <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
+                Returns
+              </h4>
+              <p className="mt-3 whitespace-pre-line">
+                {productMetadataString(product, "returns_copy") ??
+                  "Due to the nature of our products, returns may be limited. All sales are final unless the item is faulty."}
+              </p>
+            </section>
           </div>
         </Accordion.Item>
       </Accordion>

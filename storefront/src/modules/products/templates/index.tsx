@@ -2,8 +2,8 @@ import React, { Suspense } from "react"
 
 import { getVirtualTryOnApiKey } from "@lib/digital/virtual-tryon-config"
 import { Container } from "@modules/common/components/xyz/Container"
-import ProductActions from "@modules/products/components/product-actions"
 import ProductDetailAccordions from "@modules/products/components/product-detail-accordions"
+import { ProductColorProvider } from "@modules/products/components/product-color-context"
 import ProductImageGallery from "@modules/products/components/product-image-gallery"
 import ProductOnboardingCta from "@modules/products/components/product-onboarding-cta"
 import RelatedProducts from "@modules/products/components/related-products"
@@ -37,37 +37,40 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         data-testid="product-container"
       >
         <Container className="py-8 lg:py-12">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-x-10 xl:gap-x-14">
-            <div className="flex flex-col gap-10 lg:col-span-7 xl:col-span-8">
-              <ProductImageGallery
-                images={product.images ?? []}
-                thumbnail={product.thumbnail}
-                productTitle={product.title ?? "Product"}
-              />
-              <ProductDetailAccordions product={product} />
-            </div>
+          <ProductColorProvider product={product}>
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-x-10 xl:gap-x-14">
+              <div className="flex flex-col gap-10 lg:col-span-7 xl:col-span-8">
+                <ProductImageGallery
+                  product={product}
+                  images={product.images ?? []}
+                  thumbnail={product.thumbnail}
+                  productTitle={product.title ?? "Product"}
+                />
+                <ProductDetailAccordions product={product} />
+              </div>
 
-            <aside className="flex flex-col gap-8 lg:col-span-5 lg:sticky lg:top-24 lg:max-w-md lg:self-start xl:col-span-4">
-              <ProductInfo product={product} compact />
-              <ProductOnboardingCta />
-              <Suspense
-                fallback={
-                  <ProductActions
-                    disabled={true}
-                    product={product}
+              <aside className="flex flex-col gap-8 lg:col-span-5 lg:sticky lg:top-24 lg:max-w-md lg:self-start xl:col-span-4">
+                <ProductInfo product={product} compact />
+                <ProductOnboardingCta />
+                <Suspense
+                  fallback={
+                    <div className="flex flex-col gap-y-6" aria-hidden>
+                      <div className="h-10 w-32 animate-pulse bg-concrete" />
+                      <div className="h-10 w-full animate-pulse bg-concrete" />
+                      <div className="h-10 w-full animate-pulse bg-concrete" />
+                      <div className="h-12 w-full animate-pulse bg-concrete" />
+                    </div>
+                  }
+                >
+                  <ProductActionsWrapper
+                    id={product.id}
                     region={region}
                     tryOnEnabled={tryOnEnabled}
                   />
-                }
-              >
-                <ProductActionsWrapper
-                  id={product.id}
-                  region={region}
-                  tryOnEnabled={tryOnEnabled}
-                />
-              </Suspense>
-            </aside>
-          </div>
+                </Suspense>
+              </aside>
+            </div>
+          </ProductColorProvider>
         </Container>
       </div>
       <div className="my-16 small:my-32" data-testid="related-products-container">

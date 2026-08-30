@@ -6,7 +6,15 @@ import {
 import { Button, Container, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
+const LINE_COLLECTION_HANDLES = new Set(["x", "y", "z"])
+
 type AdminCategory = HttpTypes.AdminProductCategory
+
+function isProductTypeCategory(category: AdminCategory): boolean {
+  const handle = (category.handle ?? "").toLowerCase()
+  const name = (category.name ?? "").trim().toLowerCase()
+  return !LINE_COLLECTION_HANDLES.has(handle) && !LINE_COLLECTION_HANDLES.has(name)
+}
 
 async function adminFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, {
@@ -68,6 +76,7 @@ const ProductStorefrontCategoriesWidget = ({
       categories
         .filter((c) => !assignedIds.has(c.id))
         .filter((c) => c.is_active !== false && c.is_internal !== true)
+        .filter(isProductTypeCategory)
         .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")),
     [assignedIds, categories]
   )
@@ -134,15 +143,15 @@ const ProductStorefrontCategoriesWidget = ({
       <div className="px-6 py-4">
         <Heading level="h2">Physical Form categories</Heading>
         <Text className="text-ui-fg-subtle mt-1" size="small">
-          Create Hoodies, Sneakers, Caps, or any name. Active categories assigned
-          here appear on the storefront automatically.
+          Assign the product type — Tees, Caps, and so on. Collections (X, Y, Z)
+          are set in the widget below.
         </Text>
       </div>
 
       <div className="px-6 py-4 flex flex-col gap-3">
-        {assigned.length > 0 ? (
+        {assigned.filter(isProductTypeCategory).length > 0 ? (
           <ul className="flex flex-wrap gap-2">
-            {assigned.map((category) => (
+            {assigned.filter(isProductTypeCategory).map((category) => (
               <li
                 key={category.id}
                 className="rounded-full border border-ui-border-base px-3 py-1 text-xs"

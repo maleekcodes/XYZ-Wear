@@ -1,6 +1,11 @@
 import { HttpTypes } from "@medusajs/types"
 
 import { getProductPrice } from "@lib/util/get-product-price"
+import {
+  fitLabelForProduct,
+  productMetadataString,
+} from "@lib/util/physical-product-copy"
+import { appearanceValues } from "@lib/util/product-options"
 import type { PhysicalProductCardProps } from "@modules/store/components/physical-product-card"
 
 function truncateText(text: string | null | undefined, max = 96): string {
@@ -23,23 +28,7 @@ function toImageUrl(
 function extractSwatches(
   product: HttpTypes.StoreProduct
 ): PhysicalProductCardProps["swatches"] {
-  const labels = new Set<string>()
-  for (const variant of product.variants ?? []) {
-    for (const opt of variant.options ?? []) {
-      const title = opt.option?.title?.toLowerCase() ?? ""
-      if (
-        title.includes("color") ||
-        title.includes("colour") ||
-        title.includes("finish")
-      ) {
-        const v = opt.value
-        if (v) labels.add(v)
-      }
-    }
-    if (labels.size >= 5) break
-  }
-
-  const swatchLabels = [...labels].slice(0, 5)
+  const swatchLabels = appearanceValues(product).slice(0, 5)
   if (swatchLabels.length === 0) {
     return []
   }
@@ -64,6 +53,8 @@ function extractSwatches(
 }
 
 function subtitleForProduct(product: HttpTypes.StoreProduct): string {
+  const tagline = productMetadataString(product, "tagline") ?? product.subtitle
+  if (tagline) return truncateText(tagline, 96)
   const fromDesc = truncateText(product.description ?? undefined)
   if (fromDesc) return fromDesc
   const cat = product.categories?.[0]?.name
@@ -100,5 +91,6 @@ export function buildPhysicalProductCardProps(
         : undefined,
     priceIsSale: cheapestPrice?.price_type === "sale",
     swatches: extractSwatches(priced),
+    fitLabel: fitLabelForProduct(priced),
   }
 }

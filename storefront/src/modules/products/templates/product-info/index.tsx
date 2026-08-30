@@ -1,5 +1,11 @@
 import { HttpTypes } from "@medusajs/types"
+import {
+  isLineCollectionHandle,
+  lineCollectionLabel,
+} from "@lib/util/line-collections"
+import { productMetadataString } from "@lib/util/physical-product-copy"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import ProductTagline from "@modules/products/components/product-tagline"
 
 type ProductInfoProps = {
   product: HttpTypes.StoreProduct
@@ -8,48 +14,68 @@ type ProductInfoProps = {
 }
 
 function Breadcrumb({ product }: { product: HttpTypes.StoreProduct }) {
-  const categories = product.categories?.filter(Boolean) ?? []
-  if (categories.length > 0) {
-    return (
-      <p className="text-xs font-mono uppercase tracking-[0.15em] text-neutral-400">
-        {categories.map((c, i) => (
-          <span key={c.id}>
-            {i > 0 && <span className="text-neutral-300"> • </span>}
-            <LocalizedClientLink
-              href={`/categories/${c.handle}`}
-              className="hover:text-deepBlack transition-colors"
-            >
-              {c.name}
-            </LocalizedClientLink>
-          </span>
-        ))}
-      </p>
-    )
-  }
+  const category = (product.categories ?? []).find(
+    (c) => c?.handle && !isLineCollectionHandle(c.handle)
+  )
+  const collection = product.collection
+  const collectionHandle = collection?.handle ?? null
+  const collectionHref =
+    category?.handle && isLineCollectionHandle(collectionHandle)
+      ? `/categories/${category.handle}?collection=${collectionHandle}`
+      : collectionHandle
+        ? `/collections/${collectionHandle}`
+        : null
 
-  if (product.collection) {
-    return (
-      <p className="text-xs font-mono uppercase tracking-[0.15em] text-neutral-400">
+  if (!category && !collection) return null
+
+  return (
+    <p className="text-xs font-mono uppercase tracking-[0.15em] text-neutral-400">
+      {category && (
         <LocalizedClientLink
-          href={`/collections/${product.collection.handle}`}
+          href={`/categories/${category.handle}`}
           className="hover:text-deepBlack transition-colors"
         >
-          {product.collection.title}
+          {category.name}
         </LocalizedClientLink>
-      </p>
-    )
-  }
-
-  return null
+      )}
+      {category && collection && (
+        <span className="text-neutral-300"> · </span>
+      )}
+      {collection &&
+        (collectionHref ? (
+          <LocalizedClientLink
+            href={collectionHref}
+            className="hover:text-deepBlack transition-colors"
+          >
+            {isLineCollectionHandle(collectionHandle)
+              ? lineCollectionLabel(collectionHandle)
+              : collection.title}
+          </LocalizedClientLink>
+        ) : (
+          collection.title
+        ))}
+    </p>
+  )
 }
 
 const ProductInfo = ({ product, compact }: ProductInfoProps) => {
+  const collectionLine =
+    productMetadataString(product, "collection_line") ??
+    (product.collection?.title
+      ? `${product.collection.title} | XYZ London`
+      : null)
   return (
     <div id="product-info">
-      <div className={compact ? "flex flex-col gap-y-4" : "mx-auto flex max-w-[500px] flex-col gap-y-4 lg:max-w-[500px]"}>
+      <div
+        className={
+          compact
+            ? "flex flex-col"
+            : "mx-auto flex max-w-[500px] flex-col lg:max-w-[500px]"
+        }
+      >
         <Breadcrumb product={product} />
         <h2
-          className={`font-bold tracking-tighter text-deepBlack ${
+          className={`mt-3 font-bold tracking-tighter text-deepBlack ${
             compact
               ? "text-2xl leading-tight md:text-3xl"
               : "text-3xl leading-10"
@@ -59,9 +85,14 @@ const ProductInfo = ({ product, compact }: ProductInfoProps) => {
           {product.title}
         </h2>
 
+        <div className="mt-6 flex flex-col gap-y-5 text-sm leading-relaxed text-neutral-600">
+          {collectionLine && <p>{collectionLine}</p>}
+          <ProductTagline product={product} />
+        </div>
+
         {!compact && product.description && (
           <p
-            className="text-medium whitespace-pre-line text-ui-fg-subtle"
+            className="mt-6 text-medium whitespace-pre-line text-ui-fg-subtle"
             data-testid="product-description"
           >
             {product.description}

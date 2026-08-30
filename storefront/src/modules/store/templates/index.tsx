@@ -6,16 +6,19 @@ const StoreTemplate = ({
   sortBy,
   page,
   countryCode,
+  categoryHandle,
 }: {
   sortBy?: SortOptions
   page?: string
   countryCode: string
+  categoryHandle?: string
 }) => {
   return (
     <PhysicalFormStoreTemplate
       sortBy={sortBy}
       page={page}
       countryCode={countryCode}
+      categoryHandle={categoryHandle}
     />
   )
 }

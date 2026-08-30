@@ -3,6 +3,7 @@ import { buildOrganizationSchema } from "@lib/seo/schema"
 import { getGlobalSeoSettings } from "@lib/seo/sanity"
 import { rootMetadata } from "@lib/seo/site"
 import { getSiteSettings } from "@lib/sanity/queries"
+import { NavigationProgress } from "@modules/common/components/navigation-progress"
 import JsonLd from "@modules/seo/components/json-ld"
 import type { Metadata, Viewport } from "next"
 import "styles/globals.css"
@@ -45,6 +46,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         />
       </head>
       <body>
+        <NavigationProgress />
         <main className="relative">{props.children}</main>
       </body>
     </html>

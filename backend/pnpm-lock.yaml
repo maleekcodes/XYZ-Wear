@@ -35,6 +35,9 @@ importers:
       '@medusajs/payment-stripe':
         specifier: 2.15.2
         version: 2.15.2(@medusajs/framework@2.15.2(@medusajs/cli@2.15.2(@types/node@20.19.25))(@types/node@20.19.25)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.25))(zod@4.2.0))
+      '@medusajs/ui':
+        specifier: 4.1.12
+        version: 4.1.12(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@medusajs/workflow-engine-redis':
         specifier: 2.15.2
         version: 2.15.2(@medusajs/framework@2.15.2(@medusajs/cli@2.15.2(@types/node@20.19.25))(@types/node@20.19.25)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.25))(zod@4.2.0))
@@ -62,7 +65,7 @@ importers:
         version: 2.15.2(@medusajs/core-flows@2.15.2(@medusajs/framework@2.15.2(@medusajs/cli@2.15.2(@types/node@20.19.25))(@types/node@20.19.25)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.25))(zod@4.2.0)))(@medusajs/framework@2.15.2(@medusajs/cli@2.15.2(@types/node@20.19.25))(@types/node@20.19.25)(ioredis@5.10.1)(vite@5.4.21(@types/node@20.19.25))(zod@4.2.0))(@medusajs/medusa@2.15.2)
       '@react-email/preview-server':
         specifier: ^5.1.0
-        version: 5.1.0(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 5.1.0(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@swc/core':
         specifier: 1.5.7
         version: 1.5.7(@swc/helpers@0.5.21)
@@ -10896,9 +10899,9 @@ snapshots:
       marked: 15.0.12
       react: 18.3.1
 
-  '@react-email/preview-server@5.1.0(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@react-email/preview-server@5.1.0(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      next: 16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 16.0.10(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - '@babel/core'
       - '@opentelemetry/api'
@@ -13822,7 +13825,7 @@ snapshots:
 
   negotiator@0.6.4: {}
 
-  next@16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next@16.0.10(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 16.0.10
       '@swc/helpers': 0.5.15
@@ -13830,7 +13833,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.6(@babel/core@7.28.5)(react@18.3.1)
+      styled-jsx: 5.1.6(@babel/core@7.29.0)(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.0.10
       '@next/swc-darwin-x64': 16.0.10
@@ -14967,12 +14970,12 @@ snapshots:
 
   stubborn-utils@1.0.2: {}
 
-  styled-jsx@5.1.6(@babel/core@7.28.5)(react@18.3.1):
+  styled-jsx@5.1.6(@babel/core@7.29.0)(react@18.3.1):
     dependencies:
       client-only: 0.0.1
       react: 18.3.1
     optionalDependencies:
-      '@babel/core': 7.28.5
+      '@babel/core': 7.29.0
 
   sucrase@3.35.1:
     dependencies:

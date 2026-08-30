@@ -2,6 +2,7 @@
  * Sanity CMS Seed Script
  *
  * Migrates static data from the original XYZ London site to Sanity CMS.
+ * Safe to re-run: existing Studio documents (and their images) are never replaced.
  *
  * Usage:
  *   SANITY_TOKEN=<write-token> npx tsx seed.ts
@@ -522,13 +523,33 @@ const staticPageSeo = {
 // SEED FUNCTIONS
 // ============================================================================
 
+/**
+ * Never replace an existing Studio document. createOrReplace wipes fields the
+ * seed payload omits (especially images), which looks like Sanity "deleted"
+ * assets even though the files are still in the dataset, unreferenced.
+ */
+async function createIfMissing(
+  doc: { _id: string },
+  label: string
+): Promise<'created' | 'skipped'> {
+  const existingId = await client.fetch<string | null>(`*[_id == $id][0]._id`, {
+    id: doc._id,
+  })
+  if (existingId) {
+    console.log(`  [SKIP] ${label} already exists — keeping Studio edits (including images)`)
+    return 'skipped'
+  }
+  await client.create(doc)
+  console.log(`  [OK] ${label}`)
+  return 'created'
+}
+
 async function seedJournalPosts() {
   console.log('\n--- Seeding Journal Posts ---')
 
   for (const post of journalPosts) {
     try {
-      await client.createOrReplace(post)
-      console.log(`  [OK] ${post.title} (${post.category})`)
+      await createIfMissing(post, `${post.title} (${post.category})`)
     } catch (error) {
       console.error(`  [FAIL] ${post.title}:`, error)
     }
@@ -541,8 +562,7 @@ async function seedSiteSettings() {
   console.log('\n--- Seeding Site Settings ---')
 
   try {
-    await client.createOrReplace(siteSettings)
-    console.log(`  [OK] Site Settings`)
+    await createIfMissing(siteSettings, 'Site Settings')
   } catch (error) {
     console.error(`  [FAIL] Site Settings:`, error)
   }
@@ -554,8 +574,7 @@ async function seedHomePage() {
   console.log('\n--- Seeding Home Page ---')
 
   try {
-    await client.createOrReplace(homePage)
-    console.log(`  [OK] Home Page`)
+    await createIfMissing(homePage, 'Home Page')
   } catch (error) {
     console.error(`  [FAIL] Home Page:`, error)
   }
@@ -565,8 +584,7 @@ async function seedAboutPage() {
   console.log('\n--- Seeding About Page ---')
 
   try {
-    await client.createOrReplace(aboutPage)
-    console.log(`  [OK] About Page`)
+    await createIfMissing(aboutPage, 'About Page')
   } catch (error) {
     console.error(`  [FAIL] About Page:`, error)
   }
@@ -576,19 +594,55 @@ async function seedArFitPage() {
   console.log('\n--- Seeding Try-on page ---')
 
   try {
-    await client.createOrReplace(arFitPage)
-    console.log(`  [OK] Try-on page`)
+    await createIfMissing(arFitPage, 'Try-on page')
   } catch (error) {
     console.error(`  [FAIL] Try-on page:`, error)
   }
 }
 
+type SeededDigitalProduct = (typeof digitalFormPage.digitalProducts)[number]
+
 async function seedDigitalFormPage() {
   console.log('\n--- Seeding Digital Form Page ---')
 
   try {
-    await client.createOrReplace(digitalFormPage)
-    console.log(`  [OK] Digital Form Page`)
+    const existing = await client.fetch<{
+      _id: string
+      digitalProducts?: { _key?: string }[]
+    } | null>(`*[_id == $id][0]{ _id, digitalProducts[]{ _key } }`, {
+      id: digitalFormPage._id,
+    })
+
+    if (!existing) {
+      await client.create(digitalFormPage)
+      console.log(`  [OK] Digital Form Page`)
+      return
+    }
+
+    const existingKeys = new Set(
+      (existing.digitalProducts ?? [])
+        .map((p) => p._key)
+        .filter((k): k is string => typeof k === 'string' && k.length > 0)
+    )
+    const toAdd = digitalFormPage.digitalProducts.filter(
+      (p: SeededDigitalProduct) => !existingKeys.has(p._key)
+    )
+
+    if (toAdd.length === 0) {
+      console.log(
+        '  [SKIP] Digital Form Page already exists — keeping Studio images and product edits'
+      )
+      return
+    }
+
+    await client
+      .patch(digitalFormPage._id)
+      .setIfMissing({ digitalProducts: [] })
+      .insert('after', 'digitalProducts[-1]', toAdd)
+      .commit()
+    console.log(
+      `  [OK] Digital Form Page — added ${toAdd.length} missing product(s), left existing images untouched`
+    )
   } catch (error) {
     console.error(`  [FAIL] Digital Form Page:`, error)
   }
@@ -598,8 +652,7 @@ async function seedPrivateExpressionsPage() {
   console.log('\n--- Seeding Private Expressions (OOO) ---')
 
   try {
-    await client.createOrReplace(privateExpressionsPage)
-    console.log(`  [OK] Private Expressions`)
+    await createIfMissing(privateExpressionsPage, 'Private Expressions')
   } catch (error) {
     console.error(`  [FAIL] Private Expressions:`, error)
   }
@@ -609,8 +662,7 @@ async function seedSiteFooterDoc() {
   console.log('\n--- Seeding Site footer ---')
 
   try {
-    await client.createOrReplace(siteFooter)
-    console.log(`  [OK] Site footer`)
+    await createIfMissing(siteFooter, 'Site footer')
   } catch (error) {
     console.error(`  [FAIL] Site footer:`, error)
   }
@@ -620,8 +672,7 @@ async function seedStaticPageSeo() {
   console.log('\n--- Seeding Static Page SEO ---')
 
   try {
-    await client.createOrReplace(staticPageSeo)
-    console.log(`  [OK] Static Page SEO`)
+    await createIfMissing(staticPageSeo, 'Static Page SEO')
   } catch (error) {
     console.error(`  [FAIL] Static Page SEO:`, error)
   }

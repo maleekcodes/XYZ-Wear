@@ -9,6 +9,11 @@ import X from "@modules/common/icons/x"
 import { getProductPrice } from "@lib/util/get-product-price"
 import OptionSelect from "./option-select"
 import { HttpTypes } from "@medusajs/types"
+import { productMetadataString } from "@lib/util/physical-product-copy"
+import {
+  isSizeOption,
+  productHasSelectableOptions,
+} from "@lib/util/product-options"
 
 type MobileActionsProps = {
   product: HttpTypes.StoreProduct
@@ -167,9 +172,10 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                     </button>
                   </div>
                   <div className="bg-white px-6 py-12">
-                    {(product.variants?.length ?? 0) > 1 && (
+                    {productHasSelectableOptions(product) && (
                       <div className="flex flex-col gap-y-6">
                         {(product.options || []).map((option) => {
+                          const isSize = isSizeOption(option.title)
                           return (
                             <div key={option.id}>
                               <OptionSelect
@@ -177,6 +183,19 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                                 current={options[option.title ?? ""]}
                                 updateOption={updateOptions}
                                 title={option.title ?? ""}
+                                hint={
+                                  isSize
+                                    ? productMetadataString(product, "size_info")
+                                    : null
+                                }
+                                note={
+                                  isSize
+                                    ? productMetadataString(
+                                        product,
+                                        "size_info_detail"
+                                      )
+                                    : null
+                                }
                                 disabled={optionsDisabled}
                               />
                             </div>
