@@ -1,3 +1,4 @@
+import { isLineCollectionHandle } from "@lib/util/line-collections"
 import { HttpTypes } from "@medusajs/types"
 
 export type PhysicalCategorySection = {
@@ -77,6 +78,9 @@ function isTruthyMetadata(
 function isPublicActive(c: StoreCategory): boolean {
   if (c.is_active === false) return false
   if (c.is_internal === true) return false
+  if (isLineCollectionHandle(c.handle) || isLineCollectionHandle(c.name)) {
+    return false
+  }
   if (isTruthyMetadata(c.metadata, "hide_on_store")) return false
   return true
 }

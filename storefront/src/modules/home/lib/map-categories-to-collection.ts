@@ -1,9 +1,18 @@
+import {
+  LINE_COLLECTION_HANDLES,
+  isLineCollectionHandle,
+  lineCollectionSectionLabel,
+  type LineCollectionHandle,
+} from "@lib/util/line-collections"
+import { productMetadataString } from "@lib/util/physical-product-copy"
 import { HttpTypes } from "@medusajs/types"
 
 import {
   groupProductsByAssignedCategory,
+  listComingSoonCategories,
   productCreatedAtMs,
 } from "@modules/store/lib/group-products-by-category"
+import { groupProductsByLineCollection } from "@modules/store/lib/group-products-by-collection"
 
 export type CollectionShape = "x" | "y" | "z"
 
@@ -16,9 +25,20 @@ export type HomeCollectionItem = {
   shape: CollectionShape
   imageUrl?: string | null
   isLatest?: boolean
+  comingSoon?: boolean
 }
 
-const SHAPES: CollectionShape[] = ["x", "y", "z"]
+export type HomeCategorySection = {
+  id: string
+  name: string
+  handle?: string | null
+  items: HomeCollectionItem[]
+}
+
+export type HomeCollectionLayout = {
+  categories: HomeCategorySection[]
+  future: HomeCollectionItem[]
+}
 
 type StoreCategory = HttpTypes.StoreProductCategory & {
   parent_category_id?: string | null
@@ -44,7 +64,7 @@ function resolveShape(
 ): CollectionShape {
   const raw = metadataString(metadata, "shape")?.toLowerCase()
   if (raw === "x" || raw === "y" || raw === "z") return raw
-  return SHAPES[index % SHAPES.length]
+  return LINE_COLLECTION_HANDLES[index % LINE_COLLECTION_HANDLES.length]
 }
 
 function resolveLine(
@@ -76,18 +96,7 @@ function isTruthyMetadata(
 /**
  * Top-level active Medusa categories → homepage collection cards.
  *
- * By default every top-level active category becomes a card (3 per row;
- * extras wrap to the next row). To curate a subset, set metadata
- * `show_on_home: true` on the ones that should appear — once any category
- * uses that flag, only flagged categories are shown.
- *
- * Optional metadata keys (Admin → Products → Categories → Metadata):
- * - `show_on_home` — "true" to include when curating a subset
- * - `line`         — pill label (e.g. "X Line")
- * - `shape`        — abstract graphic: "x" | "y" | "z"
- * - `subtitle`     — overrides Description for the card line under the title
- *
- * Description is used as the card subtitle when `subtitle` is unset.
+ * @deprecated Prefer {@link mapPhysicalHomeCollection} for category × line layout.
  */
 export function mapCategoriesToCollectionItems(
   categories: HttpTypes.StoreProductCategory[] | null | undefined
@@ -97,6 +106,7 @@ export function mapCategoriesToCollectionItems(
   const topLevel = (categories as StoreCategory[])
     .filter((c) => !parentCategoryId(c))
     .filter((c) => c.is_active !== false)
+    .filter((c) => !isLineCollectionHandle(c.handle) && !isLineCollectionHandle(c.name))
     .sort((a, b) => {
       const ra = a.rank ?? 0
       const rb = b.rank ?? 0
@@ -135,44 +145,95 @@ function productImageUrl(product: HttpTypes.StoreProduct): string | null {
   return url || null
 }
 
+function latestProduct(products: HttpTypes.StoreProduct[]) {
+  if (!products.length) return null
+  return [...products].sort(
+    (a, b) => productCreatedAtMs(b) - productCreatedAtMs(a)
+  )[0]
+}
+
+function lineCard(args: {
+  categoryId: string
+  categoryHandle?: string | null
+  line: LineCollectionHandle
+  product?: HttpTypes.StoreProduct | null
+}): HomeCollectionItem {
+  const { categoryId, categoryHandle, line, product } = args
+  const href = categoryHandle
+    ? `/categories/${categoryHandle}?collection=${line}`
+    : "/store"
+
+  return {
+    id: `${categoryId}-${line}`,
+    title: product?.title?.trim() || "Coming soon",
+    description:
+      (product &&
+        (productMetadataString(product, "tagline") ??
+          product.subtitle?.trim())) ||
+      "Coming soon",
+    line: lineCollectionSectionLabel(line),
+    href,
+    shape: line,
+    imageUrl: product ? productImageUrl(product) : null,
+    isLatest: Boolean(product),
+    comingSoon: !product,
+  }
+}
+
 /**
- * One homepage card per Medusa category that has products, featuring
- * that category's newest release. Category names stay dynamic.
+ * Homepage Physical Form: each category (Tees, Caps, …) shows X / Y / Z,
+ * featuring the latest product in that line. Empty lines and Future Forms
+ * use the original abstract shapes.
  */
-export function mapLatestProductsToCollectionItems(
+export function mapPhysicalHomeCollection(
   products: HttpTypes.StoreProduct[] | null | undefined,
   categories: HttpTypes.StoreProductCategory[] | null | undefined
-): HomeCollectionItem[] {
-  if (!products?.length || !categories?.length) return []
+): HomeCollectionLayout {
+  const withProducts = groupProductsByAssignedCategory(
+    products ?? [],
+    categories
+  ).filter((section) => section.id !== "__other__")
+  const emptyCategories = listComingSoonCategories(categories, withProducts)
 
-  const byId = new Map(
-    (categories as StoreCategory[]).map((c) => [c.id as string, c])
-  )
-  const sections = groupProductsByAssignedCategory(products, categories)
+  const categorySections = [
+    ...withProducts,
+    ...emptyCategories.map((category) => ({
+      id: category.id,
+      name: category.name,
+      handle: category.handle,
+      products: [] as HttpTypes.StoreProduct[],
+    })),
+  ]
 
-  return sections
-    .filter((section) => section.id !== "__other__" && section.products.length > 0)
-    .map((section, index) => {
-      const newest = [...section.products].sort(
-        (a, b) => productCreatedAtMs(b) - productCreatedAtMs(a)
-      )[0]
-      const category = byId.get(section.id)
-      const productHandle = newest?.handle
-      const href = section.handle
-        ? `/categories/${section.handle}${
-            productHandle ? `?featured=${encodeURIComponent(productHandle)}` : ""
-          }`
-        : "/store"
+  return {
+    categories: categorySections.map((section) => {
+      const lines = groupProductsByLineCollection(section.products, {
+        includeEmpty: true,
+      })
 
       return {
         id: section.id,
-        title: section.name,
-        description: newest?.title?.trim() || "New release",
-        line: "Latest",
-        href,
-        shape: resolveShape(category?.metadata, index),
-        imageUrl: newest ? productImageUrl(newest) : null,
-        isLatest: true,
+        name: section.name,
+        handle: section.handle,
+        items: LINE_COLLECTION_HANDLES.map((line) => {
+          const group = lines.find((item) => item.handle === line)
+          return lineCard({
+            categoryId: section.id,
+            categoryHandle: section.handle,
+            line,
+            product: latestProduct(group?.products ?? []),
+          })
+        }),
       }
-    })
+    }),
+    future: LINE_COLLECTION_HANDLES.map((line) => ({
+      id: `future-${line}`,
+      title: "Coming soon",
+      description: "New forms in development",
+      line: lineCollectionSectionLabel(line),
+      href: "/store?category=future",
+      shape: line,
+      comingSoon: true,
+    })),
+  }
 }
