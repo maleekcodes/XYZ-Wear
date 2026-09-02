@@ -4,3 +4,5 @@
 .pnpm*
 .env.local
 CLAUDE.md
+docs/handover-print/node_modules/
+docs/handover-print/*.png

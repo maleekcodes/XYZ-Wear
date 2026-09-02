@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <title>XYZ London — Project Handover</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 16mm 15mm 18mm;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      color: #141414;
+      background: #fff;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 10pt;
+      line-height: 1.45;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .cover {
+      page-break-after: always;
+      min-height: 240mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28mm 8mm 18mm;
+    }
+
+    .cover-rule {
+      width: 48px;
+      height: 3px;
+      background: #E95420;
+      margin: 0 0 28px;
+    }
+
+    .cover-kicker {
+      font-size: 9pt;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #6b6b6b;
+      margin: 0 0 14px;
+    }
+
+    .cover h1 {
+      font-size: 36pt;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 16px;
+      color: #0F0F0F;
+    }
+
+    .cover-sub {
+      font-size: 13pt;
+      color: #3a3a3a;
+      max-width: 420px;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .cover-meta {
+      border-top: 1px solid #ddd;
+      padding-top: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 24px;
+      font-size: 9pt;
+      color: #555;
+    }
+
+    .cover-meta strong {
+      display: block;
+      color: #111;
+      font-size: 8pt;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .page {
+      padding: 0 2mm;
+    }
+
+    h1, h2, h3, h4 {
+      color: #0F0F0F;
+      page-break-after: avoid;
+      font-weight: 650;
+    }
+
+    h1 {
+      font-size: 20pt;
+      letter-spacing: -0.02em;
+      margin: 0 0 10px;
+    }
+
+    h2 {
+      font-size: 14pt;
+      letter-spacing: -0.015em;
+      margin: 20px 0 8px;
+      padding-top: 12px;
+      border-top: 1.5px solid #0F0F0F;
+      page-break-before: auto;
+    }
+
+    h3 {
+      font-size: 11.5pt;
+      margin: 16px 0 6px;
+    }
+
+    h4 {
+      font-size: 10.5pt;
+      margin: 12px 0 4px;
+    }
+
+    p { margin: 0 0 8px; }
+
+    a { color: #1a1a1a; text-decoration: underline; text-underline-offset: 2px; }
+
+    ul, ol { margin: 0 0 10px; padding-left: 18px; }
+    li { margin-bottom: 3px; }
+
+    hr {
+      border: 0;
+      border-top: 1px solid #ddd;
+      margin: 14px 0;
+    }
+
+    code {
+      font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+      font-size: 8.4pt;
+      background: #f3f3f3;
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #e4e4e4;
+      padding: 10px 12px;
+      overflow: hidden;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 7.8pt;
+      line-height: 1.4;
+      page-break-inside: avoid;
+      margin: 0 0 12px;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 12px;
+      font-size: 8.6pt;
+      page-break-inside: auto;
+    }
+
+    thead { display: table-header-group; }
+
+    th, td {
+      border: 1px solid #d8d8d8;
+      padding: 5px 7px;
+      vertical-align: top;
+      text-align: left;
+      word-break: break-word;
+    }
+
+    th {
+      background: #0F0F0F;
+      color: #fff;
+      font-weight: 600;
+      font-size: 8pt;
+      letter-spacing: 0.02em;
+    }
+
+    tr { page-break-inside: avoid; }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    blockquote {
+      margin: 0 0 10px;
+      padding: 6px 12px;
+      border-left: 3px solid #E95420;
+      background: #faf7f5;
+      color: #333;
+    }
+
+    .toc-note {
+      font-size: 9pt;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    .footer-note {
+      margin-top: 28px;
+      padding-top: 10px;
+      border-top: 1px solid #ddd;
+      font-size: 8.5pt;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div>
+      <div class="cover-rule"></div>
+      <p class="cover-kicker">Confidential handover</p>
+      <h1>XYZ London<br/>Project Handover</h1>
+      <p class="cover-sub">Architecture, operations, and developer notes for the MedusaJS store, Next.js storefront, and Sanity CMS.</p>
+    </div>
+    <div class="cover-meta">
+      <div>
+        <strong>Prepared for</strong>
+        Client and incoming developer
+      </div>
+      <div>
+        <strong>Date</strong>
+        2 September 2026
+      </div>
+      <div>
+        <strong>Stack</strong>
+        Medusa 2.15 · Next.js 15 · Sanity 3
+      </div>
+      <div>
+        <strong>Source</strong>
+        HANDOVER.md in the project repository
+      </div>
+    </div>
+  </section>
+  <main class="page">
+    <p>This document is the handover for <strong>XYZ London</strong>: a luxury streetwear / digital-fashion store built on MedusaJS, Next.js, and Sanity. It is written for two audiences.</p>
+<table>
+<thead>
+<tr>
+<th>Audience</th>
+<th>Start here</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Client / brand / merchandiser</strong></td>
+<td><a href="#1-what-you-received">What you received</a>, <a href="#4-who-edits-what">Who edits what</a>, <a href="#11-day-to-day-operations">Day-to-day operations</a></td>
+</tr>
+<tr>
+<td><strong>Incoming developer</strong></td>
+<td><a href="#3-architecture">Architecture</a>, <a href="#8-local-development">Local development</a>, <a href="#9-environment-variables">Environment variables</a>, <a href="#13-how-the-storefront-is-built">How the storefront is built</a></td>
+</tr>
+</tbody></table>
+<p>Read this document before changing production. Official product docs are linked at the end; this file describes <strong>this</strong> codebase, not generic Medusa or Next.js.</p>
+<hr>
+<h2>Table of contents</h2>
+<ol>
+<li><a href="#1-what-you-received">What you received</a></li>
+<li><a href="#2-brand-information-architecture">Brand information architecture</a></li>
+<li><a href="#3-architecture">Architecture</a></li>
+<li><a href="#4-who-edits-what">Who edits what</a></li>
+<li><a href="#5-repository-layout">Repository layout</a></li>
+<li><a href="#6-stack-and-versions">Stack and versions</a></li>
+<li><a href="#7-access-and-accounts-to-transfer">Access and accounts to transfer</a></li>
+<li><a href="#8-local-development">Local development</a></li>
+<li><a href="#9-environment-variables">Environment variables</a></li>
+<li><a href="#10-production--railway">Production / Railway</a></li>
+<li><a href="#11-day-to-day-operations">Day-to-day operations</a></li>
+<li><a href="#12-payments">Payments</a></li>
+<li><a href="#13-how-the-storefront-is-built">How the storefront is built</a></li>
+<li><a href="#14-virtual-try-on">Virtual try-on</a></li>
+<li><a href="#15-digital-form-commerce">Digital Form commerce</a></li>
+<li><a href="#16-email">Email</a></li>
+<li><a href="#17-search">Search</a></li>
+<li><a href="#18-file-storage-minio">File storage (MinIO)</a></li>
+<li><a href="#19-seo">SEO</a></li>
+<li><a href="#20-custom-backend-apis-and-admin-widgets">Custom backend APIs and admin widgets</a></li>
+<li><a href="#21-catalog-scripts">Catalog scripts</a></li>
+<li><a href="#22-testing">Testing</a></li>
+<li><a href="#23-known-issues-and-follow-up-work">Known issues and follow-up work</a></li>
+<li><a href="#24-security-notes">Security notes</a></li>
+<li><a href="#25-common-tasks">Common tasks</a></li>
+<li><a href="#26-official-documentation">Official documentation</a></li>
+<li><a href="#27-glossary">Glossary</a></li>
+</ol>
+<hr>
+<h2>1. What you received</h2>
+<p>XYZ London is a <strong>headless commerce</strong> site. The customer-facing website, the commerce engine, and the marketing CMS are three separate applications that talk to each other.</p>
+<table>
+<thead>
+<tr>
+<th>App</th>
+<th>What it is</th>
+<th>Typical URL (local)</th>
+<th>Who uses it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Storefront</strong></td>
+<td>Next.js 15 website customers see</td>
+<td><a href="http://localhost:8000">http://localhost:8000</a></td>
+<td>Shoppers</td>
+</tr>
+<tr>
+<td><strong>Backend (Medusa)</strong></td>
+<td>Commerce API + Admin dashboard</td>
+<td><a href="http://localhost:9000">http://localhost:9000</a> — admin at <code>/app</code></td>
+<td>Merchandisers, ops, developers</td>
+</tr>
+<tr>
+<td><strong>Sanity Studio</strong></td>
+<td>Marketing / editorial CMS</td>
+<td><a href="http://localhost:3333">http://localhost:3333</a></td>
+<td>Brand / content editors</td>
+</tr>
+</tbody></table>
+<p>The repo is a monorepo based on the <a href="https://github.com/rpuls/medusajs-2.0-for-railway-boilerplate">Medusa 2.0 Railway boilerplate</a>, heavily customized for XYZ London (Physical Form, Digital Form, OOO, Journal, virtual try-on, X/Y/Z lines).</p>
+<p><strong>Git remote (current):</strong> <a href="https://github.com/maleekcodes/medusajs-2.0-for-railway-boilerplate.git">https://github.com/maleekcodes/medusajs-2.0-for-railway-boilerplate.git</a></p>
+<p>Transfer this repository (or a fork) into the client’s GitHub organisation as part of handover.</p>
+<h3>What is live vs what is content</h3>
+<ul>
+<li><strong>Physical products</strong> (tees, caps, inventory, prices, variants, checkout, orders) live in <strong>Medusa</strong>.</li>
+<li><strong>Homepage copy, About, Journal, Digital Form merchandising, OOO page, footer, most SEO</strong> live in <strong>Sanity</strong>.</li>
+<li><strong>Legal page body copy</strong> (privacy, terms, shipping) is <strong>hardcoded</strong> in the storefront. Only the SEO titles/descriptions for those pages are in Sanity.</li>
+<li><strong>Contact page body</strong> is <strong>hardcoded</strong> (<code>contact@wearxyz.co</code>).</li>
+</ul>
+<hr>
+<h2>2. Brand information architecture</h2>
+<p>The storefront is organised around three brand pillars plus supporting pages.</p>
+<pre><code>/{country}/                          Homepage
+/{country}/store                     Physical Form  (Medusa catalog)
+/{country}/digital                   Digital Form   (Sanity + Stripe Checkout)
+/{country}/digital/{slug}            Digital product
+/{country}/digital/{slug}/success    Digital purchase success + download
+/{country}/private-expressions       OOO / Highest Expression
+/{country}/about                     About
+/{country}/journal                   Journal (Editorial + Lookbook)
+/{country}/journal/{slug}            Journal post
+/{country}/virtual-try-on            Try-on explainer
+/{country}/ar-fit                    Permanent redirect → /virtual-try-on
+/{country}/contact                   Contact
+/{country}/products/{handle}         Physical product (Medusa)
+/{country}/categories/{handle}       Category (Tees, Caps, …)
+/{country}/collections/{handle}      Collection (including X / Y / Z)
+/{country}/cart                      Cart (physical)
+/{country}/checkout                  Checkout (physical, Medusa + Stripe)
+/{country}/search                    Search overlay
+/{country}/results/{query}           Search results
+/{country}/account                   Account / login
+/{country}/order/confirmed/{id}      Physical order confirmation
+/{country}/content/privacy-policy
+/{country}/content/terms-of-use
+/{country}/content/shipping-policy
+</code></pre>
+<p>Every customer URL is prefixed with a <strong>country code</strong> (for example <code>/gb/store</code>). Middleware adds it automatically. <code>{country}</code> comes from Medusa <strong>regions</strong>.</p>
+<h3>Navigation</h3>
+<p><strong>Desktop left:</strong> Physical Form · Digital Form · OOO<br><strong>Desktop centre:</strong> XYZ London mark → home<br><strong>Desktop right:</strong> About · Journal · Try-on · Search (if enabled) · Account · Cart</p>
+<p>On OOO routes the chrome uses a light theme (<code>#EBEBEB</code>). Digital routes use a near-black theme.</p>
+<h3>Physical Form merchandising model (important)</h3>
+<p>Do <strong>not</strong> treat X, Y, and Z as product categories.</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Medusa object</th>
+<th>Handles</th>
+<th>Storefront use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Line</strong></td>
+<td>Collection</td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+<td>Groups products into X-Line / Y-Line / Z-Line</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td>Product category</td>
+<td><code>tees</code>, <code>caps</code>, …</td>
+<td>Physical Form tabs and <code>/categories/{handle}</code></td>
+</tr>
+<tr>
+<td><strong>Future Forms</strong></td>
+<td>Categories with <code>metadata.coming_soon = true</code></td>
+<td>e.g. hoodies</td>
+<td>Coming-soon grid on Physical Form</td>
+</tr>
+</tbody></table>
+<p>A product should typically have:</p>
+<ol>
+<li>One <strong>type category</strong> (Tees or Caps, etc.)</li>
+<li>One <strong>line collection</strong> (X, Y, or Z)</li>
+<li>Rich <strong>metadata</strong> (tagline, composition, GSM, size guide, …) edited via Admin widgets</li>
+</ol>
+<hr>
+<h2>3. Architecture</h2>
+<pre><code>                         ┌─────────────────────┐
+                         │   Sanity Cloud      │
+                         │   project bff91fb2  │
+                         │   dataset production│
+                         └──────────▲──────────┘
+                                    │ GROQ (published CDN)
+┌──────────────┐    Medusa JS SDK   │
+│  Storefront  ├───────────────────►│  Backend (Medusa 2.15)
+│  Next.js 15  │  x-publishable-api-key
+│  port 8000   ├───────────────────►│  port 9000
+└──────┬───────┘                    └──────┬───────────────┘
+       │                                   │
+       │ Stripe Checkout                   │ Stripe Payment
+       │ (digital only)                    │ (physical checkout)
+       │                                   │
+       │ FASHN try-on API                  │ PostgreSQL
+       │ MinIO (try-on files)              │ Redis (events / workflows)
+       │                                   │ MinIO (product images)
+       │                                   │ MeiliSearch (product index)
+       │                                   │ Resend or SendGrid (email)
+       ▼
+  Stripe (digital)          Stripe (physical, via Medusa)
+</code></pre>
+<h3>Request flow — physical purchase</h3>
+<ol>
+<li>Storefront reads products/regions from Medusa Store API.</li>
+<li>Customer adds to cart (<code>_medusa_cart_id</code> cookie).</li>
+<li>Checkout at <code>/{country}/checkout</code> creates Medusa payment sessions.</li>
+<li>Stripe.js (publishable key) collects the card; Medusa backend (<code>STRIPE_API_KEY</code>) charges.</li>
+<li><code>order.placed</code> subscriber sends the order-confirmation email.</li>
+</ol>
+<h3>Request flow — digital purchase</h3>
+<ol>
+<li>Digital catalog comes from Sanity (<code>digitalFormPage.digitalProducts[]</code>).</li>
+<li>Customer runs virtual try-on (FASHN). Output is stored in MinIO under <code>digital-tryon/</code>.</li>
+<li>Storefront <code>POST /api/stripe/digital-checkout</code> creates a <strong>Stripe Checkout Session</strong> with the storefront’s <code>STRIPE_SECRET_KEY</code>.</li>
+<li>After payment, <code>/{country}/digital/{slug}/success</code> + <code>/api/digital/download?session_id=</code> serve a signed MinIO URL for the try-on file.</li>
+</ol>
+<p>Physical and digital payments are <strong>two different Stripe integrations</strong>. They can share the same Stripe account, but they use different keys and different webhook endpoints.</p>
+<h3>Data ownership</h3>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>System of record</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SKUs, variants, prices, stock, regions, tax, shipping, customers, physical orders</td>
+<td>Medusa / PostgreSQL</td>
+</tr>
+<tr>
+<td>Product photography for physical goods</td>
+<td>MinIO (via Medusa File module)</td>
+</tr>
+<tr>
+<td>Homepage, About, Journal, Digital merchandising, OOO, footer, global SEO</td>
+<td>Sanity</td>
+</tr>
+<tr>
+<td>Legal / contact page <strong>body</strong></td>
+<td>Storefront source code</td>
+</tr>
+<tr>
+<td>Digital try-on outputs</td>
+<td>MinIO (<code>digital-tryon/</code>, <code>physical-tryon/</code>)</td>
+</tr>
+<tr>
+<td>Product search index</td>
+<td>MeiliSearch</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>4. Who edits what</h2>
+<h3>Client / merchandiser — no code required</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Tool</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Add / edit physical products, prices, variants, images</td>
+<td>Medusa Admin → Products</td>
+</tr>
+<tr>
+<td>Storefront copy (tagline, composition, size guide, …)</td>
+<td>Product page widgets in Admin</td>
+</tr>
+<tr>
+<td>Assign X / Y / Z line</td>
+<td>Product page “collection” widget</td>
+</tr>
+<tr>
+<td>Assign Tees / Caps / create type categories</td>
+<td>Product page “categories” widget</td>
+</tr>
+<tr>
+<td>Mark a category Coming Soon / hide it / set Future Forms shape</td>
+<td>Category page widget</td>
+</tr>
+<tr>
+<td>Inventory, regions, shipping, tax, discounts</td>
+<td>Medusa Admin</td>
+</tr>
+<tr>
+<td>Orders (physical)</td>
+<td>Medusa Admin → Orders</td>
+</tr>
+<tr>
+<td>Homepage, About, Journal, Digital Form, OOO, footer, SEO</td>
+<td>Sanity Studio</td>
+</tr>
+<tr>
+<td>Invite another admin user</td>
+<td>Medusa Admin → Settings → Users</td>
+</tr>
+</tbody></table>
+<h3>Developer — code or env required</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Change legal or contact page wording</td>
+<td><code>storefront/src/modules/legal/</code> and <code>contact/</code></td>
+</tr>
+<tr>
+<td>Change nav structure</td>
+<td><code>storefront/src/modules/layout/</code></td>
+</tr>
+<tr>
+<td>New storefront page or component</td>
+<td><code>storefront/src/app/</code> + <code>storefront/src/modules/</code></td>
+</tr>
+<tr>
+<td>New Medusa module, subscriber, or Admin widget</td>
+<td><code>backend/src/</code></td>
+</tr>
+<tr>
+<td>New Sanity document type</td>
+<td><code>sanity/schemas/</code> + storefront GROQ in <code>storefront/src/lib/sanity/queries.ts</code></td>
+</tr>
+<tr>
+<td>Env / Stripe / CORS / Railway</td>
+<td>Hosting dashboards + env files</td>
+</tr>
+<tr>
+<td>Seed / wipe / script catalog</td>
+<td><code>backend/src/scripts/</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. Repository layout</h2>
+<pre><code>/
+├── HANDOVER.md                 ← this document
+├── README.md                   ← original Railway boilerplate readme
+├── CLAUDE.md                   ← notes for coding agents
+├── backend/                    ← MedusaJS server + Admin
+│   ├── medusa-config.js        ← modules gated by env vars
+│   ├── src/
+│   │   ├── api/                ← custom HTTP routes
+│   │   ├── admin/widgets/      ← XYZ Admin widgets
+│   │   ├── lib/constants.ts    ← env loading + validation
+│   │   ├── modules/
+│   │   │   ├── minio-file/     ← S3-compatible storage provider
+│   │   │   └── email-notifications/  ← Resend + React Email
+│   │   ├── subscribers/        ← order-placed, invite-created
+│   │   └── scripts/            ← seed + XYZ catalog scripts + assets/
+│   └── .nvmrc                  ← Node 22.11.0
+├── storefront/                 ← Next.js 15 storefront
+│   ├── src/
+│   │   ├── app/                ← App Router pages + API routes
+│   │   ├── lib/                ← Medusa SDK, Sanity, SEO, digital/try-on
+│   │   ├── modules/            ← UI grouped by feature
+│   │   ├── middleware.ts       ← country-code enforcement
+│   │   └── styles/globals.css
+│   └── e2e/                    ← Playwright tests
+└── sanity/                     ← Sanity Studio
+    ├── schemas/                ← 9 document types
+    ├── seed.ts                 ← initial CMS content
+    └── sanity.config.ts
+</code></pre>
+<p>There is <strong>no root <code>package.json</code></strong>. Install and run each app from its own folder.</p>
+<hr>
+<h2>6. Stack and versions</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Version / choice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Node.js</td>
+<td><strong>22.x</strong> (backend <code>.nvmrc</code> = <code>v22.11.0</code>)</td>
+</tr>
+<tr>
+<td>Package manager</td>
+<td><strong>pnpm 9.10.0</strong></td>
+</tr>
+<tr>
+<td>Medusa</td>
+<td><strong>2.15.2</strong> (root README still says 2.12.1 — ignore that)</td>
+</tr>
+<tr>
+<td>Next.js</td>
+<td><strong>15.5</strong></td>
+</tr>
+<tr>
+<td>React</td>
+<td><strong>19.0.4</strong> (storefront) / 18 (backend admin, Sanity)</td>
+</tr>
+<tr>
+<td>Sanity</td>
+<td><strong>3.30</strong></td>
+</tr>
+<tr>
+<td>Stripe (backend physical)</td>
+<td><code>@medusajs/payment-stripe</code> 2.15.2</td>
+</tr>
+<tr>
+<td>Stripe (storefront digital)</td>
+<td><code>stripe</code> ^22 + Checkout Sessions</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>MeiliSearch via <code>@rokmohar/medusa-plugin-meilisearch</code> 1.3.5</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>Resend 4.0.1 (or SendGrid) + React Email</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>MinIO (S3 API)</td>
+</tr>
+<tr>
+<td>Try-on provider</td>
+<td><a href="https://api.fashn.ai/v1">FASHN</a> (<code>VIRTUAL_TRYON_API_KEY</code>)</td>
+</tr>
+<tr>
+<td>Hosting (intended)</td>
+<td>Railway (Postgres, Redis, MinIO, MeiliSearch, backend, storefront)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. Access and accounts to transfer</h2>
+<p>Hand these to the client (or confirm they already own them). <strong>Do not put secrets in this repo.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>What to transfer</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub</strong></td>
+<td>Repo ownership or a new remote</td>
+<td>Current: <code>maleekcodes/medusajs-2.0-for-railway-boilerplate</code></td>
+</tr>
+<tr>
+<td><strong>Railway</strong></td>
+<td>Project + all services + env vars</td>
+<td>Backend, storefront, Postgres, Redis, MinIO, MeiliSearch</td>
+</tr>
+<tr>
+<td><strong>Medusa Admin</strong></td>
+<td>Admin email / password</td>
+<td>Create a client user; rotate the old password</td>
+</tr>
+<tr>
+<td><strong>Sanity</strong></td>
+<td>Project <code>bff91fb2</code></td>
+<td><a href="https://www.sanity.io/manage/project/bff91fb2">sanity.io/manage</a> — add the client as Admin/Owner</td>
+</tr>
+<tr>
+<td><strong>Stripe</strong></td>
+<td>Account + API keys + webhooks</td>
+<td>Same account for physical + digital, or split if desired</td>
+</tr>
+<tr>
+<td><strong>Resend</strong> (or SendGrid)</td>
+<td>API key + sending domain</td>
+<td>Order + invite emails</td>
+</tr>
+<tr>
+<td><strong>MinIO</strong></td>
+<td>Endpoint, access key, secret, bucket <code>medusa-media</code></td>
+<td>Product images + try-on files</td>
+</tr>
+<tr>
+<td><strong>MeiliSearch</strong></td>
+<td>Host + admin key + search-only key</td>
+<td>Storefront uses the <strong>search</strong> key</td>
+</tr>
+<tr>
+<td><strong>FASHN</strong></td>
+<td><code>VIRTUAL_TRYON_API_KEY</code></td>
+<td>Digital + physical try-on</td>
+</tr>
+<tr>
+<td><strong>Domain / DNS</strong></td>
+<td>Storefront + backend + admin</td>
+<td>Point at Railway (or new host)</td>
+</tr>
+<tr>
+<td><strong>HubSpot</strong> (OOO form)</td>
+<td>Form embed URL</td>
+<td>Stored on Sanity <code>privateExpressionsPage.hubspotFormUrl</code></td>
+</tr>
+<tr>
+<td><strong>Google Search Console / Analytics</strong></td>
+<td>If already set up</td>
+<td>Not configured in this repo</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>8. Local development</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Node.js 22.x (<code>nvm use</code> in <code>backend/</code> reads <code>.nvmrc</code>)</li>
+<li>pnpm 9.10.0 (<code>corepack enable</code> then <code>corepack prepare pnpm@9.10.0 --activate</code>)</li>
+<li>PostgreSQL (local or Railway <code>DATABASE_URL</code>)</li>
+<li>Optional locally: Redis, MinIO, MeiliSearch. Without them the backend falls back (in-memory events, local file storage, no search plugin).</li>
+</ul>
+<h3>Backend</h3>
+<pre><code class="language-bash">cd backend
+pnpm install
+# Create backend/.env  (there is no committed .env.template — copy the table in §9)
+pnpm ib          # first time only: migrate + seed if the DB is empty
+pnpm dev         # http://localhost:9000  — Admin: http://localhost:9000/app
+</code></pre>
+<p>If the database is empty, <code>pnpm ib</code> (<code>init-backend</code> from <code>medusajs-launch-utils</code>) runs migrations, <code>db:sync-links</code>, <code>pnpm seed</code>, and optionally creates an admin user from <code>MEDUSA_ADMIN_EMAIL</code> / <code>MEDUSA_ADMIN_PASSWORD</code>.</p>
+<p>Then create XYZ collections and catalog (only if they are not already in this database):</p>
+<pre><code class="language-bash">pnpm exec medusa exec ./src/scripts/ensure-xyz-collections.ts
+# then the create-* product scripts listed in §21
+pnpm exec medusa exec ./src/scripts/sync-storefront-copy.ts
+</code></pre>
+<p><strong>Admin login:</strong> after seed, use the email/password you set, or create a user:</p>
+<pre><code class="language-bash">cd backend
+npx medusa user -e you@client.com -p &#39;a-strong-password&#39;
+</code></pre>
+<p>Reset an existing admin password:</p>
+<pre><code class="language-bash">MEDUSA_ADMIN_EMAIL=you@client.com MEDUSA_ADMIN_PASSWORD=&#39;new-password&#39; \
+  pnpm exec medusa exec ./src/scripts/reset-admin-password.ts
+</code></pre>
+<p><strong>Publishable API key:</strong> Admin → Settings → Publishable API Keys. Seed creates a key titled <strong>Webshop</strong>. Copy it into the storefront as <code>NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY</code>.</p>
+<p>After changing env vars, delete <code>backend/.medusa/server/</code> — Medusa caches compiled config there.</p>
+<h3>Storefront</h3>
+<pre><code class="language-bash">cd storefront
+pnpm install
+cp .env.example .env.local
+# fill NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY and Sanity IDs at minimum
+pnpm dev         # waits for backend, then http://localhost:8000
+</code></pre>
+<p><code>pnpm dev</code> / <code>pnpm build</code> call <code>await-backend</code> then <code>launch-storefront</code> (<code>medusajs-launch-utils</code>). The backend must be reachable on <code>NEXT_PUBLIC_MEDUSA_BACKEND_URL</code> (default <code>http://localhost:9000</code>).</p>
+<p>Build will <strong>fail</strong> if <code>NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY</code> is missing (<code>check-env-variables.js</code>).</p>
+<h3>Sanity Studio</h3>
+<pre><code class="language-bash">cd sanity
+pnpm install
+cp .env.example .env
+# SANITY_STUDIO_PROJECT_ID=bff91fb2
+# SANITY_STUDIO_DATASET=production
+pnpm dev         # http://localhost:3333
+</code></pre>
+<p>You must be logged into the Sanity CLI / browser with access to project <code>bff91fb2</code>.</p>
+<p>Seed CMS <strong>only</strong> on a new empty dataset (create-if-missing; will not overwrite existing documents):</p>
+<pre><code class="language-bash">SANITY_TOKEN=&lt;editor-write-token&gt; pnpm seed
+</code></pre>
+<p>Deploy a hosted Studio:</p>
+<pre><code class="language-bash">pnpm deploy      # sanity deploy  — requires `sanity login`
+</code></pre>
+<h3>Typical local ports</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Port</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Storefront</td>
+<td>8000</td>
+</tr>
+<tr>
+<td>Backend + Admin</td>
+<td>9000</td>
+</tr>
+<tr>
+<td>Sanity Studio</td>
+<td>3333</td>
+</tr>
+<tr>
+<td>React Email preview</td>
+<td>3002 (<code>cd backend &amp;&amp; pnpm email:dev</code>)</td>
+</tr>
+<tr>
+<td>MeiliSearch (if local)</td>
+<td>7700</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>9. Environment variables</h2>
+<p>Never commit real <code>.env</code> / <code>.env.local</code> files.</p>
+<h3>9.1 Backend (<code>backend/.env</code>)</h3>
+<p>There is <strong>no</strong> <code>.env.template</code> in the repo. Create <code>.env</code> from this table.</p>
+<h4>Required (process exits without these)</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>DATABASE_URL</code></td>
+<td>PostgreSQL connection string</td>
+</tr>
+<tr>
+<td><code>JWT_SECRET</code></td>
+<td>Signs admin / customer JWTs</td>
+</tr>
+<tr>
+<td><code>COOKIE_SECRET</code></td>
+<td>Signs cookies</td>
+</tr>
+</tbody></table>
+<h4>Core</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NODE_ENV</code></td>
+<td><code>development</code></td>
+<td>Environment</td>
+</tr>
+<tr>
+<td><code>PORT</code></td>
+<td><code>9000</code></td>
+<td>HTTP port</td>
+</tr>
+<tr>
+<td><code>BACKEND_PUBLIC_URL</code></td>
+<td>—</td>
+<td>Public backend URL (preferred over Railway fallback)</td>
+</tr>
+<tr>
+<td><code>RAILWAY_PUBLIC_DOMAIN_VALUE</code></td>
+<td>—</td>
+<td>Railway-injected public domain</td>
+</tr>
+<tr>
+<td><code>REDIS_URL</code></td>
+<td>unset</td>
+<td>Enables Redis event bus + workflow engine</td>
+</tr>
+<tr>
+<td><code>ADMIN_CORS</code></td>
+<td>unset</td>
+<td>Admin UI allowed origins</td>
+</tr>
+<tr>
+<td><code>AUTH_CORS</code></td>
+<td>unset</td>
+<td>Auth endpoint allowed origins</td>
+</tr>
+<tr>
+<td><code>STORE_CORS</code></td>
+<td>unset</td>
+<td>Storefront allowed origins — <strong>set this in production</strong></td>
+</tr>
+<tr>
+<td><code>MEDUSA_WORKER_MODE</code></td>
+<td><code>shared</code></td>
+<td><code>shared</code> | <code>server</code> | <code>worker</code>. <code>worker</code> skips seed on start</td>
+</tr>
+<tr>
+<td><code>MEDUSA_DISABLE_ADMIN</code></td>
+<td><code>false</code></td>
+<td><code>true</code> hides <code>/app</code></td>
+</tr>
+<tr>
+<td><code>MEDUSA_ADMIN_EMAIL</code></td>
+<td>—</td>
+<td>Created on first <code>init-backend</code> seed</td>
+</tr>
+<tr>
+<td><code>MEDUSA_ADMIN_PASSWORD</code></td>
+<td>—</td>
+<td>Created on first seed; also used by reset script</td>
+</tr>
+</tbody></table>
+<p>CORS values are comma-separated origins, e.g. <code>https://wearxyz.co,https://www.wearxyz.co</code>.</p>
+<h4>MinIO (all three required to enable cloud storage; otherwise local <code>static/</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MINIO_ENDPOINT</code></td>
+<td>Host, with or without <code>https://</code></td>
+</tr>
+<tr>
+<td><code>MINIO_ACCESS_KEY</code></td>
+<td>Access key</td>
+</tr>
+<tr>
+<td><code>MINIO_SECRET_KEY</code></td>
+<td>Secret key</td>
+</tr>
+<tr>
+<td><code>MINIO_BUCKET</code></td>
+<td>Default <code>medusa-media</code></td>
+</tr>
+</tbody></table>
+<h4>Email — configure <strong>either</strong> Resend <strong>or</strong> SendGrid</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESEND_API_KEY</code></td>
+<td>Resend</td>
+</tr>
+<tr>
+<td><code>RESEND_FROM_EMAIL</code> or <code>RESEND_FROM</code></td>
+<td>From address</td>
+</tr>
+<tr>
+<td><code>SENDGRID_API_KEY</code></td>
+<td>SendGrid</td>
+</tr>
+<tr>
+<td><code>SENDGRID_FROM_EMAIL</code> or <code>SENDGRID_FROM</code></td>
+<td>From address</td>
+</tr>
+</tbody></table>
+<p>If neither pair is complete, the notification module is not loaded and order emails will not send.</p>
+<h4>Stripe (physical checkout via Medusa)</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>STRIPE_API_KEY</code></td>
+<td>Secret key — enables <code>@medusajs/payment-stripe</code></td>
+</tr>
+<tr>
+<td><code>STRIPE_WEBHOOK_SECRET</code></td>
+<td>Loaded in <code>constants.ts</code> but <strong>commented out</strong> in <code>medusa-config.js</code> — not wired today</td>
+</tr>
+</tbody></table>
+<h4>MeiliSearch</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MEILISEARCH_HOST</code></td>
+<td>MeiliSearch URL</td>
+</tr>
+<tr>
+<td><code>MEILISEARCH_ADMIN_KEY</code></td>
+<td>Admin key for indexing</td>
+</tr>
+<tr>
+<td><code>MEILISEARCH_MASTER_KEY</code></td>
+<td>Used by <code>init-backend</code> on Railway to auto-fetch the admin key</td>
+</tr>
+</tbody></table>
+<h3>9.2 Storefront (<code>storefront/.env.local</code>)</h3>
+<p>Template: <code>storefront/.env.example</code>.</p>
+<h4>Required</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY</code></td>
+<td>Medusa Store API key (<strong>build fails without it</strong>)</td>
+</tr>
+</tbody></table>
+<h4>Medusa / site</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NEXT_PUBLIC_MEDUSA_BACKEND_URL</code></td>
+<td><code>http://localhost:9000</code></td>
+<td>Backend API</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_BASE_URL</code></td>
+<td><code>http://localhost:8000</code></td>
+<td>Canonical storefront URL (SEO, sitemap, Stripe redirects)</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_DEFAULT_REGION</code></td>
+<td><code>us</code></td>
+<td>Fallback country code. Seeded region uses <strong>Europe</strong> (<code>gb</code>, <code>de</code>, …). Set this to a country that exists in Medusa (often <code>gb</code>)</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_MINIO_ENDPOINT</code></td>
+<td>—</td>
+<td>Allowed image host in <code>next.config.js</code></td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_FEATURE_SEARCH_ENABLED</code></td>
+<td>unset</td>
+<td>Truthy → show Search in nav</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_SEARCH_ENDPOINT</code></td>
+<td><code>http://127.0.0.1:7700</code></td>
+<td>MeiliSearch</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_SEARCH_API_KEY</code></td>
+<td><code>test_key</code></td>
+<td><strong>Search-only</strong> key (not the admin key)</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_INDEX_NAME</code></td>
+<td><code>products</code></td>
+<td>MeiliSearch index</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code></td>
+<td>—</td>
+<td>Stripe.js on <strong>physical</strong> checkout (<code>pk_…</code>)</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_STRIPE_KEY</code></td>
+<td>—</td>
+<td>Alias for the publishable key</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_PAYPAL_CLIENT_ID</code></td>
+<td>—</td>
+<td>PayPal (provider must also be on the backend)</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_PRIVATE_EXPRESSIONS_TYPEFORM_URL</code></td>
+<td>—</td>
+<td>Override OOO embed URL</td>
+</tr>
+<tr>
+<td><code>PORT</code></td>
+<td>launcher / <code>8000</code> locally</td>
+<td>Host port</td>
+</tr>
+</tbody></table>
+<h4>Sanity (must match Studio)</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SANITY_PROJECT_ID</code></td>
+<td>Same as <code>SANITY_STUDIO_PROJECT_ID</code> (default project <code>bff91fb2</code>)</td>
+</tr>
+<tr>
+<td><code>SANITY_DATASET</code></td>
+<td>Usually <code>production</code></td>
+</tr>
+<tr>
+<td><code>SANITY_API_VERSION</code></td>
+<td><code>2024-01-01</code></td>
+</tr>
+<tr>
+<td><code>SANITY_TOKEN</code></td>
+<td>Optional. Leave unset to read <strong>published</strong> content via CDN</td>
+</tr>
+<tr>
+<td><code>NEXT_PUBLIC_SANITY_*</code></td>
+<td>Accepted as aliases</td>
+</tr>
+</tbody></table>
+<p>If <code>SANITY_PROJECT_ID</code> is empty, the storefront uses hardcoded fallbacks (footer, OOO, etc.).</p>
+<h4>Digital / try-on (server-only — never <code>NEXT_PUBLIC_</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>VIRTUAL_TRYON_API_KEY</code></td>
+<td>FASHN API key. Also accepts legacy <code>FASHN_API_KEY</code></td>
+</tr>
+<tr>
+<td><code>VIRTUAL_TRYON_PROVIDER_BASE_URL</code></td>
+<td>Default <code>https://api.fashn.ai/v1</code></td>
+</tr>
+<tr>
+<td><code>STRIPE_SECRET_KEY</code></td>
+<td>Stripe Checkout for <strong>digital</strong> products</td>
+</tr>
+<tr>
+<td><code>STRIPE_WEBHOOK_SECRET</code></td>
+<td>Verifies <code>POST /api/stripe/webhook</code></td>
+</tr>
+<tr>
+<td><code>DIGITAL_PREVIEW_HMAC_SECRET</code></td>
+<td>Signs <code>/api/try-on/preview</code> URLs. Falls back to <code>STRIPE_WEBHOOK_SECRET</code> or <code>MINIO_SECRET_KEY</code></td>
+</tr>
+<tr>
+<td><code>MINIO_ENDPOINT</code> / <code>MINIO_ACCESS_KEY</code> / <code>MINIO_SECRET_KEY</code></td>
+<td>Persist try-on files</td>
+</tr>
+<tr>
+<td><code>MINIO_BUCKET</code></td>
+<td>Default <code>medusa-media</code></td>
+</tr>
+<tr>
+<td><code>MINIO_USE_SSL</code></td>
+<td>Default <code>true</code></td>
+</tr>
+<tr>
+<td><code>MINIO_SERVER_URL</code></td>
+<td>Full URL if endpoint is host-only</td>
+</tr>
+<tr>
+<td><code>MINIO_REGION</code></td>
+<td>Default <code>us-east-1</code></td>
+</tr>
+</tbody></table>
+<h3>9.3 Sanity Studio (<code>sanity/.env</code>)</h3>
+<pre><code class="language-env">SANITY_STUDIO_PROJECT_ID=bff91fb2
+SANITY_STUDIO_DATASET=production
+SANITY_TOKEN=          # only for pnpm seed / migrate
+</code></pre>
+<hr>
+<h2>10. Production / Railway</h2>
+<p>The original template is designed for <a href="https://railway.com/deploy/gkU-27">Railway</a>. This repo has <strong>no</strong> <code>Dockerfile</code>, <code>railway.toml</code>, or <code>nixpacks.toml</code>. Railway Nixpacks detects Node and uses each service’s <code>package.json</code> scripts.</p>
+<h3>Suggested Railway services</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Root directory</th>
+<th>Start command</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Backend</td>
+<td><code>backend</code></td>
+<td><code>pnpm start</code></td>
+<td>Runs <code>init-backend</code> then <code>.medusa/server</code> <code>medusa start</code></td>
+</tr>
+<tr>
+<td>Storefront</td>
+<td><code>storefront</code></td>
+<td><code>pnpm start</code></td>
+<td>Set <code>PORT</code> as Railway injects</td>
+</tr>
+<tr>
+<td>Postgres</td>
+<td>plugin</td>
+<td>—</td>
+<td><code>DATABASE_URL</code></td>
+</tr>
+<tr>
+<td>Redis</td>
+<td>plugin</td>
+<td>—</td>
+<td><code>REDIS_URL</code></td>
+</tr>
+<tr>
+<td>MinIO</td>
+<td>template / image</td>
+<td>—</td>
+<td>Public bucket <code>medusa-media</code></td>
+</tr>
+<tr>
+<td>MeiliSearch</td>
+<td>template / image</td>
+<td>—</td>
+<td>Host + keys</td>
+</tr>
+</tbody></table>
+<h3>Backend production commands</h3>
+<pre><code class="language-bash">pnpm build
+# medusa build + src/scripts/postBuild.js
+# copies lockfile + .env into .medusa/server and runs prod pnpm i
+
+pnpm start
+# init-backend (migrate/seed if empty, Meili admin key fetch)
+# then: cd .medusa/server &amp;&amp; medusa start --verbose
+</code></pre>
+<h3>Storefront production</h3>
+<pre><code class="language-bash">pnpm build     # waits for backend, then next build
+pnpm start     # launch-storefront start
+</code></pre>
+<p><code>next.config.js</code> sets <code>eslint.ignoreDuringBuilds</code> and <code>typescript.ignoreBuildErrors</code> to <code>true</code>. Type errors will not fail a production build — fix them in CI if you add a stricter pipeline.</p>
+<h3>Production env checklist</h3>
+<p><strong>Backend</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> <code>DATABASE_URL</code>, <code>JWT_SECRET</code>, <code>COOKIE_SECRET</code> (long random strings)</li>
+<li><input disabled="" type="checkbox"> <code>BACKEND_PUBLIC_URL</code> = public backend URL (https)</li>
+<li><input disabled="" type="checkbox"> <code>STORE_CORS</code> = storefront origin(s)</li>
+<li><input disabled="" type="checkbox"> <code>ADMIN_CORS</code> / <code>AUTH_CORS</code> = admin origin(s)</li>
+<li><input disabled="" type="checkbox"> <code>REDIS_URL</code></li>
+<li><input disabled="" type="checkbox"> MinIO trio + bucket</li>
+<li><input disabled="" type="checkbox"> <code>STRIPE_API_KEY</code> (<code>sk_live_…</code> when going live)</li>
+<li><input disabled="" type="checkbox"> Resend or SendGrid pair; verify sending domain</li>
+<li><input disabled="" type="checkbox"> MeiliSearch host + admin key</li>
+</ul>
+<p><strong>Storefront</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> <code>NEXT_PUBLIC_MEDUSA_BACKEND_URL</code> = public backend</li>
+<li><input disabled="" type="checkbox"> <code>NEXT_PUBLIC_BASE_URL</code> = public storefront (no trailing path)</li>
+<li><input disabled="" type="checkbox"> <code>NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY</code> = Webshop key</li>
+<li><input disabled="" type="checkbox"> <code>NEXT_PUBLIC_DEFAULT_REGION</code> = a real country in your region (e.g. <code>gb</code>)</li>
+<li><input disabled="" type="checkbox"> <code>NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code> matching the backend Stripe account</li>
+<li><input disabled="" type="checkbox"> Sanity project + dataset</li>
+<li><input disabled="" type="checkbox"> <code>NEXT_PUBLIC_MINIO_ENDPOINT</code> so Next/image allows product URLs</li>
+<li><input disabled="" type="checkbox"> Digital: <code>STRIPE_SECRET_KEY</code>, <code>STRIPE_WEBHOOK_SECRET</code>, MinIO, <code>VIRTUAL_TRYON_API_KEY</code></li>
+</ul>
+<h3>Stripe webhooks to register</h3>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>{STOREFRONT}/api/stripe/webhook</code></td>
+<td>Digital Checkout (storefront verifies signature)</td>
+</tr>
+<tr>
+<td><code>{BACKEND}/hooks/payment/stripe_stripe</code></td>
+<td>Medusa physical Stripe (standard Medusa path). <code>webhookSecret</code> is currently <strong>commented out</strong> in <code>medusa-config.js</code> — enable it before relying on webhook-driven payment status</td>
+</tr>
+</tbody></table>
+<h3>After deploy</h3>
+<ol>
+<li>Open <code>{BACKEND}/app</code> and confirm Admin login.</li>
+<li>Confirm publishable key + default sales channel.</li>
+<li>Place a <strong>test</strong> physical order (Stripe test mode) and a <strong>test</strong> digital checkout if digital is in use.</li>
+<li>Confirm product images load (MinIO public-read).</li>
+<li>Publish all Sanity singletons (drafts are invisible to the storefront CDN).</li>
+<li>Set Search Console / sitemap: <code>{STOREFRONT}/sitemap.xml</code>, <code>{STOREFRONT}/robots.txt</code>.</li>
+</ol>
+<p>Health probes:</p>
+<ul>
+<li>Storefront: <code>GET /api/healthcheck</code></li>
+<li>Backend smoke: <code>GET /store/custom</code> (200 empty body)</li>
+</ul>
+<hr>
+<h2>11. Day-to-day operations</h2>
+<h3>11.1 Medusa Admin</h3>
+<p>URL: <code>{BACKEND_URL}/app</code></p>
+<p>Typical sections:</p>
+<table>
+<thead>
+<tr>
+<th>Admin area</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Products</td>
+<td>Physical catalog, variants, images, metadata widgets</td>
+</tr>
+<tr>
+<td>Collections</td>
+<td>X / Y / Z lines (handles must stay <code>x</code>, <code>y</code>, <code>z</code>)</td>
+</tr>
+<tr>
+<td>Categories</td>
+<td>Tees, Caps, Future Forms</td>
+</tr>
+<tr>
+<td>Orders</td>
+<td>Physical orders, fulfillment</td>
+</tr>
+<tr>
+<td>Customers</td>
+<td>Store accounts</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>Stock at “European Warehouse” (seed default)</td>
+</tr>
+<tr>
+<td>Settings → Regions</td>
+<td>Countries, currency, payment providers</td>
+</tr>
+<tr>
+<td>Settings → Tax</td>
+<td>Tax regions</td>
+</tr>
+<tr>
+<td>Settings → Locations &amp; shipping</td>
+<td>Stock location + shipping options</td>
+</tr>
+<tr>
+<td>Settings → Publishable API Keys</td>
+<td>Storefront key (“Webshop”)</td>
+</tr>
+<tr>
+<td>Settings → Users / Invites</td>
+<td>Admin access (invite email uses Resend)</td>
+</tr>
+</tbody></table>
+<p>Admin file upload limit is <strong>25 MB</strong> (<code>medusa-config.js</code>).</p>
+<h3>11.2 Add a physical product (recommended path)</h3>
+<ol>
+<li><strong>Admin → Products → Create.</strong></li>
+<li>Title can be <code>X _ Money Orders Tee</code> — the storefront strips the <code>X _</code> prefix unless <code>display_title</code> is set.</li>
+<li>Add options: <strong>Color</strong> (or Colour / Finish) and <strong>Size</strong> as needed.</li>
+<li>Upload images. First / thumbnail is used in grids and try-on.</li>
+<li>On the product page, use the XYZ widgets:<ul>
+<li><strong>Storefront copy</strong> — tagline, overview, composition, GSM, fit, care, shipping, size guide JSON.</li>
+<li><strong>Swatches</strong> — map each color value to a hex in <code>metadata.swatch_colors</code>.</li>
+<li><strong>Collection</strong> — assign <strong>X</strong>, <strong>Y</strong>, or <strong>Z</strong> (sets <code>metadata.collection_line</code>).</li>
+<li><strong>Categories</strong> — assign <strong>Tees</strong> or <strong>Caps</strong> (not X/Y/Z).</li>
+</ul>
+</li>
+<li>Publish the product and attach it to the <strong>Default Sales Channel</strong>.</li>
+<li>Set inventory at the stock location.</li>
+<li>Set prices for the region currency.</li>
+</ol>
+<p><strong>Size guide JSON</strong> example:</p>
+<pre><code class="language-json">{&quot;columns&quot;:[&quot;Fit&quot;,&quot;Notes&quot;],&quot;rows&quot;:[[&quot;S&quot;,&quot;Chest 50cm&quot;],[&quot;M&quot;,&quot;Chest 53cm&quot;]]}
+</code></pre>
+<p><strong>Color-specific taglines:</strong> metadata key <code>tagline_green</code> (or <code>tagline_&lt;normalized-color&gt;</code>), or a <code>taglines</code> JSON map.</p>
+<h3>11.3 Categories and Future Forms</h3>
+<p>On <strong>Admin → Categories → [category]</strong>, the storefront settings widget writes:</p>
+<table>
+<thead>
+<tr>
+<th>Metadata</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>coming_soon</code></td>
+<td>Shown in the Physical Form “Future Forms” / Coming Soon block</td>
+</tr>
+<tr>
+<td><code>hide_on_store</code></td>
+<td>Hidden from Physical Form tabs</td>
+</tr>
+<tr>
+<td><code>shape</code></td>
+<td>Geometry used in Future Forms teasers (<code>hexagon</code>, <code>square</code>, <code>rhombus</code>, …)</td>
+</tr>
+<tr>
+<td><code>subtitle</code></td>
+<td>Optional subtitle</td>
+</tr>
+</tbody></table>
+<p>Active type categories (not coming soon, not hidden, not X/Y/Z) become <strong>tabs</strong> on <code>/store</code>.</p>
+<h3>11.4 Sanity Studio — content editors</h3>
+<p>Studio title: <strong>XYZ London CMS</strong>. Default project <code>bff91fb2</code>, dataset <code>production</code>.</p>
+<p>There is <strong>no custom desk / singleton UI</strong>. Documents appear as normal Sanity types. Keep <strong>one document</strong> of each singleton type. Seeded IDs:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Expected <code>_id</code></th>
+<th>Storefront</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>siteSettings</code></td>
+<td><code>siteSettings</code></td>
+<td>Global SEO, org JSON-LD, social</td>
+</tr>
+<tr>
+<td><code>siteFooter</code></td>
+<td><code>siteFooter</code></td>
+<td>Footer (merged with hardcoded defaults)</td>
+</tr>
+<tr>
+<td><code>homePage</code></td>
+<td><code>homePage</code></td>
+<td><code>/</code></td>
+</tr>
+<tr>
+<td><code>aboutPage</code></td>
+<td><code>aboutPage</code></td>
+<td><code>/about</code></td>
+</tr>
+<tr>
+<td><code>arFitPage</code></td>
+<td><code>arFitPage</code></td>
+<td><code>/virtual-try-on</code></td>
+</tr>
+<tr>
+<td><code>digitalFormPage</code></td>
+<td><code>digitalFormPage</code></td>
+<td><code>/digital</code> and <code>/digital/[slug]</code></td>
+</tr>
+<tr>
+<td><code>privateExpressionsPage</code></td>
+<td><code>privateExpressionsPage</code></td>
+<td><code>/private-expressions</code> + homepage OOO teaser</td>
+</tr>
+<tr>
+<td><code>staticPageSeo</code></td>
+<td><code>staticPageSeo</code></td>
+<td>SEO only for store, journal, contact, legal, cart, checkout, search, 404</td>
+</tr>
+<tr>
+<td><code>journalPost</code></td>
+<td>one per article</td>
+<td><code>/journal</code>, <code>/journal/[slug]</code></td>
+</tr>
+</tbody></table>
+<p><strong>Journal categories</strong></p>
+<ul>
+<li>Editorial index: <code>Theory</code>, <code>Process</code>, <code>Dialogue</code></li>
+<li>Lookbook / campaign index: <code>Lookbook</code>, <code>Campaign</code></li>
+</ul>
+<p><strong>Digital products</strong> are rows <strong>inside</strong> <code>digitalFormPage</code>, not separate documents. After adding images, <strong>Publish</strong> the page — the storefront only reads published CDN content. There is no draft preview.</p>
+<p><strong>OOO form:</strong> <code>hubspotFormUrl</code> on <code>privateExpressionsPage</code>. Optional override: <code>NEXT_PUBLIC_PRIVATE_EXPRESSIONS_TYPEFORM_URL</code>.</p>
+<p><strong>Publishing:</strong> Edit → Publish → refresh the storefront. CDN cache is usually seconds, not minutes.</p>
+<p><strong>Do not create a second Home Page / About Page.</strong> GROQ uses <code>*[_type == &quot;homePage&quot;][0]</code> — a duplicate would be undefined which document wins.</p>
+<h3>11.5 Legal and contact</h3>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>Body copy</th>
+<th>SEO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Privacy, Terms, Shipping</td>
+<td>Hardcoded React templates in <code>storefront/src/modules/legal/templates/</code></td>
+<td>Sanity <code>staticPageSeo</code></td>
+</tr>
+<tr>
+<td>Contact</td>
+<td>Hardcoded <code>storefront/src/modules/contact/templates/contact-template.tsx</code></td>
+<td>Sanity <code>staticPageSeo.contact</code></td>
+</tr>
+</tbody></table>
+<p>Contact email in templates and fallbacks: <strong><a href="mailto:contact@wearxyz.co">contact@wearxyz.co</a></strong>.</p>
+<hr>
+<h2>12. Payments</h2>
+<h3>Physical (Medusa cart checkout)</h3>
+<ul>
+<li>Provider: <code>@medusajs/payment-stripe</code> when <code>STRIPE_API_KEY</code> is set.</li>
+<li>Storefront mounts Stripe.js with <code>NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code> (or <code>NEXT_PUBLIC_STRIPE_KEY</code>).</li>
+<li><strong>The publishable key and secret key must belong to the same Stripe account.</strong></li>
+<li>PayPal is wired in the UI (<code>pp_paypal_paypal</code>) if <code>NEXT_PUBLIC_PAYPAL_CLIENT_ID</code> is set <strong>and</strong> a PayPal provider exists on the backend (not configured in <code>medusa-config.js</code> today).</li>
+<li>Seeded region payment provider is <code>pp_system_default</code> (manual / test). After adding Stripe, enable the Stripe provider on the <strong>Europe</strong> (or live) region in Admin.</li>
+</ul>
+<h3>Digital (Stripe Checkout, bypasses Medusa cart)</h3>
+<ul>
+<li><code>STRIPE_SECRET_KEY</code> on the <strong>storefront</strong>.</li>
+<li>Session metadata stores <code>slug</code>, <code>prediction_id</code>, MinIO key.</li>
+<li>Currencies allowed in code: <strong>gbp, usd, eur</strong>.</li>
+<li>Checkout is blocked until a try-on file exists in MinIO.</li>
+<li>Download is gated on <code>session.payment_status === &quot;paid&quot;</code>.</li>
+</ul>
+<h3>Going live with Stripe</h3>
+<ol>
+<li>Switch keys from <code>sk_test_</code> / <code>pk_test_</code> to live.</li>
+<li>Register both webhook URLs (§10).</li>
+<li>Uncomment and set <code>webhookSecret</code> in <code>backend/medusa-config.js</code> for physical payments.</li>
+<li>Place a real small order in production, then refund.</li>
+</ol>
+<hr>
+<h2>13. How the storefront is built</h2>
+<h3>Routing</h3>
+<ul>
+<li>App Router under <code>storefront/src/app/[countryCode]/</code>.</li>
+<li><code>(main)</code> = nav + footer. <code>(checkout)</code> = minimal chrome.</li>
+<li><code>storefront/src/middleware.ts</code>:<ul>
+<li>Loads Medusa regions (1 hour cache).</li>
+<li>Redirects any path without a valid country prefix.</li>
+<li>Country resolution: URL → Vercel <code>x-vercel-ip-country</code> → <code>NEXT_PUBLIC_DEFAULT_REGION</code> → first region.</li>
+<li>Sets <code>_medusa_cart_id</code> when <code>?cart_id=</code> is present.</li>
+</ul>
+</li>
+</ul>
+<h3>Data fetching</h3>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Medusa SDK client</td>
+<td><code>storefront/src/lib/config.ts</code></td>
+</tr>
+<tr>
+<td>Cart, products, customer, regions, orders</td>
+<td><code>storefront/src/lib/data/*.ts</code></td>
+</tr>
+<tr>
+<td>Server Actions (mutations)</td>
+<td><code>storefront/src/modules/*/actions.ts</code></td>
+</tr>
+<tr>
+<td>Sanity GROQ</td>
+<td><code>storefront/src/lib/sanity/queries.ts</code></td>
+</tr>
+<tr>
+<td>SEO helpers</td>
+<td><code>storefront/src/lib/seo/</code></td>
+</tr>
+<tr>
+<td>Digital / try-on / MinIO</td>
+<td><code>storefront/src/lib/digital/</code></td>
+</tr>
+</tbody></table>
+<h3>Feature modules (<code>storefront/src/modules/</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Folder</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>home/components/xyz/</code></td>
+<td>Homepage sections</td>
+</tr>
+<tr>
+<td><code>store/</code></td>
+<td>Physical Form catalog</td>
+</tr>
+<tr>
+<td><code>products/</code></td>
+<td>Physical PDP</td>
+</tr>
+<tr>
+<td><code>digital/</code></td>
+<td>Digital Form index</td>
+</tr>
+<tr>
+<td><code>digital-product/</code></td>
+<td>Digital PDP + Stripe</td>
+</tr>
+<tr>
+<td><code>private-expressions/</code></td>
+<td>OOO</td>
+</tr>
+<tr>
+<td><code>journal/</code></td>
+<td>Editorial + lookbook</td>
+</tr>
+<tr>
+<td><code>virtual-try-on/</code></td>
+<td>Try-on marketing page</td>
+</tr>
+<tr>
+<td><code>about/</code>, <code>contact/</code>, <code>legal/</code></td>
+<td>Static-ish pages</td>
+</tr>
+<tr>
+<td><code>layout/</code></td>
+<td>Nav, footer</td>
+</tr>
+<tr>
+<td><code>checkout/</code>, <code>cart/</code>, <code>account/</code></td>
+<td>Commerce</td>
+</tr>
+<tr>
+<td><code>common/components/xyz/</code></td>
+<td>Logo, Container, ClientOnly</td>
+</tr>
+</tbody></table>
+<h3>Design tokens (<code>storefront/tailwind.config.js</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Hex</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>deepBlack</code></td>
+<td><code>#0F0F0F</code></td>
+<td>Body / digital</td>
+</tr>
+<tr>
+<td><code>concrete</code></td>
+<td><code>#F4F4F4</code></td>
+<td>Surfaces</td>
+</tr>
+<tr>
+<td><code>oooLight</code></td>
+<td><code>#EBEBEB</code></td>
+<td>OOO shell</td>
+</tr>
+<tr>
+<td><code>oooAccent</code></td>
+<td><code>#E95420</code></td>
+<td>OOO accent</td>
+</tr>
+</tbody></table>
+<p>Fonts: <strong>Inter</strong> (sans), <strong>JetBrains Mono</strong>. Logo: <code>storefront/public/xyz-london-logo.png</code> (masked so it follows <code>currentColor</code>).</p>
+<h3>Physical product metadata keys</h3>
+<p>These are stored on the Medusa product and rendered by <code>storefront/src/lib/util/physical-product-copy.ts</code>:</p>
+<p><code>display_title</code>, <code>tagline</code>, <code>tagline_{color}</code>, <code>taglines</code>, <code>collection_line</code>, <code>overview</code>, <code>type_label</code>, <code>origin_label</code>, <code>fit_label</code>, <code>composition</code>, <code>fabric_weight</code>, <code>design_details</code>, <code>core_product_id</code>, <code>item_number</code>, <code>fit</code>, <code>care</code>, <code>size_info</code>, <code>size_info_detail</code>, <code>shipping_copy</code>, <code>returns_copy</code>, <code>size_guide_title</code>, <code>size_guide_intro</code>, <code>size_guide</code>, <code>swatch_colors</code>.</p>
+<h3>Seeded / scripted XYZ products</h3>
+<table>
+<thead>
+<tr>
+<th>Handle</th>
+<th>Line</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>x-money-orders-tee</code></td>
+<td>X</td>
+<td>Tee (Black / Green / Purple × S–XL)</td>
+</tr>
+<tr>
+<td><code>x-monogram-tonal-stealth-cap</code></td>
+<td>X</td>
+<td>Cap</td>
+</tr>
+<tr>
+<td><code>x-monogram-flat-peak-snapback-cap</code></td>
+<td>X</td>
+<td>Cap</td>
+</tr>
+<tr>
+<td><code>y-vintage-patina-luxe-tee</code></td>
+<td>Y</td>
+<td>Tee</td>
+</tr>
+<tr>
+<td><code>y-26-suede-mesh-trucker-cap</code></td>
+<td>Y</td>
+<td>Cap</td>
+</tr>
+<tr>
+<td><code>z-script-logo-luxe-tee</code></td>
+<td>Z</td>
+<td>Tee</td>
+</tr>
+<tr>
+<td><code>z-26-vintage-washed-organic-cap</code></td>
+<td>Z</td>
+<td>Cap</td>
+</tr>
+</tbody></table>
+<p>Images for scripts live in <code>backend/src/scripts/assets/</code>.</p>
+<p>Boilerplate <code>seed.ts</code> also creates demo Medusa T-Shirt / Sweatshirt / etc. Those can be deleted in Admin or via <code>clear-products.ts</code> (destructive — see §21).</p>
+<hr>
+<h2>14. Virtual try-on</h2>
+<p>Provider: <strong>FASHN</strong> (<code>https://api.fashn.ai/v1</code>), overridable with <code>VIRTUAL_TRYON_PROVIDER_BASE_URL</code>.</p>
+<p>Enabled when <code>VIRTUAL_TRYON_API_KEY</code> (or <code>FASHN_API_KEY</code>) is set on the <strong>storefront</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET /api/try-on/enabled</code></td>
+<td>Whether try-on is configured</td>
+</tr>
+<tr>
+<td><code>POST /api/try-on/start</code></td>
+<td>Start a job. Body: digital <code>{ slug, modelImage }</code> <strong>or</strong> physical <code>{ productHandle, countryCode, modelImage }</code></td>
+</tr>
+<tr>
+<td><code>GET /api/try-on/status</code></td>
+<td>Poll provider</td>
+</tr>
+<tr>
+<td><code>GET /api/try-on/preview</code></td>
+<td>HMAC-signed preview of a stored file</td>
+</tr>
+</tbody></table>
+<p><code>modelImage</code> must be a <code>data:image/…</code> URL or <code>https://</code> URL.</p>
+<p>Completed outputs are written to MinIO:</p>
+<ul>
+<li>Digital: <code>digital-tryon/{slug}/{predictionId}.png</code></li>
+<li>Physical: <code>physical-tryon/{country}/{handle}/{predictionId}.png</code></li>
+</ul>
+<p>The marketing page <code>/virtual-try-on</code> is Sanity-driven (<code>arFitPage</code>). Try-on UI also appears on physical and digital PDPs when the API key is present.</p>
+<hr>
+<h2>15. Digital Form commerce</h2>
+<ol>
+<li>Editors add products on Sanity <strong>Digital Form Page</strong> (<code>digitalProducts[]</code>).</li>
+<li>Fields: slug, name, line, category, description, images, price (major units, e.g. <code>45</code> = £45), currency, platforms, optional <code>medusaHandle</code>, external marketplace URLs, shape, featured / coming soon.</li>
+<li>If <code>medusaHandle</code> is set, the storefront can enrich with live Medusa pricing.</li>
+<li>Purchase path does <strong>not</strong> use the Medusa cart. It requires a completed try-on file, then Stripe Checkout.</li>
+<li>Success page: <code>/{country}/digital/{slug}/success?session_id=cs_…</code></li>
+<li>File delivery: <code>/api/digital/download?session_id=cs_…</code> (redirects to a 10-minute signed URL).</li>
+</ol>
+<p>Webhook <code>POST /api/stripe/webhook</code> only <strong>verifies</strong> the event. Fulfilment is on-demand from the Checkout Session id.</p>
+<hr>
+<h2>16. Email</h2>
+<h3>When emails send</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Template</th>
+<th>Subscriber</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>order.placed</code></td>
+<td><code>order-placed</code></td>
+<td><code>backend/src/subscribers/order-placed.ts</code></td>
+</tr>
+<tr>
+<td><code>invite.created</code> / <code>invite.resent</code></td>
+<td><code>invite-user</code></td>
+<td><code>backend/src/subscribers/invite-created.ts</code></td>
+</tr>
+</tbody></table>
+<p>Templates: <code>backend/src/modules/email-notifications/templates/</code>. Preview: <code>cd backend &amp;&amp; pnpm email:dev</code> → <a href="http://localhost:3002">http://localhost:3002</a>.</p>
+<h3>Follow-up for the client</h3>
+<ul>
+<li>Order email <code>replyTo</code> is still <strong><code>info@example.com</code></strong>. Change this in <code>order-placed.ts</code>.</li>
+<li>Invite email still uses Medusa branding. Rebrand <code>invite-user.tsx</code> / <code>base.tsx</code>.</li>
+<li>Verify the Resend/SendGrid domain before production orders.</li>
+</ul>
+<p>Digital Stripe Checkout uses <strong>Stripe’s</strong> receipts, not these templates.</p>
+<hr>
+<h2>17. Search</h2>
+<ol>
+<li>Backend: set <code>MEILISEARCH_HOST</code> + <code>MEILISEARCH_ADMIN_KEY</code> so the plugin indexes products (<code>title</code>, <code>description</code>, <code>handle</code>, <code>variant_sku</code>, <code>thumbnail</code>).</li>
+<li>Storefront: set <code>NEXT_PUBLIC_SEARCH_ENDPOINT</code>, <code>NEXT_PUBLIC_SEARCH_API_KEY</code> (<strong>search-only</strong> key), <code>NEXT_PUBLIC_INDEX_NAME</code>.</li>
+<li>Set <code>NEXT_PUBLIC_FEATURE_SEARCH_ENABLED=true</code> to show Search in the nav.</li>
+</ol>
+<p>UI: <code>/search</code> (InstantSearch modal) and <code>/results/[query]</code>. Algolia leftovers exist in comments / unused <code>algoliasearch</code> dependency; MeiliSearch is what is wired.</p>
+<p><code>store.config.json</code> from the Medusa starter is <strong>not</strong> used.</p>
+<hr>
+<h2>18. File storage (MinIO)</h2>
+<p>When MinIO env vars are set, the backend uses <code>backend/src/modules/minio-file/</code>:</p>
+<ul>
+<li>Auto-creates bucket (default <code>medusa-media</code>)</li>
+<li>Sets a <strong>public-read</strong> bucket policy</li>
+<li>Object keys are ULIDs</li>
+<li>Public URLs are stored on file records and used as product image URLs</li>
+</ul>
+<p>Without MinIO, files go to <code>backend/static</code> and are served at <code>{BACKEND_URL}/static</code>.</p>
+<p>The storefront uses the same bucket (different key prefixes) for try-on persistence via the AWS S3 SDK (<code>forcePathStyle: true</code>).</p>
+<p>If product images 404 in production: check bucket policy, <code>NEXT_PUBLIC_MINIO_ENDPOINT</code> in <code>next.config.js</code> remotePatterns, and CORS on MinIO.</p>
+<hr>
+<h2>19. SEO</h2>
+<table>
+<thead>
+<tr>
+<th>Piece</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Default title / description</td>
+<td><code>storefront/src/lib/seo/site.ts</code> — “XYZ London | Premium Luxury Streetwear &amp; Refined Headwear”</td>
+</tr>
+<tr>
+<td>Per-page overrides</td>
+<td>Sanity (<code>seoTitle</code> / <code>seoDescription</code> on each page type + <code>staticPageSeo</code>)</td>
+</tr>
+<tr>
+<td>Organization JSON-LD</td>
+<td>Root layout + <code>siteSettings</code></td>
+</tr>
+<tr>
+<td>Product JSON-LD</td>
+<td>Physical PDP (<code>buildProductSchema</code>)</td>
+</tr>
+<tr>
+<td>Sitemap</td>
+<td><code>storefront/src/app/sitemap.ts</code> — static core paths × <code>NEXT_PUBLIC_DEFAULT_REGION</code> only (not every country, not every product)</td>
+</tr>
+<tr>
+<td>Robots</td>
+<td><code>storefront/src/app/robots.ts</code> — allow <code>/</code>, disallow <code>/api/</code></td>
+</tr>
+<tr>
+<td>Manifest / icons</td>
+<td><code>manifest.ts</code>, <code>icon.svg</code>, <code>apple-icon.svg</code></td>
+</tr>
+<tr>
+<td>Open Graph locale</td>
+<td><code>en_GB</code></td>
+</tr>
+</tbody></table>
+<p>Canonical / OG URLs use <code>NEXT_PUBLIC_BASE_URL</code>. Wrong value = wrong canonicals. Set it to the real https domain.</p>
+<p><code>siteSettings.heroHeadline</code> / <code>heroSubheadline</code> are <strong>legacy</strong> — the storefront reads hero copy from <code>homePage</code>.</p>
+<hr>
+<h2>20. Custom backend APIs and admin widgets</h2>
+<h3>HTTP routes (<code>backend/src/api/</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Auth</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/admin/custom</code></td>
+<td>Admin</td>
+<td>Smoke test, empty 200</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/store/custom</code></td>
+<td>Public</td>
+<td>Smoke test, empty 200</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/key-exchange</code></td>
+<td><strong>Public</strong></td>
+<td>Returns <code>{ publishableApiKey }</code> for the key titled <code>Webshop</code></td>
+</tr>
+</tbody></table>
+<p><code>/key-exchange</code> exists for Railway auto-config. Restrict or remove it if the backend URL is public and you do not want the publishable key enumerable. A publishable key is not a secret, but there is no reason to advertise it.</p>
+<p>No custom <code>middlewares.ts</code>. No custom workflows or cron jobs (only README stubs).</p>
+<h3>Admin widgets (<code>backend/src/admin/widgets/</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Zone</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>product-storefront-copy.tsx</code></td>
+<td><code>product.details.after</code></td>
+<td>Storefront metadata editor</td>
+</tr>
+<tr>
+<td><code>product-storefront-swatches.tsx</code></td>
+<td><code>product.details.after</code></td>
+<td>Color → hex map</td>
+</tr>
+<tr>
+<td><code>product-storefront-collection.tsx</code></td>
+<td><code>product.details.side.after</code></td>
+<td>Assign X/Y/Z collection</td>
+</tr>
+<tr>
+<td><code>product-storefront-categories.tsx</code></td>
+<td><code>product.details.side.after</code></td>
+<td>Assign / create type categories</td>
+</tr>
+<tr>
+<td><code>category-storefront-settings.tsx</code></td>
+<td><code>product_category.details.after</code></td>
+<td>coming soon, hide, shape, subtitle</td>
+</tr>
+</tbody></table>
+<p>Widgets call standard Admin REST with <code>credentials: &quot;include&quot;</code>. They do not add custom APIs.</p>
+<hr>
+<h2>21. Catalog scripts</h2>
+<p>Run from <code>backend/</code> with the backend env loaded:</p>
+<pre><code class="language-bash">pnpm exec medusa exec ./src/scripts/&lt;file&gt;.ts
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Script</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>seed.ts</code></td>
+<td>Boilerplate seed: EUR store, Europe region (<code>gb de dk se fr es it</code>), warehouse in Copenhagen, shipping €10, publishable key “Webshop”, demo products</td>
+</tr>
+<tr>
+<td><code>ensure-xyz-collections.ts</code></td>
+<td>Create collections X/Y/Z; hide X/Y/Z <strong>categories</strong>; normalize Tees handle; assign money-orders tee to X</td>
+</tr>
+<tr>
+<td><code>create-x-money-orders-tee.ts</code></td>
+<td>Full X tee + uploads</td>
+</tr>
+<tr>
+<td><code>add-x-money-orders-tee-green.ts</code> / <code>…-purple.ts</code></td>
+<td>Extra colors</td>
+</tr>
+<tr>
+<td><code>update-x-money-orders-tee-media.ts</code></td>
+<td>Refresh images</td>
+</tr>
+<tr>
+<td><code>create-y-vintage-patina-luxe-tee.ts</code></td>
+<td>Y tee</td>
+</tr>
+<tr>
+<td><code>create-z-script-logo-luxe-tee.ts</code></td>
+<td>Z tee</td>
+</tr>
+<tr>
+<td><code>create-x-monogram-caps.ts</code></td>
+<td>Two X caps</td>
+</tr>
+<tr>
+<td><code>create-y-26-suede-mesh-trucker-cap.ts</code></td>
+<td>Y cap</td>
+</tr>
+<tr>
+<td><code>create-z-26-vintage-washed-organic-cap.ts</code></td>
+<td>Z cap</td>
+</tr>
+<tr>
+<td><code>sync-storefront-copy.ts</code></td>
+<td>Batch metadata (fit labels, size guides)</td>
+</tr>
+<tr>
+<td><code>list-products.ts</code></td>
+<td>Log handles</td>
+</tr>
+<tr>
+<td><code>list-admin-users.ts</code></td>
+<td>Log admin emails</td>
+</tr>
+<tr>
+<td><code>reset-admin-password.ts</code></td>
+<td>Requires <code>MEDUSA_ADMIN_EMAIL</code> + <code>MEDUSA_ADMIN_PASSWORD</code></td>
+</tr>
+<tr>
+<td><code>clear-products.ts</code></td>
+<td><strong>Deletes all products, collections, reservations</strong></td>
+</tr>
+</tbody></table>
+<p>Do <strong>not</strong> run <code>clear-products.ts</code> on production unless the client explicitly wants a catalog wipe.</p>
+<p><code>pnpm seed</code> / first <code>pnpm ib</code> will re-create demo Medusa products if the DB is treated as empty. Production databases that already have data are not re-seeded by <code>init-backend</code>.</p>
+<hr>
+<h2>22. Testing</h2>
+<p>Playwright E2E: <code>storefront/e2e/</code>. See <code>storefront/e2e/README.md</code>.</p>
+<ul>
+<li>Requires a Postgres database whose name starts with <code>test_</code>.</li>
+<li>Database is dropped/recreated between runs.</li>
+<li>Specs cover cart, checkout, search, login, register, discounts, gift cards, profile, addresses, orders.</li>
+<li>Tests assume <strong>Medusa starter seed products</strong> (e.g. “Sweatshirt”), not XYZ handles or Sanity pages.</li>
+<li>There is <strong>no</strong> E2E coverage for Digital Form, OOO, Journal, or try-on.</li>
+</ul>
+<pre><code class="language-bash">cd storefront
+pnpm test-e2e
+</code></pre>
+<hr>
+<h2>23. Known issues and follow-up work</h2>
+<p>These are honest leftover items for the incoming developer — not blockers for content editing.</p>
+<ol>
+<li><strong>Order email</strong> still uses <code>replyTo: info@example.com</code> and generic copy.</li>
+<li><strong>Invite email</strong> still says Medusa.</li>
+<li><strong>Mobile side menu</strong> copyright still says “Medusa Store” in places.</li>
+<li><strong><code>STRIPE_WEBHOOK_SECRET</code> is not passed</strong> into the Medusa Stripe provider (<code>medusa-config.js</code> comment).</li>
+<li><strong><code>/key-exchange</code> is public.</strong></li>
+<li><strong>No backend <code>.env.template</code></strong> in git.</li>
+<li><strong>Sanity <code>homePage.arFitCtaLabel</code></strong> is read/seeded but <strong>missing from the Studio schema</strong> — editors cannot change the homepage try-on CTA in CMS.</li>
+<li><strong><code>siteSettings</code> hero fields</strong> are unused; hero lives on <code>homePage</code>.</li>
+<li><strong>No Sanity live preview / draft mode.</strong></li>
+<li><strong>No singleton desk</strong> — editors can accidentally create a second Home Page.</li>
+<li><strong>Sitemap</strong> lists only the default region and static paths — not products, journal slugs, or all countries.</li>
+<li><strong>Default region env is <code>us</code></strong>, but seed creates a Europe region without the US. Set <code>NEXT_PUBLIC_DEFAULT_REGION=gb</code> (or add a US region).</li>
+<li><strong>Build ignores ESLint and TypeScript errors.</strong></li>
+<li><strong>E2E tests</strong> do not match the XYZ catalog.</li>
+<li><strong><code>@medusajs/draft-order</code></strong> is a dependency but not registered in <code>medusa-config.js</code>.</li>
+<li><strong>PayPal</strong> UI exists; backend payment module does not register PayPal.</li>
+<li>Root <strong>README</strong> is still the generic Railway boilerplate (version 2.12.1, no XYZ IA). Prefer this handover file.</li>
+<li><strong>Legal body copy</strong> requires a code change / deploy — not CMS.</li>
+</ol>
+<hr>
+<h2>24. Security notes</h2>
+<ul>
+<li>Publishable Medusa keys and Stripe <strong>publishable</strong> keys are public by design. Never expose <code>JWT_SECRET</code>, <code>COOKIE_SECRET</code>, Stripe <strong>secret</strong> keys, Resend keys, MinIO secrets, MeiliSearch <strong>admin</strong> keys, <code>VIRTUAL_TRYON_API_KEY</code>, or <code>SANITY_TOKEN</code> with write access.</li>
+<li>Storefront try-on and digital checkout keys are <strong>server-only</strong>. Do not prefix them with <code>NEXT_PUBLIC_</code>.</li>
+<li>Digital download checks Stripe <code>payment_status</code> before signing a 10-minute MinIO URL.</li>
+<li>Preview URLs are HMAC-signed (<code>DIGITAL_PREVIEW_HMAC_SECRET</code>).</li>
+<li>Admin is cookie/JWT authenticated. Use strong <code>JWT_SECRET</code> / <code>COOKIE_SECRET</code> in production and HTTPS.</li>
+<li>Set CORS explicitly in production. Do not leave store CORS open to <code>*</code>.</li>
+<li>Rotate all secrets as part of handover (Railway, Stripe, MinIO, Sanity tokens, admin passwords).</li>
+<li><code>medusa-config.js</code> <strong>logs the full config JSON on startup</strong>, including the fact that modules loaded. Avoid logging secrets; review Railway logs if you add more <code>console.log</code>.</li>
+</ul>
+<hr>
+<h2>25. Common tasks</h2>
+<h3>Change homepage headline</h3>
+<p>Sanity → Home Page → Hero → Publish.</p>
+<h3>Add a Journal article</h3>
+<p>Sanity → Journal Post → fill title, slug, category, body, <code>publishedAt</code> → Publish. Appears on <code>/journal</code> automatically.</p>
+<h3>Add a Digital product</h3>
+<p>Sanity → Digital Form Page → add a <code>digitalProducts</code> row (slug without <code>/digital/</code>) → upload images → Publish.</p>
+<h3>Hide a Physical Form category without deleting it</h3>
+<p>Admin → Category → enable <strong>Hide on store</strong>.</p>
+<h3>Mark a category as Future Forms / Coming Soon</h3>
+<p>Admin → Category → enable <strong>Coming soon</strong>, optionally set <strong>shape</strong>.</p>
+<h3>Change shipping price</h3>
+<p>Admin → Settings → Locations &amp; shipping → edit the shipping option. Seed created Standard + Express at €10 / $10.</p>
+<h3>Add a country</h3>
+<p>Admin → Settings → Regions → add the country to Europe (or create a new region + currency + tax + providers). Storefront URLs become <code>/{iso}/…</code> after middleware cache refreshes (up to 1 hour, or restart).</p>
+<h3>Point the store at a new domain</h3>
+<ol>
+<li>DNS → Railway (or new host).</li>
+<li>Storefront <code>NEXT_PUBLIC_BASE_URL=https://your-domain</code>.</li>
+<li>Backend <code>BACKEND_PUBLIC_URL</code>, <code>STORE_CORS</code>, <code>ADMIN_CORS</code>, <code>AUTH_CORS</code>.</li>
+<li>Stripe webhook URLs.</li>
+<li>Sanity image / site settings if they contain absolute URLs.</li>
+</ol>
+<h3>Rebuild after env change (backend)</h3>
+<pre><code class="language-bash">rm -rf backend/.medusa/server
+cd backend &amp;&amp; pnpm build &amp;&amp; pnpm start
+</code></pre>
+<h3>Preview emails</h3>
+<pre><code class="language-bash">cd backend &amp;&amp; pnpm email:dev
+</code></pre>
+<hr>
+<h2>26. Official documentation</h2>
+<p>Use these for platform questions; use this handover for <strong>this</strong> project’s customisations.</p>
+<ul>
+<li>Medusa 2: <a href="https://docs.medusajs.com">https://docs.medusajs.com</a></li>
+<li>Medusa Admin: <code>{BACKEND}/app</code> + <a href="https://docs.medusajs.com/user-guide">https://docs.medusajs.com/user-guide</a></li>
+<li>Medusa Stripe: <a href="https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider#stripe">https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider#stripe</a></li>
+<li>Next.js 15: <a href="https://nextjs.org/docs">https://nextjs.org/docs</a></li>
+<li>Sanity: <a href="https://www.sanity.io/docs">https://www.sanity.io/docs</a></li>
+<li>MeiliSearch plugin: <a href="https://github.com/rokmohar/medusa-plugin-meilisearch">https://github.com/rokmohar/medusa-plugin-meilisearch</a></li>
+<li>FASHN try-on API: <a href="https://docs.fashn.ai">https://docs.fashn.ai</a> (provider default)</li>
+<li>Railway Medusa template background: root <code>README.md</code> and <a href="https://funkyton.com/medusajs-2-0-is-finally-here/">https://funkyton.com/medusajs-2-0-is-finally-here/</a></li>
+</ul>
+<hr>
+<h2>27. Glossary</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Physical Form</strong></td>
+<td>Tangible catalog (<code>/store</code>) powered by Medusa</td>
+</tr>
+<tr>
+<td><strong>Digital Form</strong></td>
+<td>Digital / NFT-style merchandising in Sanity + Stripe Checkout</td>
+</tr>
+<tr>
+<td><strong>OOO</strong></td>
+<td>“Highest Expression” / private list — route <code>/private-expressions</code></td>
+</tr>
+<tr>
+<td><strong>Line (X / Y / Z)</strong></td>
+<td>Design line = Medusa <strong>collection</strong> <code>x</code> / <code>y</code> / <code>z</code></td>
+</tr>
+<tr>
+<td><strong>Type category</strong></td>
+<td>Tees, Caps, etc. — Medusa <strong>product category</strong></td>
+</tr>
+<tr>
+<td><strong>Future Forms</strong></td>
+<td>Coming-soon type categories</td>
+</tr>
+<tr>
+<td><strong>Publishable key</strong></td>
+<td>Public Medusa Store API key (header <code>x-publishable-api-key</code>)</td>
+</tr>
+<tr>
+<td><strong>Handle</strong></td>
+<td>URL slug for a Medusa product or category</td>
+</tr>
+<tr>
+<td><strong>Region</strong></td>
+<td>Medusa market (currency + countries). Drives <code>/{country}/</code></td>
+</tr>
+<tr>
+<td><strong>Singleton</strong></td>
+<td>Sanity document that should exist exactly once (Home, About, …)</td>
+</tr>
+<tr>
+<td><strong>GROQ</strong></td>
+<td>Sanity query language used by the storefront</td>
+</tr>
+<tr>
+<td><strong>FASHN</strong></td>
+<td>Third-party virtual try-on API</td>
+</tr>
+<tr>
+<td><strong>init-backend</strong></td>
+<td>Railway helper that migrates/seeds on empty DBs</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Handover sign-off checklist</h2>
+<p>Copy this into your transfer email and tick with the client.</p>
+<ul>
+<li><input disabled="" type="checkbox"> Git repository transferred or forked into the client org</li>
+<li><input disabled="" type="checkbox"> Railway (or host) project transferred; all env vars documented offline</li>
+<li><input disabled="" type="checkbox"> Client Medusa Admin user created; old passwords rotated</li>
+<li><input disabled="" type="checkbox"> Sanity project <code>bff91fb2</code> — client is Owner/Admin</li>
+<li><input disabled="" type="checkbox"> Stripe account + webhooks pointed at production URLs</li>
+<li><input disabled="" type="checkbox"> Resend/SendGrid domain verified; <code>info@example.com</code> replaced</li>
+<li><input disabled="" type="checkbox"> MinIO bucket public-read; images load on the live storefront</li>
+<li><input disabled="" type="checkbox"> <code>NEXT_PUBLIC_DEFAULT_REGION</code> matches a real Medusa country</li>
+<li><input disabled="" type="checkbox"> CORS set to the live storefront origin</li>
+<li><input disabled="" type="checkbox"> Test physical checkout (Stripe test, then live)</li>
+<li><input disabled="" type="checkbox"> Test digital checkout + download if Digital Form is in scope</li>
+<li><input disabled="" type="checkbox"> OOO HubSpot (or override) form works</li>
+<li><input disabled="" type="checkbox"> DNS / SSL for storefront and backend</li>
+<li><input disabled="" type="checkbox"> This <code>HANDOVER.md</code> stored with the repo</li>
+</ul>
+<hr>
+<p><em>Generated from the XYZ London monorepo as of September 2026. Medusa 2.15.2, Next.js 15, Sanity 3. Update this file when you add modules, env vars, or routes.</em></p>
+
+    <p class="footer-note">This PDF is generated from HANDOVER.md. Prefer the markdown file in the repository when copying commands. Do not commit secrets into either document.</p>
+  </main>
+</body>
+</html>

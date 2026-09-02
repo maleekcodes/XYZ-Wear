@@ -1,0 +1,11 @@
+{
+  "name": "xyz-handover-print",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "html": "node generate.mjs"
+  },
+  "dependencies": {
+    "marked": "^15.0.12"
+  }
+}

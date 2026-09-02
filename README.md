@@ -15,6 +15,8 @@
   </a>
 </p>
 
+> **XYZ London handover:** this repo is the live XYZ London store (Physical Form, Digital Form, OOO, Sanity CMS, virtual try-on). For client and developer transfer notes — architecture, env vars, Admin/CMS operations, payments, and known follow-ups — start with **[HANDOVER.md](./HANDOVER.md)** or the printable **[XYZ-London-Project-Handover.pdf](./XYZ-London-Project-Handover.pdf)**. The rest of this README is the original Railway boilerplate guide.
+
 <h2 align="center">
   Prebaked medusajs 2.0 monorepo
 </h2>
