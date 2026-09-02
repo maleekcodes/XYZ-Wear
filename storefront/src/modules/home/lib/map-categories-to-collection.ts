@@ -242,7 +242,7 @@ export function mapPhysicalHomeCollection(
             line,
             product,
             isLatest: product
-              ? isLatestInGroup(product, section.products)
+              ? isLatestInGroup(product, group?.products ?? [])
               : false,
           })
         }),

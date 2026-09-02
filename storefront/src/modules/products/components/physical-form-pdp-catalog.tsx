@@ -153,7 +153,7 @@ export default async function PhysicalFormPdpCatalog({
                       <PhysicalProductCard
                         {...cardProps}
                         compact
-                        isLatest={isLatestInGroup(item, catalogProducts)}
+                        isLatest={isLatestInGroup(item, group.products)}
                       />
                     </li>
                   )

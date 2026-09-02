@@ -47,7 +47,7 @@ function ComingSoonCard({ item }: { item: HomeCollectionItem }) {
         viewport={{ once: true }}
         whileHover={{ y: -5 }}
         transition={{ duration: 0.4 }}
-        className="group flex h-full min-h-[360px] flex-col justify-between bg-concrete p-3"
+        className="group flex h-full min-h-[360px] flex-col justify-between border border-neutral-200 bg-white p-3 transition-colors hover:border-neutral-300"
       >
         <div className="flex items-start justify-between">
           <span className="rounded-full border border-neutral-300 bg-white/50 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest">
@@ -57,7 +57,7 @@ function ComingSoonCard({ item }: { item: HomeCollectionItem }) {
         </div>
 
         <div className="flex flex-grow items-center justify-center py-3">
-          <div className="relative flex aspect-[3/4] w-full max-w-[14rem] items-center justify-center overflow-hidden border border-neutral-100 bg-white">
+          <div className="relative flex aspect-[3/4] w-full items-center justify-center overflow-hidden bg-white">
             <CollectionShapeGraphic shape={item.shape} />
           </div>
         </div>

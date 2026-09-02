@@ -6,7 +6,10 @@ import {
   productDisplayTitle,
   productMetadataString,
 } from "@lib/util/physical-product-copy"
-import { appearanceValues } from "@lib/util/product-options"
+import {
+  appearanceValues,
+  isAppearanceOption,
+} from "@lib/util/product-options"
 import { swatchHexForLabel } from "@lib/util/swatch-color"
 import type { PhysicalProductCardProps } from "@modules/store/components/physical-product-card"
 
@@ -25,6 +28,44 @@ function toImageUrl(
 ): string | null {
   const url = image?.url
   return typeof url === "string" && url.trim().length > 0 ? url.trim() : null
+}
+
+function variantIsPurchasable(variant: HttpTypes.StoreProductVariant): boolean {
+  if (!variant.id) return false
+  if (variant.manage_inventory === false) return true
+  if (variant.allow_backorder) return true
+  return (variant.inventory_quantity ?? 1) > 0
+}
+
+function variantMatchesAppearance(
+  variant: HttpTypes.StoreProductVariant,
+  color: string,
+  appearanceOptionId?: string
+): boolean {
+  return (variant.options ?? []).some((opt) => {
+    const isAppearance =
+      isAppearanceOption(opt.option?.title) ||
+      Boolean(appearanceOptionId && opt.option_id === appearanceOptionId)
+    return isAppearance && opt.value === color
+  })
+}
+
+function pickVariantId(
+  product: HttpTypes.StoreProduct,
+  color?: string
+): string | null {
+  const variants = product.variants ?? []
+  const appearanceOptionId = product.options?.find((option) =>
+    isAppearanceOption(option.title)
+  )?.id
+  const matching = color
+    ? variants.filter((variant) =>
+        variantMatchesAppearance(variant, color, appearanceOptionId)
+      )
+    : variants
+  const pool = matching.length ? matching : variants
+  const ready = pool.find(variantIsPurchasable)
+  return ready?.id ?? pool.find((variant) => variant.id)?.id ?? null
 }
 
 function extractSwatches(
@@ -51,6 +92,7 @@ function extractSwatches(
       label,
       imageUrl: matched ?? uniqueImagePool[index] ?? null,
       hex: swatchHexForLabel(product, label),
+      variantId: pickVariantId(product, label),
     }
   })
 }
@@ -93,6 +135,7 @@ export function buildPhysicalProductCardProps(
         : undefined,
     priceIsSale: cheapestPrice?.price_type === "sale",
     swatches: extractSwatches(priced),
+    defaultVariantId: pickVariantId(priced),
     fitLabel: fitLabelForProduct(priced),
   }
 }

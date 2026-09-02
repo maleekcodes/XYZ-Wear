@@ -107,7 +107,7 @@ function CollectionCatalog({
                       <PhysicalProductCard
                         {...cardProps}
                         compact
-                        isLatest={isLatestInGroup(product, section.products)}
+                        isLatest={isLatestInGroup(product, group.products)}
                       />
                     </li>
                   )

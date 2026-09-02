@@ -134,7 +134,7 @@ export default async function RelatedProducts({
                       <PhysicalProductCard
                         {...cardProps}
                         compact
-                        isLatest={isLatestInGroup(item, similar)}
+                        isLatest={isLatestInGroup(item, group.products)}
                       />
                     </li>
                   )

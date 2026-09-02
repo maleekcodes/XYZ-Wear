@@ -308,7 +308,7 @@ export default async function CategoryTemplate({
                               compact
                               isLatest={isLatestInGroup(
                                 product,
-                                catalogProducts
+                                group.products
                               )}
                             />
                           </li>
