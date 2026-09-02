@@ -114,6 +114,7 @@ export function PhysicalFormCategoryTabs({
   futureHref,
   scrollToCatalogOnClick = false,
   scrollSpy = false,
+  onSelect,
 }: {
   tabs: PhysicalFormTab[]
   activeHandle?: string | null
@@ -121,6 +122,7 @@ export function PhysicalFormCategoryTabs({
   futureHref?: string
   scrollToCatalogOnClick?: boolean
   scrollSpy?: boolean
+  onSelect?: (handle: string) => void
 }) {
   const spyHandles = useMemo(() => {
     const handles = tabs
@@ -154,6 +156,18 @@ export function PhysicalFormCategoryTabs({
     >
       {tabs.map((tab) => {
         const active = !futureActive && tab.handle === current
+        if (onSelect) {
+          return (
+            <button
+              key={tab.handle}
+              type="button"
+              className={tabClass(active)}
+              onClick={() => onSelect(tab.handle)}
+            >
+              {tab.name}
+            </button>
+          )
+        }
         if (scrollSpy) {
           const hash = tab.handle === "all" ? undefined : sectionId(tab.handle)
           return (
@@ -183,7 +197,15 @@ export function PhysicalFormCategoryTabs({
         )
       })}
       {showFuture &&
-        (scrollSpy ? (
+        (onSelect ? (
+          <button
+            type="button"
+            className={tabClass(futureActive)}
+            onClick={() => onSelect(FUTURE_FORMS_HANDLE)}
+          >
+            Future Forms
+          </button>
+        ) : scrollSpy ? (
           <a
             href={storePath(countryCode, FUTURE_FORMS_SECTION_ID)}
             className={tabClass(futureActive)}

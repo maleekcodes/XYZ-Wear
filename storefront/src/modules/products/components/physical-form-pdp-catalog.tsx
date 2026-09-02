@@ -10,24 +10,49 @@ import {
 } from "@lib/util/line-collections"
 import { productTypeCategory } from "@lib/util/product-type-category"
 import { HttpTypes } from "@medusajs/types"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { PhysicalProductCard } from "@modules/store/components/physical-product-card"
 import {
   FUTURE_FORMS_HANDLE,
-  PhysicalFormCategoryTabs,
 } from "@modules/store/components/physical-form-category-tabs"
-import { CATALOG_SCROLL_ID } from "@modules/store/lib/catalog-scroll"
 import { buildPhysicalProductCardProps } from "@modules/store/lib/build-physical-product-card-props"
 import {
   groupProductsByAssignedCategory,
   isLatestInGroup,
   listComingSoonCategories,
   pinLatestProducts,
+  type PhysicalCategorySection,
 } from "@modules/store/lib/group-products-by-category"
 import { groupProductsByLineCollection } from "@modules/store/lib/group-products-by-collection"
 
-function categoryHref(handle: string) {
-  return `/categories/${handle}`
+import {
+  PhysicalFormPdpCatalogView,
+  type PdpCatalog,
+} from "./physical-form-pdp-catalog-view"
+
+function toCatalog(section: PhysicalCategorySection): PdpCatalog | null {
+  const handle = section.handle
+  if (!handle) return null
+
+  return {
+    handle,
+    groups: groupProductsByLineCollection(section.products, {
+      includeEmpty: true,
+    }).map((group) => ({
+      id: group.id,
+      title: group.title,
+      handle: group.handle,
+      cards: group.products
+        .map((item) => {
+          const card = buildPhysicalProductCardProps(item)
+          if (!card || !item.id) return null
+          return {
+            ...card,
+            id: item.id,
+            isLatest: isLatestInGroup(item, group.products),
+          }
+        })
+        .filter((card): card is NonNullable<typeof card> => Boolean(card)),
+    })),
+  }
 }
 
 export default async function PhysicalFormPdpCatalog({
@@ -81,92 +106,38 @@ export default async function PhysicalFormPdpCatalog({
       name: item.name,
       handle: item.handle ?? "",
     })),
-  ]
-    .filter((tab) => {
-      const handle = normalizeHandle(tab.handle)
-      if (!handle || handle === FUTURE_FORMS_HANDLE || seen.has(handle)) {
-        return false
-      }
-      if (isLineCollectionHandle(handle)) return false
-      seen.add(handle)
-      return true
-    })
-    .map((tab) => ({
-      ...tab,
-      href: categoryHref(tab.handle),
-    }))
-
-  const pageSection = sections.find(
-    (section) =>
-      normalizeHandle(section.handle) === normalizeHandle(category.handle)
-  )
-  const catalogProducts = pageSection?.products ?? []
-  const collectionGroups = groupProductsByLineCollection(catalogProducts, {
-    includeEmpty: true,
+  ].filter((tab) => {
+    const handle = normalizeHandle(tab.handle)
+    if (!handle || handle === FUTURE_FORMS_HANDLE || seen.has(handle)) {
+      return false
+    }
+    if (isLineCollectionHandle(handle)) return false
+    seen.add(handle)
+    return true
   })
 
-  return (
-    <div className="mt-12 md:mt-16">
-      <PhysicalFormCategoryTabs
-        tabs={tabs}
-        activeHandle={category.handle}
-        showFuture
-        futureHref={`${categoryHref(category.handle)}?view=${FUTURE_FORMS_HANDLE}`}
-      />
+  const catalogs = [
+    ...sections,
+    ...comingSoon
+      .filter(
+        (item) => !sections.some((section) => section.id === item.id)
+      )
+      .map((item) => ({
+        id: item.id,
+        name: item.name,
+        handle: item.handle,
+        products: [] as HttpTypes.StoreProduct[],
+      })),
+  ]
+    .map(toCatalog)
+    .filter((catalog): catalog is PdpCatalog => Boolean(catalog))
 
-      <section
-        id={CATALOG_SCROLL_ID}
-        className="scroll-mt-[10.5rem] mt-12 space-y-16 md:mt-16 md:space-y-20"
-        data-testid="products-list"
-      >
-        {collectionGroups.map((group) => (
-          <div
-            key={group.id}
-            id={group.handle ? `line-${group.handle}` : undefined}
-          >
-            <div className="mb-6 flex items-baseline justify-between gap-3">
-              {group.handle ? (
-                <LocalizedClientLink
-                  href={`${categoryHref(category.handle)}?collection=${group.handle}`}
-                  className="text-lg font-bold tracking-tight text-deepBlack hover:opacity-70 transition-opacity md:text-xl"
-                >
-                  {group.title}
-                </LocalizedClientLink>
-              ) : (
-                <span className="text-lg font-bold tracking-tight text-deepBlack md:text-xl">
-                  {group.title}
-                </span>
-              )}
-              {group.products.length > 0 && (
-                <span className="font-mono text-[10px] text-neutral-400">
-                  {group.products.length}
-                </span>
-              )}
-            </div>
-            {group.products.length > 0 ? (
-              <ul className="grid w-full grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
-                {group.products.map((item) => {
-                  const cardProps = buildPhysicalProductCardProps(item)
-                  if (!cardProps) return null
-                  return (
-                    <li key={item.id}>
-                      <PhysicalProductCard
-                        {...cardProps}
-                        compact
-                        isLatest={isLatestInGroup(item, group.products)}
-                      />
-                    </li>
-                  )
-                })}
-              </ul>
-            ) : (
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-neutral-400">
-                Coming soon
-              </p>
-            )}
-          </div>
-        ))}
-      </section>
-    </div>
+  return (
+    <PhysicalFormPdpCatalogView
+      tabs={tabs}
+      initialHandle={category.handle}
+      catalogs={catalogs}
+      comingSoon={comingSoon}
+    />
   )
 }
