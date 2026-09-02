@@ -1,8 +1,7 @@
 "use client"
 
-import { motion, type Variants } from "framer-motion"
-import { ArrowRight } from "lucide-react"
-import Image from "next/image"
+import { motion } from "framer-motion"
+import { Plus } from "lucide-react"
 
 import { Container } from "@modules/common/components/xyz/Container"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -12,6 +11,9 @@ import type {
   HomeCollectionItem,
   HomeCollectionLayout,
 } from "@modules/home/lib/map-categories-to-collection"
+import { PhysicalFutureForms } from "@modules/store/components/physical-future-forms"
+import { PhysicalProductCard } from "@modules/store/components/physical-product-card"
+import type { ComingSoonCategory } from "@modules/store/lib/group-products-by-category"
 
 function CollectionShapeGraphic({ shape }: { shape: CollectionShape }) {
   if (shape === "x") {
@@ -36,77 +38,57 @@ function CollectionShapeGraphic({ shape }: { shape: CollectionShape }) {
   )
 }
 
-const cardVariants: Variants = {
-  hover: {
-    y: -8,
-    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
-  },
-}
+function ComingSoonCard({ item }: { item: HomeCollectionItem }) {
+  return (
+    <LocalizedClientLink href={item.href} className="block h-full min-h-[360px]">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        whileHover={{ y: -5 }}
+        transition={{ duration: 0.4 }}
+        className="group flex h-full min-h-[360px] flex-col justify-between bg-concrete p-3"
+      >
+        <div className="flex items-start justify-between">
+          <span className="rounded-full border border-neutral-300 bg-white/50 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest">
+            {item.line}
+          </span>
+          <Plus size={18} className="text-neutral-400" aria-hidden />
+        </div>
 
-const ctaVariants: Variants = {
-  initial: { x: 0, opacity: 0 },
-  hover: { x: 5, opacity: 1, transition: { duration: 0.3 } },
+        <div className="flex flex-grow items-center justify-center py-3">
+          <div className="relative flex aspect-[3/4] w-full max-w-[14rem] items-center justify-center overflow-hidden border border-neutral-100 bg-white">
+            <CollectionShapeGraphic shape={item.shape} />
+          </div>
+        </div>
+
+        <div>
+          <h3 className="truncate text-xs font-bold tracking-tight">Coming soon</h3>
+          <span className="mt-1 block text-xs text-neutral-500">
+            {item.line} releases are on the way.
+          </span>
+          <div className="mt-4 flex items-center justify-between border-t border-neutral-200/60 pt-4 font-mono text-[10px] uppercase tracking-widest text-neutral-400">
+            <span>Soon</span>
+            <span>—</span>
+          </div>
+        </div>
+      </motion.div>
+    </LocalizedClientLink>
+  )
 }
 
 function CollectionCard({ item }: { item: HomeCollectionItem }) {
-  return (
-    <motion.div
-      initial="initial"
-      whileHover="hover"
-      variants={cardVariants}
-      className="group relative bg-concrete h-[500px] flex flex-col p-8 md:p-10 cursor-pointer overflow-hidden col-span-1 md:col-span-4"
-    >
-      <LocalizedClientLink href={item.href} className="absolute inset-0 z-10" />
+  if (item.card) {
+    return (
+      <PhysicalProductCard
+        {...item.card}
+        compact
+        className="max-w-none w-full"
+      />
+    )
+  }
 
-      <div className="flex justify-between items-start w-full relative z-10 shrink-0">
-        <span
-          className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full text-xs font-mono tracking-wide ${
-            item.isLatest
-              ? "border border-deepBlack bg-deepBlack text-white"
-              : "border border-deepBlack bg-transparent"
-          }`}
-        >
-          {item.line}
-        </span>
-
-        <motion.div
-          variants={ctaVariants}
-          className="flex items-center gap-2 text-deepBlack"
-        >
-          <span className="text-[10px] uppercase font-bold tracking-widest hidden md:inline-block">
-            {item.comingSoon ? "Soon" : "View"}
-          </span>
-          <ArrowRight size={18} />
-        </motion.div>
-      </div>
-
-      <div className="relative flex-1 min-h-0 my-5 flex items-center justify-center pointer-events-none">
-        {item.imageUrl ? (
-          <div className="relative aspect-square h-full max-h-[240px] w-auto max-w-[72%] overflow-hidden bg-white shadow-sm outline outline-1 outline-black/10 transition-transform duration-700 ease-out group-hover:scale-[1.03]">
-            <Image
-              src={item.imageUrl}
-              alt={item.description || item.title}
-              fill
-              className="object-contain object-center"
-              sizes="(min-width: 768px) 28vw, 90vw"
-              quality={75}
-            />
-          </div>
-        ) : (
-          <CollectionShapeGraphic shape={item.shape} />
-        )}
-      </div>
-
-      <div className="relative z-10 shrink-0 min-h-[5.5rem]">
-        <h3 className="text-2xl font-bold tracking-tight mb-2 text-balance line-clamp-2">
-          {item.title}
-        </h3>
-        <p className="text-sm text-neutral-500 font-medium text-pretty line-clamp-2">
-          {item.description}
-        </p>
-      </div>
-    </motion.div>
-  )
+  return <ComingSoonCard item={item} />
 }
 
 function CategoryBlock({ section }: { section: HomeCategorySection }) {
@@ -138,11 +120,13 @@ function CategoryBlock({ section }: { section: HomeCategorySection }) {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         {section.items.map((item) => (
-          <CollectionCard key={item.id} item={item} />
+          <li key={item.id}>
+            <CollectionCard item={item} />
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   )
 }
@@ -150,17 +134,14 @@ function CategoryBlock({ section }: { section: HomeCategorySection }) {
 export function Collection({
   layout,
   items = [],
+  futureForms,
 }: {
   layout?: HomeCollectionLayout
   items?: HomeCollectionItem[]
+  futureForms?: ComingSoonCategory[]
 }) {
   const categories = layout?.categories ?? []
-  const future = layout?.future ?? []
   const fallback = !layout && items.length > 0 ? items : []
-
-  if (!categories.length && !future.length && !fallback.length) {
-    return null
-  }
 
   return (
     <section className="py-32 bg-white" id="collection">
@@ -175,11 +156,13 @@ export function Collection({
         </div>
 
         {fallback.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {fallback.map((item) => (
-              <CollectionCard key={item.id} item={item} />
+              <li key={item.id}>
+                <CollectionCard item={item} />
+              </li>
             ))}
-          </div>
+          </ul>
         )}
 
         <div className="space-y-24 md:space-y-28">
@@ -188,23 +171,7 @@ export function Collection({
           ))}
         </div>
 
-        {future.length > 0 && (
-          <section className="mt-28 border-t border-neutral-100 pt-20">
-            <div className="mb-16 text-center">
-              <span className="text-xs font-mono text-neutral-400 uppercase tracking-widest border border-neutral-300 px-3 py-1 rounded-full">
-                Coming Soon
-              </span>
-              <h3 className="mt-6 text-4xl font-bold tracking-tighter">
-                Future Forms
-              </h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-              {future.map((item) => (
-                <CollectionCard key={item.id} item={item} />
-              ))}
-            </div>
-          </section>
-        )}
+        <PhysicalFutureForms items={futureForms ?? layout?.futureForms} />
       </Container>
     </section>
   )

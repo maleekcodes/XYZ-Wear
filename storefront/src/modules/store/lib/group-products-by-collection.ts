@@ -34,7 +34,11 @@ export function groupProductsByLineCollection(
   for (const product of products) {
     const handle = normalizeHandle(product.collection?.handle)
     if (isLineCollectionHandle(handle)) {
-      buckets.get(handle)!.products.push(product)
+      const bucket = buckets.get(handle)!
+      bucket.products.push(product)
+      if (product.collection?.title?.trim()) {
+        bucket.title = product.collection.title.trim()
+      }
       continue
     }
 

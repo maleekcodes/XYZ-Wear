@@ -37,11 +37,9 @@ function DescriptionBody({ product }: { product: HttpTypes.StoreProduct }) {
   const itemNumber = productMetadataString(product, "item_number")
   const fit = productMetadataString(product, "fit")
   const care = productMetadataString(product, "care")
-  const origin = product.origin_country
-    ? product.origin_country === "GB"
-      ? "Made in England"
-      : product.origin_country
-    : null
+  const origin =
+    productMetadataString(product, "origin_label") ??
+    (product.origin_country ? product.origin_country : null)
 
   const hasStructured = Boolean(
     composition || fabricWeight || designDetails || coreId || fit || care
@@ -100,6 +98,11 @@ function DescriptionBody({ product }: { product: HttpTypes.StoreProduct }) {
 }
 
 export default function ProductDetailAccordions({ product }: Props) {
+  const shippingCopy = productMetadataString(product, "shipping_copy")
+  const returnsCopy = productMetadataString(product, "returns_copy")
+  const originLabel =
+    productMetadataString(product, "origin_label") ?? product.origin_country
+
   return (
     <div className="w-full">
       <Accordion type="multiple">
@@ -127,14 +130,7 @@ export default function ProductDetailAccordions({ product }: Props) {
                     productMetadataString(product, "composition")
                   }
                 />
-                <Spec
-                  label="Country of origin"
-                  value={
-                    product.origin_country === "GB"
-                      ? "Made in England"
-                      : product.origin_country
-                  }
-                />
+                <Spec label="Country of origin" value={originLabel} />
                 <Spec
                   label="Type"
                   value={
@@ -161,32 +157,32 @@ export default function ProductDetailAccordions({ product }: Props) {
           </div>
         </Accordion.Item>
 
-        <Accordion.Item
-          title="Shipping & Returns"
-          headingSize="medium"
-          value="shipping"
-        >
-          <div className="flex flex-col gap-6 pb-8 pt-2 text-sm font-light leading-relaxed text-neutral-600">
-            <section>
-              <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
-                Shipping
-              </h4>
-              <p className="mt-3 whitespace-pre-line">
-                {productMetadataString(product, "shipping_copy") ??
-                  "Delivery times are estimates and may vary depending on location, customs, and external factors.\n\nEstimated delivery times:\nUnited Kingdom: 1–3 business days\nEurope: 3–5 business days\nInternational: 5–7 business days"}
-              </p>
-            </section>
-            <section>
-              <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
-                Returns
-              </h4>
-              <p className="mt-3 whitespace-pre-line">
-                {productMetadataString(product, "returns_copy") ??
-                  "Due to the nature of our products, returns may be limited. All sales are final unless the item is faulty."}
-              </p>
-            </section>
-          </div>
-        </Accordion.Item>
+        {(shippingCopy || returnsCopy) && (
+          <Accordion.Item
+            title="Shipping & Returns"
+            headingSize="medium"
+            value="shipping"
+          >
+            <div className="flex flex-col gap-6 pb-8 pt-2 text-sm font-light leading-relaxed text-neutral-600">
+              {shippingCopy && (
+                <section>
+                  <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
+                    Shipping
+                  </h4>
+                  <p className="mt-3 whitespace-pre-line">{shippingCopy}</p>
+                </section>
+              )}
+              {returnsCopy && (
+                <section>
+                  <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
+                    Returns
+                  </h4>
+                  <p className="mt-3 whitespace-pre-line">{returnsCopy}</p>
+                </section>
+              )}
+            </div>
+          </Accordion.Item>
+        )}
       </Accordion>
     </div>
   )

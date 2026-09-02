@@ -23,6 +23,7 @@ import {
   FUTURE_FORMS_HANDLE,
   PhysicalFormCategoryTabs,
 } from "@modules/store/components/physical-form-category-tabs"
+import { PhysicalFutureForms } from "@modules/store/components/physical-future-forms"
 import { CATALOG_SCROLL_ID } from "@modules/store/lib/catalog-scroll"
 import { PhysicalProductCard } from "@modules/store/components/physical-product-card"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
@@ -30,6 +31,7 @@ import { buildPhysicalProductCardProps } from "@modules/store/lib/build-physical
 import {
   groupProductsByAssignedCategory,
   isLatestInGroup,
+  listComingSoonCategories,
   pinLatestProducts,
 } from "@modules/store/lib/group-products-by-category"
 import { groupProductsByLineCollection } from "@modules/store/lib/group-products-by-collection"
@@ -130,6 +132,7 @@ export default async function CategoryTemplate({
     ? (await getProductsById({ ids: [featured.id], regionId: region.id }))[0]
     : null
   const featuredProduct = featuredPriced ?? featured
+  const comingSoon = listComingSoonCategories(allCategories, sections)
 
   const seenTabs = new Set<string>()
   const tabs = [
@@ -137,6 +140,10 @@ export default async function CategoryTemplate({
     ...sections.map((section) => ({
       name: section.name,
       handle: section.handle ?? "",
+    })),
+    ...comingSoon.map((item) => ({
+      name: item.name,
+      handle: item.handle ?? "",
     })),
   ].filter((tab) => {
     const handle = normalizeHandle(tab.handle)
@@ -259,7 +266,10 @@ export default async function CategoryTemplate({
             id={CATALOG_SCROLL_ID}
             className="scroll-mt-[10.5rem] space-y-16 md:space-y-20"
           >
-            {collectionGroups.map((group) => (
+            {futureActive ? (
+              <PhysicalFutureForms items={comingSoon} />
+            ) : (
+              collectionGroups.map((group) => (
                 <div
                   key={group.id}
                   id={group.handle ? `line-${group.handle}` : undefined}
@@ -311,7 +321,8 @@ export default async function CategoryTemplate({
                     </p>
                   )}
                 </div>
-              ))}
+              ))
+            )}
           </div>
         </section>
       </Container>

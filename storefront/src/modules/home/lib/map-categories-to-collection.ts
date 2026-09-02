@@ -4,15 +4,22 @@ import {
   lineCollectionSectionLabel,
   type LineCollectionHandle,
 } from "@lib/util/line-collections"
-import { productMetadataString } from "@lib/util/physical-product-copy"
+import {
+  productDisplayTitle,
+  productMetadataString,
+} from "@lib/util/physical-product-copy"
 import { HttpTypes } from "@medusajs/types"
 
 import {
   groupProductsByAssignedCategory,
+  isLatestInGroup,
   listComingSoonCategories,
   productCreatedAtMs,
+  type ComingSoonCategory,
 } from "@modules/store/lib/group-products-by-category"
 import { groupProductsByLineCollection } from "@modules/store/lib/group-products-by-collection"
+import type { PhysicalProductCardProps } from "@modules/store/components/physical-product-card"
+import { buildPhysicalProductCardProps } from "@modules/store/lib/build-physical-product-card-props"
 
 export type CollectionShape = "x" | "y" | "z"
 
@@ -26,6 +33,7 @@ export type HomeCollectionItem = {
   imageUrl?: string | null
   isLatest?: boolean
   comingSoon?: boolean
+  card?: PhysicalProductCardProps | null
 }
 
 export type HomeCategorySection = {
@@ -37,7 +45,7 @@ export type HomeCategorySection = {
 
 export type HomeCollectionLayout = {
   categories: HomeCategorySection[]
-  future: HomeCollectionItem[]
+  futureForms: ComingSoonCategory[]
 }
 
 type StoreCategory = HttpTypes.StoreProductCategory & {
@@ -157,15 +165,19 @@ function lineCard(args: {
   categoryHandle?: string | null
   line: LineCollectionHandle
   product?: HttpTypes.StoreProduct | null
+  isLatest?: boolean
 }): HomeCollectionItem {
-  const { categoryId, categoryHandle, line, product } = args
-  const href = categoryHandle
-    ? `/categories/${categoryHandle}?collection=${line}`
-    : "/store"
+  const { categoryId, categoryHandle, line, product, isLatest } = args
+  const href = product?.handle
+    ? `/products/${product.handle}`
+    : categoryHandle
+      ? `/categories/${categoryHandle}?collection=${line}`
+      : "/store"
+  const card = product ? buildPhysicalProductCardProps(product) : null
 
   return {
     id: `${categoryId}-${line}`,
-    title: product?.title?.trim() || "Coming soon",
+    title: (product && productDisplayTitle(product)) || "Coming soon",
     description:
       (product &&
         (productMetadataString(product, "tagline") ??
@@ -175,15 +187,18 @@ function lineCard(args: {
     href,
     shape: line,
     imageUrl: product ? productImageUrl(product) : null,
-    isLatest: Boolean(product),
+    isLatest: Boolean(isLatest),
     comingSoon: !product,
+    card: card
+      ? { ...card, isLatest: Boolean(isLatest) }
+      : null,
   }
 }
 
 /**
  * Homepage Physical Form: each category (Tees, Caps, …) shows X / Y / Z,
- * featuring the latest product in that line. Empty lines and Future Forms
- * use the original abstract shapes.
+ * featuring the latest product in that line. Empty lines use the original
+ * abstract shapes. Future Forms is a separate coming-soon grid.
  */
 export function mapPhysicalHomeCollection(
   products: HttpTypes.StoreProduct[] | null | undefined,
@@ -193,7 +208,9 @@ export function mapPhysicalHomeCollection(
     products ?? [],
     categories
   ).filter((section) => section.id !== "__other__")
-  const emptyCategories = listComingSoonCategories(categories, withProducts)
+  const comingSoon = listComingSoonCategories(categories, withProducts)
+  const usedIds = new Set(withProducts.map((section) => section.id))
+  const emptyCategories = comingSoon.filter((category) => !usedIds.has(category.id))
 
   const categorySections = [
     ...withProducts,
@@ -206,6 +223,7 @@ export function mapPhysicalHomeCollection(
   ]
 
   return {
+    futureForms: comingSoon,
     categories: categorySections.map((section) => {
       const lines = groupProductsByLineCollection(section.products, {
         includeEmpty: true,
@@ -217,23 +235,18 @@ export function mapPhysicalHomeCollection(
         handle: section.handle,
         items: LINE_COLLECTION_HANDLES.map((line) => {
           const group = lines.find((item) => item.handle === line)
+          const product = latestProduct(group?.products ?? [])
           return lineCard({
             categoryId: section.id,
             categoryHandle: section.handle,
             line,
-            product: latestProduct(group?.products ?? []),
+            product,
+            isLatest: product
+              ? isLatestInGroup(product, section.products)
+              : false,
           })
         }),
       }
     }),
-    future: LINE_COLLECTION_HANDLES.map((line) => ({
-      id: `future-${line}`,
-      title: "Coming soon",
-      description: "New forms in development",
-      line: lineCollectionSectionLabel(line),
-      href: "/store?category=future",
-      shape: line,
-      comingSoon: true,
-    })),
   }
 }

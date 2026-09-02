@@ -3,9 +3,11 @@ import { HttpTypes } from "@medusajs/types"
 import { getProductPrice } from "@lib/util/get-product-price"
 import {
   fitLabelForProduct,
+  productDisplayTitle,
   productMetadataString,
 } from "@lib/util/physical-product-copy"
 import { appearanceValues } from "@lib/util/product-options"
+import { swatchHexForLabel } from "@lib/util/swatch-color"
 import type { PhysicalProductCardProps } from "@modules/store/components/physical-product-card"
 
 function truncateText(text: string | null | undefined, max = 96): string {
@@ -48,6 +50,7 @@ function extractSwatches(
     return {
       label,
       imageUrl: matched ?? uniqueImagePool[index] ?? null,
+      hex: swatchHexForLabel(product, label),
     }
   })
 }
@@ -75,12 +78,11 @@ export function buildPhysicalProductCardProps(
     (priced.images?.[0] as { url?: string } | undefined)?.url ??
     null
 
-  const lineLabel =
-    priced.collection?.title?.slice(0, 28) || "XYZ London"
+  const lineLabel = priced.collection?.title?.trim() || ""
 
   return {
     handle: priced.handle,
-    title: priced.title ?? "",
+    title: productDisplayTitle(priced),
     subtitle: subtitleForProduct(priced),
     lineLabel,
     imageUrl,

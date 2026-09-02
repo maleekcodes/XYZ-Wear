@@ -1,9 +1,11 @@
 import { HttpTypes } from "@medusajs/types"
+import { isLineCollectionHandle } from "@lib/util/line-collections"
 import {
-  isLineCollectionHandle,
-  lineCollectionLabel,
-} from "@lib/util/line-collections"
-import { productMetadataString } from "@lib/util/physical-product-copy"
+  productCollectionLine,
+  productDisplayTitle,
+  productLineCollectionLabel,
+} from "@lib/util/physical-product-copy"
+import { productTypeCategory } from "@lib/util/product-type-category"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ProductTagline from "@modules/products/components/product-tagline"
 
@@ -13,57 +15,38 @@ type ProductInfoProps = {
   compact?: boolean
 }
 
-function Breadcrumb({ product }: { product: HttpTypes.StoreProduct }) {
-  const category = (product.categories ?? []).find(
-    (c) => c?.handle && !isLineCollectionHandle(c.handle)
-  )
-  const collection = product.collection
-  const collectionHandle = collection?.handle ?? null
-  const collectionHref =
-    category?.handle && isLineCollectionHandle(collectionHandle)
-      ? `/categories/${category.handle}?collection=${collectionHandle}`
-      : collectionHandle
-        ? `/collections/${collectionHandle}`
-        : null
+function lineCollectionHref(product: HttpTypes.StoreProduct): string | null {
+  const category = productTypeCategory(product)
+  const collectionHandle = product.collection?.handle ?? null
+  if (category?.handle && isLineCollectionHandle(collectionHandle)) {
+    return `/categories/${category.handle}?collection=${collectionHandle}`
+  }
+  if (collectionHandle) return `/collections/${collectionHandle}`
+  return null
+}
 
-  if (!category && !collection) return null
+function Breadcrumb({ product }: { product: HttpTypes.StoreProduct }) {
+  const category = productTypeCategory(product)
+  if (!category) return null
 
   return (
-    <p className="text-xs font-mono uppercase tracking-[0.15em] text-neutral-400">
-      {category && (
-        <LocalizedClientLink
-          href={`/categories/${category.handle}`}
-          className="hover:text-deepBlack transition-colors"
-        >
-          {category.name}
-        </LocalizedClientLink>
-      )}
-      {category && collection && (
-        <span className="text-neutral-300"> · </span>
-      )}
-      {collection &&
-        (collectionHref ? (
-          <LocalizedClientLink
-            href={collectionHref}
-            className="hover:text-deepBlack transition-colors"
-          >
-            {isLineCollectionHandle(collectionHandle)
-              ? lineCollectionLabel(collectionHandle)
-              : collection.title}
-          </LocalizedClientLink>
-        ) : (
-          collection.title
-        ))}
+    <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
+      <LocalizedClientLink
+        href={`/categories/${category.handle}`}
+        className="hover:text-deepBlack transition-colors"
+      >
+        {category.name}
+      </LocalizedClientLink>
     </p>
   )
 }
 
 const ProductInfo = ({ product, compact }: ProductInfoProps) => {
-  const collectionLine =
-    productMetadataString(product, "collection_line") ??
-    (product.collection?.title
-      ? `${product.collection.title} | XYZ London`
-      : null)
+  const line = productLineCollectionLabel(product)
+  const title = productDisplayTitle(product)
+  const collectionLine = productCollectionLine(product)
+  const collectionHref = lineCollectionHref(product)
+
   return (
     <div id="product-info">
       <div
@@ -74,20 +57,37 @@ const ProductInfo = ({ product, compact }: ProductInfoProps) => {
         }
       >
         <Breadcrumb product={product} />
+
         <h2
-          className={`mt-3 font-bold tracking-tighter text-deepBlack ${
-            compact
-              ? "text-2xl leading-tight md:text-3xl"
-              : "text-3xl leading-10"
-          }`}
+          className="mt-4 flex flex-col text-deepBlack"
           data-testid="product-title"
         >
-          {product.title}
+          {line &&
+            (collectionHref ? (
+              <LocalizedClientLink
+                href={collectionHref}
+                className="font-bold uppercase tracking-tighter leading-none text-3xl md:text-4xl hover:opacity-70 transition-opacity w-fit"
+              >
+                {line}
+              </LocalizedClientLink>
+            ) : (
+              <span className="font-bold uppercase tracking-tighter leading-none text-3xl md:text-4xl">
+                {line}
+              </span>
+            ))}
+          <span
+            className={`font-medium tracking-tight text-pretty ${
+              line ? "mt-2" : ""
+            } ${compact ? "text-xl md:text-2xl" : "text-2xl md:text-3xl"}`}
+          >
+            {title}
+          </span>
         </h2>
-
-        <div className="mt-6 flex flex-col gap-y-5 text-sm leading-relaxed text-neutral-600">
-          {collectionLine && <p>{collectionLine}</p>}
+        <div className="mt-3 flex flex-col gap-1 text-sm leading-relaxed text-neutral-600">
           <ProductTagline product={product} />
+          {collectionLine && (
+            <p className="italic text-pretty">{collectionLine}</p>
+          )}
         </div>
 
         {!compact && product.description && (

@@ -10,7 +10,11 @@ import { Philosophy } from "@modules/home/components/xyz/Philosophy"
 import { VirtualTryOnSection } from "@modules/home/components/xyz/VirtualTryOnSection"
 import { PrivateGate } from "@modules/home/components/xyz/PrivateGate"
 import { listCategories } from "@lib/data/categories"
-import { getPhysicalStoreCatalogProducts } from "@lib/data/products"
+import {
+  getPhysicalStoreCatalogProducts,
+  getProductsById,
+} from "@lib/data/products"
+import { getRegion } from "@lib/data/regions"
 import {
   getHomePage,
   getPrivateExpressionsPage,
@@ -53,7 +57,17 @@ export default async function Home({
 
   const page = homePageResult.page
   const pee = peeResult.page
-  const homeCollection = mapPhysicalHomeCollection(products, categories)
+  const region = await getRegion(countryCode)
+  const ids = products.map((product) => product.id).filter(Boolean) as string[]
+  const priced =
+    region && ids.length > 0
+      ? await getProductsById({ ids, regionId: region.id })
+      : products
+  const pricedById = new Map(priced.map((product) => [product.id, product]))
+  const enriched = products.map(
+    (product) => (product.id ? pricedById.get(product.id) : null) ?? product
+  )
+  const homeCollection = mapPhysicalHomeCollection(enriched, categories)
 
   return (
     <>

@@ -38,6 +38,7 @@ const ProductStorefrontCategoriesWidget = ({
   data,
 }: DetailWidgetProps<HttpTypes.AdminProduct>) => {
   const [name, setName] = useState("")
+  const [comingSoon, setComingSoon] = useState(false)
   const [saving, setSaving] = useState(false)
   const [assigningId, setAssigningId] = useState<string | null>(null)
   const [categories, setCategories] = useState<AdminCategory[]>([])
@@ -105,14 +106,20 @@ const ProductStorefrontCategoriesWidget = ({
           name: trimmed,
           is_active: true,
           is_internal: false,
+          metadata: comingSoon ? { coming_soon: "true" } : undefined,
         }),
       })
 
-      await assignCategory(created.product_category.id)
+      if (!comingSoon) {
+        await assignCategory(created.product_category.id)
+      }
       setName("")
+      setComingSoon(false)
       await load()
       toast.success(
-        `"${trimmed}" created and assigned. It will show on Physical Form.`
+        comingSoon
+          ? `"${trimmed}" created for Future Forms.`
+          : `"${trimmed}" created and assigned. It will show on Physical Form.`
       )
     } catch (error: unknown) {
       const message =
@@ -143,8 +150,9 @@ const ProductStorefrontCategoriesWidget = ({
       <div className="px-6 py-4">
         <Heading level="h2">Physical Form categories</Heading>
         <Text className="text-ui-fg-subtle mt-1" size="small">
-          Assign the product type — Tees, Caps, and so on. Collections (X, Y, Z)
-          are set in the widget below.
+          Assign the product type — Tees, Caps, Hoodies, and so on. Create new
+          types here; they appear on Physical Form. Mark a category as Future
+          Forms on the category page. Collections (X, Y, Z) are set below.
         </Text>
       </div>
 
@@ -166,9 +174,18 @@ const ProductStorefrontCategoriesWidget = ({
           </Text>
         )}
 
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={comingSoon}
+            onChange={(event) => setComingSoon(event.target.checked)}
+          />
+          <Text size="small">Show this type in Future Forms</Text>
+        </label>
+
         <div className="flex gap-2">
           <Input
-            placeholder="New category name"
+            placeholder="New category name, e.g. Hoodies"
             value={name}
             onChange={(event) => setName(event.target.value)}
             onKeyDown={(event) => {

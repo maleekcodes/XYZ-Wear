@@ -25,12 +25,27 @@ const FIELD_GROUPS: { title: string; fields: Field[] }[] = [
     title: "Storefront copy",
     fields: [
       {
+        key: "display_title",
+        label: "Storefront title",
+        hint: "Overrides the product title on the storefront. Leave blank to strip any X_ / Y_ / Z_ prefix automatically.",
+      },
+      {
         key: "tagline",
         label: "Tagline",
         hint: "Shown under the title. Color names swap with the selected color.",
       },
-      { key: "collection_line", label: "Collection line" },
+      {
+        key: "collection_line",
+        label: "Collection line",
+        hint: "Italic line under the tagline, e.g. X | XYZ London.",
+      },
+      { key: "overview", label: "Overview", multiline: true, rows: 3 },
       { key: "type_label", label: "Type label" },
+      {
+        key: "origin_label",
+        label: "Country of origin label",
+        hint: "Shown in Details. Leave blank to use the product Origin country field.",
+      },
       {
         key: "fit_label",
         label: "Card fit label",
@@ -73,14 +88,14 @@ const FIELD_GROUPS: { title: string; fields: Field[] }[] = [
       {
         key: "shipping_copy",
         label: "Shipping copy",
-        hint: "Leave blank to use the storefront default.",
+        hint: "Leave blank to hide shipping copy on the product page.",
         multiline: true,
         rows: 4,
       },
       {
         key: "returns_copy",
         label: "Returns copy",
-        hint: "Leave blank to use the storefront default.",
+        hint: "Leave blank to hide returns copy on the product page.",
         multiline: true,
         rows: 3,
       },

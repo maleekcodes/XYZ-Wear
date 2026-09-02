@@ -1,3 +1,7 @@
+import {
+  isLineCollectionHandle,
+  lineCollectionLabel,
+} from "@lib/util/line-collections"
 import { appearanceValues } from "@lib/util/product-options"
 import { HttpTypes } from "@medusajs/types"
 
@@ -13,6 +17,42 @@ export function productMetadataString(
   if (typeof value !== "string") return null
   const trimmed = value.trim()
   return trimmed.length > 0 ? trimmed : null
+}
+
+/** Assigned Medusa line collection (X / Y / Z), or the collection title. */
+export function productLineCollectionLabel(
+  product: HttpTypes.StoreProduct
+): string | null {
+  const collection = product.collection
+  if (collection) {
+    if (isLineCollectionHandle(collection.handle)) {
+      return lineCollectionLabel(collection.handle)
+    }
+    const title = collection.title?.trim()
+    if (title) return title
+  }
+
+  const match = (product.title ?? "").trim().match(/^([xyz])\s*[_\-]/i)
+  return match?.[1] ? lineCollectionLabel(match[1]) : null
+}
+
+/** Product name from Admin `display_title`, else title without the `X _` prefix. */
+export function productDisplayTitle(product: HttpTypes.StoreProduct): string {
+  const override = productMetadataString(product, "display_title")
+  if (override) return override
+  const title = (product.title ?? "").trim()
+  const stripped = title.replace(/^[xyz]\s*[_\-]\s*/i, "").trim()
+  return stripped || title
+}
+
+export function productCollectionLine(
+  product: HttpTypes.StoreProduct
+): string | null {
+  return (
+    productMetadataString(product, "collection_line") ??
+    product.collection?.title?.trim() ??
+    null
+  )
 }
 
 function taglineOverrideForColor(

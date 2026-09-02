@@ -8,6 +8,8 @@ import ProductImageGallery from "@modules/products/components/product-image-gall
 import ProductOnboardingCta from "@modules/products/components/product-onboarding-cta"
 import RelatedProducts from "@modules/products/components/related-products"
 import ProductInfo from "@modules/products/templates/product-info"
+import PhysicalFormPdpCatalog from "@modules/products/components/physical-form-pdp-catalog"
+import { productTypeCategory } from "@lib/util/product-type-category"
 import { notFound } from "next/navigation"
 import ProductActionsWrapper from "./product-actions-wrapper"
 import { HttpTypes } from "@medusajs/types"
@@ -29,14 +31,30 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   }
 
   const tryOnEnabled = Boolean(getVirtualTryOnApiKey())
+  const category = productTypeCategory(product)
 
   return (
     <>
       <div
-        className="bg-white text-deepBlack"
+        className="bg-white text-deepBlack pt-16 pb-24 min-h-screen"
         data-testid="product-container"
       >
-        <Container className="py-8 lg:py-12">
+        <Container>
+          {category && (
+            <h1
+              className="mb-10 text-4xl font-bold tracking-tighter text-balance md:text-5xl"
+              data-testid="category-page-title"
+            >
+              {category.name}
+            </h1>
+          )}
+
+          <div className="mb-8 flex items-center gap-3">
+            <span className="font-mono text-xs uppercase tracking-widest text-neutral-400">
+              Full detail
+            </span>
+          </div>
+
           <ProductColorProvider product={product}>
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-x-10 xl:gap-x-14">
               <div className="flex flex-col gap-10 lg:col-span-7 xl:col-span-8">
@@ -71,12 +89,25 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
               </aside>
             </div>
           </ProductColorProvider>
+
+          {category ? (
+            <Suspense fallback={null}>
+              <PhysicalFormPdpCatalog
+                product={product}
+                countryCode={countryCode}
+              />
+            </Suspense>
+          ) : (
+            <div
+              className="mt-16"
+              data-testid="related-products-container"
+            >
+              <Suspense fallback={<SkeletonRelatedProducts />}>
+                <RelatedProducts product={product} countryCode={countryCode} />
+              </Suspense>
+            </div>
+          )}
         </Container>
-      </div>
-      <div className="my-16 small:my-32" data-testid="related-products-container">
-        <Suspense fallback={<SkeletonRelatedProducts />}>
-          <RelatedProducts product={product} countryCode={countryCode} />
-        </Suspense>
       </div>
     </>
   )

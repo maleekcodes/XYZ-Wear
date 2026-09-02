@@ -25,9 +25,14 @@ async function adminFetch<T>(path: string, init?: RequestInit): Promise<T> {
   return body
 }
 
-function collectionLineLabel(title?: string | null): string {
-  const name = (title ?? "").trim() || "Collection"
-  return `${name} | XYZ London`
+function collectionLineLabel(collection: AdminCollection): string {
+  const metadata = collection.metadata as Record<string, unknown> | undefined
+  const fromMeta =
+    typeof metadata?.collection_line === "string"
+      ? metadata.collection_line.trim()
+      : ""
+  if (fromMeta) return fromMeta
+  return (collection.title ?? "").trim()
 }
 
 const ProductStorefrontCollectionWidget = ({
@@ -42,7 +47,7 @@ const ProductStorefrontCollectionWidget = ({
   const load = useCallback(async () => {
     const [collectionRes, productRes] = await Promise.all([
       adminFetch<{ collections: AdminCollection[] }>(
-        "/admin/collections?limit=100&fields=id,title,handle"
+        "/admin/collections?limit=100&fields=id,title,handle,metadata"
       ),
       adminFetch<{ product: HttpTypes.AdminProduct }>(
         `/admin/products/${data.id}?fields=id,collection_id,*collection,*metadata`
@@ -84,7 +89,7 @@ const ProductStorefrontCollectionWidget = ({
       ...((productRes.product.metadata as Record<string, unknown> | null) ??
         {}),
       collection_line: collection
-        ? collectionLineLabel(collection.title)
+        ? collectionLineLabel(collection)
         : "",
     }
 

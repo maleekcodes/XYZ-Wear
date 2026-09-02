@@ -12,6 +12,7 @@ export type ComingSoonCategory = {
   id: string
   name: string
   handle?: string | null
+  shape?: string | null
 }
 
 export function productCreatedAtMs(product: HttpTypes.StoreProduct): number {
@@ -250,9 +251,9 @@ export function listComingSoonCategories(
   return catalog
     .filter(isPublicActive)
     .filter((c) => Boolean(c.name))
-    .filter((c) => !usedIds.has(c.id as string))
     .filter((c) => {
       if (isTruthyMetadata(c.metadata, "coming_soon")) return true
+      if (usedIds.has(c.id as string)) return false
       return !hasChildCategories(c, catalog)
     })
     .sort(compareCategories)
@@ -260,5 +261,7 @@ export function listComingSoonCategories(
       id: c.id as string,
       name: c.name as string,
       handle: c.handle,
+      shape:
+        typeof c.metadata?.shape === "string" ? c.metadata.shape : null,
     }))
 }

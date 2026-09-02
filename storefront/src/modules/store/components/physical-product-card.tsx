@@ -20,10 +20,12 @@ export type PhysicalProductCardProps = {
   swatches?: {
     label: string
     imageUrl?: string | null
+    hex?: string | null
   }[]
   isLatest?: boolean
   compact?: boolean
   fitLabel?: string | null
+  className?: string
 }
 
 export function PhysicalProductCard({
@@ -39,6 +41,7 @@ export function PhysicalProductCard({
   isLatest,
   compact,
   fitLabel,
+  className,
 }: PhysicalProductCardProps) {
   const swatchItems = swatches?.slice(0, 5) ?? []
   const [activeSwatch, setActiveSwatch] = useState(0)
@@ -53,21 +56,28 @@ export function PhysicalProductCard({
     const normalized = label.toLowerCase()
     if (normalized.includes("black")) return "#171717"
     if (normalized.includes("white")) return "#f5f5f5"
-    if (normalized.includes("grey") || normalized.includes("gray")) return "#9ca3af"
+    if (normalized.includes("ivory") || normalized.includes("cream")) return "#e7dcc2"
+    if (normalized.includes("beige") || normalized.includes("sand")) return "#d6c4a8"
+    if (normalized.includes("grey") || normalized.includes("gray") || normalized.includes("charcoal"))
+      return "#6b7280"
     if (normalized.includes("navy")) return "#1e3a8a"
     if (normalized.includes("blue")) return "#3b82f6"
-    if (normalized.includes("red")) return "#dc2626"
-    if (normalized.includes("green")) return "#16a34a"
+    if (normalized.includes("red") || normalized.includes("burgundy")) return "#9b1c2c"
     if (normalized.includes("olive")) return "#4d5d3a"
-    if (normalized.includes("brown")) return "#7c4a2d"
-    if (normalized.includes("beige") || normalized.includes("cream")) return "#e7dcc2"
+    if (normalized.includes("green")) return "#1f3d2b"
+    if (normalized.includes("purple") || normalized.includes("violet") || normalized.includes("plum"))
+      return "#4a2c5a"
+    if (normalized.includes("pink") || normalized.includes("mauve")) return "#b76e79"
+    if (normalized.includes("brown") || normalized.includes("chocolate")) return "#7c4a2d"
+    if (normalized.includes("orange")) return "#c2410c"
+    if (normalized.includes("yellow") || normalized.includes("gold")) return "#ca8a04"
     return "#d4d4d4"
   }
 
   return (
     <LocalizedClientLink
       href={`/products/${handle}`}
-      className={`block h-full ${compact ? "min-h-[360px] max-w-[20rem]" : "min-h-[520px]"}`}
+      className={`block h-full ${compact ? "min-h-[360px] max-w-[20rem]" : "min-h-[520px]"} ${className ?? ""}`}
       data-testid="product-wrapper"
     >
       <motion.div
@@ -89,9 +99,11 @@ export function PhysicalProductCard({
                 Latest
               </span>
             )}
-            <span className="text-[10px] uppercase tracking-widest font-mono border border-neutral-300 rounded-full px-2 py-0.5 bg-white/50">
-              {lineLabel}
-            </span>
+            {lineLabel ? (
+              <span className="text-[10px] uppercase tracking-widest font-mono border border-neutral-300 rounded-full px-2 py-0.5 bg-white/50">
+                {lineLabel}
+              </span>
+            ) : null}
           </div>
           <span
             className="text-neutral-400 group-hover:text-deepBlack transition-colors pointer-events-none"
@@ -128,7 +140,7 @@ export function PhysicalProductCard({
           <div className="flex justify-between items-end gap-3 mb-4">
             <div className="min-w-0">
               <h3
-                className={`font-bold tracking-tight truncate ${compact ? "text-sm" : "text-lg"}`}
+                className={`font-bold tracking-tight truncate ${compact ? "text-xs" : "text-sm"}`}
                 data-testid="product-title"
               >
                 {title}
@@ -155,15 +167,11 @@ export function PhysicalProductCard({
                       className={`h-4 w-4 rounded-full border transition-all ${
                         selected
                           ? "border-deepBlack ring-1 ring-deepBlack/30"
-                          : "border-neutral-300"
+                          : "border-black/15"
                       }`}
                       style={{
-                        backgroundColor: fallbackSwatchColor(swatch.label),
-                        backgroundImage: swatch.imageUrl
-                          ? `url("${swatch.imageUrl}")`
-                          : undefined,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
+                        backgroundColor:
+                          swatch.hex || fallbackSwatchColor(swatch.label),
                       }}
                     />
                   )

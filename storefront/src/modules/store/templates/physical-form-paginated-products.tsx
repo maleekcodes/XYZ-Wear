@@ -52,7 +52,11 @@ function CollectionCatalog({
   section: PhysicalCategorySection
 }) {
   return (
-    <section aria-labelledby={`cat-${section.id}`}>
+    <section
+      id={section.handle ? `physical-cat-${section.handle}` : undefined}
+      aria-labelledby={`cat-${section.id}`}
+      className="scroll-mt-40"
+    >
       <h2
         id={`cat-${section.id}`}
         className="mb-10 text-3xl font-bold tracking-tighter text-deepBlack md:text-4xl"
@@ -211,33 +215,35 @@ export default async function PhysicalFormPaginatedProducts({
         requestedComingSoon?.handle ??
         "all"
 
-  if (sections.length === 0 && comingSoon.length === 0) {
-    return (
-      <p className="font-mono text-sm text-neutral-500" data-testid="products-list">
-        No products in this catalog yet.
-      </p>
-    )
-  }
+  const hasCatalog = sections.length > 0 || comingSoon.length > 0
 
   return (
     <div className="space-y-16 md:space-y-20" data-testid="products-list">
-      {(tabs.length > 0 || comingSoon.length > 0) && (
-        <PhysicalFormCategoryTabs
-          tabs={tabs}
-          activeHandle={activeHandle}
-          showFuture={comingSoon.length > 0}
-        />
-      )}
+      <PhysicalFormCategoryTabs
+        tabs={tabs}
+        activeHandle={activeHandle}
+        showFuture
+        scrollSpy={showAll && !futureActive}
+      />
 
       {futureActive ? (
         <PhysicalFutureForms items={comingSoon} />
       ) : (
-        <div className="space-y-20 md:space-y-24">
-          {visibleSections.map((section) => (
-            <CollectionCatalog key={section.id} section={section} />
-          ))}
-          {emptyCategory && <CollectionCatalog section={emptyCategory} />}
-        </div>
+        <>
+          {hasCatalog ? (
+            <div className="space-y-20 md:space-y-24">
+              {visibleSections.map((section) => (
+                <CollectionCatalog key={section.id} section={section} />
+              ))}
+              {emptyCategory && <CollectionCatalog section={emptyCategory} />}
+            </div>
+          ) : (
+            <p className="font-mono text-sm text-neutral-500">
+              No products in this catalog yet.
+            </p>
+          )}
+          <PhysicalFutureForms items={comingSoon} />
+        </>
       )}
     </div>
   )

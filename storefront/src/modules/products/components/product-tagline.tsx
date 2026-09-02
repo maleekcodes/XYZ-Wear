@@ -7,8 +7,10 @@ import { useProductColor } from "@modules/products/components/product-color-cont
 
 export default function ProductTagline({
   product,
+  className,
 }: {
   product: HttpTypes.StoreProduct
+  className?: string
 }) {
   const colorCtx = useProductColor()
   const tagline = taglineForAppearance(
@@ -16,5 +18,9 @@ export default function ProductTagline({
     colorCtx?.color ?? colorCtx?.colors[0]
   )
   if (!tagline) return null
-  return <p data-testid="product-tagline">{tagline}</p>
+  return (
+    <p data-testid="product-tagline" className={className}>
+      {tagline}
+    </p>
+  )
 }

@@ -7,6 +7,7 @@ import Image from "next/image"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 import { useProductColor } from "@modules/products/components/product-color-context"
+import ProductImageLightbox from "@modules/products/components/product-image-lightbox"
 
 const INITIAL_VISIBLE = 2
 const FADE_MS = 400
@@ -131,6 +132,7 @@ export default function ProductImageGallery({
   product,
 }: ProductImageGalleryProps) {
   const [expanded, setExpanded] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const colorCtx = useProductColor()
   const selectedColor = colorCtx?.color ?? colorCtx?.colors[0]
   const colors = colorCtx?.colors ?? []
@@ -151,7 +153,17 @@ export default function ProductImageGallery({
 
   useEffect(() => {
     setExpanded(false)
+    setLightboxIndex(null)
   }, [selectedColor])
+
+  const captions = useMemo(
+    () =>
+      all.map((img, index) => {
+        const view = viewLabel(img.url, index)
+        return selectedColor ? `${view} · ${selectedColor}` : view
+      }),
+    [all, selectedColor]
+  )
 
   if (all.length === 0) {
     return (
@@ -174,7 +186,12 @@ export default function ProductImageGallery({
       <div className={`grid ${gridCols} gap-3 sm:gap-4`}>
         {visible.map((img, index) => (
           <figure key={index} className="group flex flex-col gap-2">
-            <div className="relative aspect-square w-full border border-black/10 bg-white">
+            <button
+              type="button"
+              onClick={() => setLightboxIndex(index)}
+              className="relative aspect-square w-full cursor-zoom-in border border-black/10 bg-white text-left transition-transform duration-200 active:scale-[0.99]"
+              aria-label={`View ${captions[index] ?? viewLabel(img.url, index)} larger`}
+            >
               <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-[1.03]">
                   <CrossfadeImage
@@ -185,7 +202,7 @@ export default function ProductImageGallery({
                   />
                 </div>
               </div>
-            </div>
+            </button>
             <figcaption className="px-0.5 text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-400 transition-opacity duration-300 ease-[cubic-bezier(0.2,0,0,1)]">
               {viewLabel(img.url, index)}
               {selectedColor ? ` · ${selectedColor}` : ""}
@@ -193,6 +210,16 @@ export default function ProductImageGallery({
           </figure>
         ))}
       </div>
+
+      <ProductImageLightbox
+        open={lightboxIndex !== null}
+        onClose={() => setLightboxIndex(null)}
+        images={all}
+        index={lightboxIndex ?? 0}
+        onIndexChange={setLightboxIndex}
+        productTitle={productTitle}
+        captions={captions}
+      />
 
       {hasMore && (
         <button
