@@ -128,14 +128,19 @@ function TeaserShape({ shape }: { shape: FutureFormShape }) {
   )
 }
 
-function ComingSoonMark() {
+function ComingSoonIcons() {
   return (
-    <div className="flex flex-col items-center">
-      <div className="mb-5 flex items-center gap-4 md:mb-6">
-        <Shape type="circle" className="h-4 w-4 bg-neutral-200" />
-        <Shape type="square" className="h-4 w-4 bg-neutral-300" />
-        <Shape type="triangle" className="h-4 w-4 bg-neutral-200" />
-      </div>
+    <div className="flex items-center gap-4">
+      <Shape type="circle" className="h-4 w-4 bg-neutral-200" />
+      <Shape type="square" className="h-4 w-4 bg-neutral-300" />
+      <Shape type="triangle" className="h-4 w-4 bg-neutral-200" />
+    </div>
+  )
+}
+
+function ComingSoonMessage() {
+  return (
+    <div className="flex justify-center">
       <p className="text-sm font-mono uppercase tracking-[0.15em] text-neutral-400">
         More content coming soon
       </p>
@@ -182,12 +187,18 @@ export function PhysicalFutureForms({
       aria-labelledby="future-forms-heading"
       className="scroll-mt-40 py-16 md:py-24"
     >
-      <h2
-        id="future-forms-heading"
-        className="mb-10 text-3xl font-bold tracking-tighter text-deepBlack md:text-4xl"
-      >
-        Future Forms
-      </h2>
+      <div className="mb-10 space-y-8">
+        <h2
+          id="future-forms-heading"
+          className="text-3xl font-bold tracking-tighter text-deepBlack md:text-4xl"
+        >
+          Future Forms
+        </h2>
+
+        <div className="flex justify-center">
+          <ComingSoonIcons />
+        </div>
+      </div>
 
       {teasers.length > 0 && (
         <div className="border-l border-t border-neutral-200">
@@ -200,7 +211,7 @@ export function PhysicalFutureForms({
       )}
 
       <div className="mt-16 md:mt-20">
-        <ComingSoonMark />
+        <ComingSoonMessage />
       </div>
     </section>
   )

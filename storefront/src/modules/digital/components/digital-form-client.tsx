@@ -63,7 +63,7 @@ function DigitalProductCard({ product }: { product: DigitalFormProductDisplay })
       viewport={{ once: true, amount: 0.15 }}
       whileHover={isClickable ? { y: -5 } : undefined}
       transition={{ duration: 0.4 }}
-      className={`flex flex-col justify-between h-full min-h-[450px] bg-neutral-900 border border-neutral-800 p-8 group ${
+      className={`flex w-full flex-col justify-between h-full min-h-[520px] bg-neutral-900 border border-neutral-800 p-4 md:p-5 group ${
         isClickable ? "hover:border-blue-500/30 cursor-pointer" : ""
       } transition-colors`}
     >
@@ -79,14 +79,14 @@ function DigitalProductCard({ product }: { product: DigitalFormProductDisplay })
         ) : null}
       </div>
 
-      <div className="flex justify-center items-center py-8 relative">
+      <div className="relative my-3 flex aspect-[3/4] w-full items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-blue-500/5 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         {product.previewImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={product.previewImage}
             alt={product.name}
-            className="w-40 h-40 object-contain relative z-10 group-hover:scale-110 transition-transform duration-500"
+            className="absolute inset-0 h-full w-full object-contain object-center z-10 group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <Shape
@@ -233,7 +233,7 @@ export function DigitalFormClient({
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
           {products.map((product) => (
             <DigitalProductCard key={product.id} product={product} />
           ))}

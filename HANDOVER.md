@@ -2,6 +2,8 @@
 
 Printable copy: [XYZ-London-Project-Handover.pdf](./XYZ-London-Project-Handover.pdf).
 
+Follow-up: [Functionality review, live DNS findings, and Digital Form display correction — 10 September 2026](./docs/functionality-review.md). The review distinguishes implemented features from missing workflows and changes not yet deployed.
+
 This document is the handover for **XYZ London**: a luxury streetwear / digital-fashion store built on MedusaJS, Next.js, and Sanity. It is written for two audiences.
 
 | Audience | Start here |
