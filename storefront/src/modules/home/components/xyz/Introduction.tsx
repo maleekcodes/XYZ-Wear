@@ -16,6 +16,24 @@ interface IntroductionProps {
 const defaultText =
   "XYZ London is a fashion house built on intent. In a world of noise, speed, and constant repetition, we choose restraint. We focus on form, premium material, and proportion — the quiet elements that shape how identity is expressed."
 
+function keepChooseRestraintTogether(text: string) {
+  const phrase = "choose restraint"
+  const parts = text.split(phrase)
+
+  if (parts.length === 1) return text
+
+  return parts.flatMap((part, index) =>
+    index === parts.length - 1
+      ? [part]
+      : [
+          part,
+          <span key={`choose-restraint-${index}`} className="whitespace-nowrap">
+            {phrase}
+          </span>,
+        ]
+  )
+}
+
 function isPortableText(value: IntroContent): value is TypedObject[] {
   return (
     Array.isArray(value) &&
@@ -48,7 +66,7 @@ function IntroBody({ content }: { content: IntroContent }) {
           key={index}
           className="text-xl md:text-2xl font-light leading-relaxed text-deepBlack"
         >
-          {paragraph.trim()}
+          {keepChooseRestraintTogether(paragraph.trim())}
         </p>
       ))}
     </div>
