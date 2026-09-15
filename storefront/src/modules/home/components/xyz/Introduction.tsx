@@ -1,13 +1,16 @@
 "use client"
 
 import { PortableText } from "@portabletext/react"
-import type { TypedObject } from "@portabletext/types"
 import { motion } from "framer-motion"
 
 import { Container } from "@modules/common/components/xyz/Container"
-import { introPortableTextComponents } from "@modules/home/lib/intro-portable-text"
+import {
+  introParagraphClassName,
+  introPortableTextComponents,
+  keepIntroPhrasesTogether,
+} from "@modules/home/lib/intro-portable-text"
 
-type IntroContent = TypedObject[] | string | null | undefined
+type IntroContent = unknown[] | string | null | undefined
 
 interface IntroductionProps {
   text?: IntroContent
@@ -16,25 +19,7 @@ interface IntroductionProps {
 const defaultText =
   "XYZ London is a fashion house built on intent. In a world of noise, speed, and constant repetition, we choose restraint. We focus on form, premium material, and proportion — the quiet elements that shape how identity is expressed."
 
-function keepChooseRestraintTogether(text: string) {
-  const phrase = "choose restraint"
-  const parts = text.split(phrase)
-
-  if (parts.length === 1) return text
-
-  return parts.flatMap((part, index) =>
-    index === parts.length - 1
-      ? [part]
-      : [
-          part,
-          <span key={`choose-restraint-${index}`} className="whitespace-nowrap">
-            {phrase}
-          </span>,
-        ]
-  )
-}
-
-function isPortableText(value: IntroContent): value is TypedObject[] {
+function isPortableText(value: IntroContent): value is unknown[] {
   return (
     Array.isArray(value) &&
     value.length > 0 &&
@@ -49,7 +34,7 @@ function IntroBody({ content }: { content: IntroContent }) {
     return (
       <div className="space-y-6">
         <PortableText
-          value={content}
+          value={content as Parameters<typeof PortableText>[0]["value"]}
           components={introPortableTextComponents}
         />
       </div>
@@ -64,9 +49,9 @@ function IntroBody({ content }: { content: IntroContent }) {
       {paragraphs.map((paragraph, index) => (
         <p
           key={index}
-          className="text-xl md:text-2xl font-light leading-relaxed text-deepBlack"
+          className={introParagraphClassName}
         >
-          {keepChooseRestraintTogether(paragraph.trim())}
+          {keepIntroPhrasesTogether(paragraph.trim())}
         </p>
       ))}
     </div>
