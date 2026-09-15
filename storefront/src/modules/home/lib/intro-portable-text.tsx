@@ -1,11 +1,36 @@
 import type { ReactNode } from "react"
 import type { PortableTextComponents } from "@portabletext/react"
 
+export const introParagraphClassName =
+  "text-pretty text-xl md:text-2xl font-light leading-relaxed text-deepBlack"
+
+export function keepIntroPhrasesTogether(content: ReactNode): ReactNode {
+  if (typeof content !== "string") return content
+
+  const phrase = "choose restraint"
+  const parts = content.split(phrase)
+
+  if (parts.length === 1) return content
+
+  return parts.flatMap((part, index) =>
+    index === parts.length - 1
+      ? [part]
+      : [
+          part,
+          <span key={`choose-restraint-${index}`} className="whitespace-nowrap">
+            {phrase}
+          </span>,
+        ]
+  )
+}
+
 export const introPortableTextComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => (
-      <p className="text-xl md:text-2xl font-light leading-relaxed text-deepBlack">
-        {children}
+      <p className={introParagraphClassName}>
+        {Array.isArray(children)
+          ? children.map((child) => keepIntroPhrasesTogether(child))
+          : keepIntroPhrasesTogether(children)}
       </p>
     ),
   },
