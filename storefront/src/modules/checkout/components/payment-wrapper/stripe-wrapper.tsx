@@ -21,22 +21,10 @@ const StripeWrapper: React.FC<StripeWrapperProps> = ({
     clientSecret: paymentSession!.data?.client_secret as string | undefined,
   }
 
-  if (!stripeKey) {
-    throw new Error(
-      "Stripe publishable key is missing. Set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY or NEXT_PUBLIC_STRIPE_KEY (pk_test_… / pk_live_…)."
-    )
-  }
-
-  if (!stripePromise) {
-    throw new Error(
-      "Stripe promise is missing. Make sure you have provided a valid Stripe key."
-    )
-  }
-
-  if (!paymentSession?.data?.client_secret) {
-    throw new Error(
-      "Stripe client secret is missing. Cannot initialize Stripe."
-    )
+  if (!stripeKey || !stripePromise || !paymentSession?.data?.client_secret) {
+    // Stripe is not fully configured — render nothing rather than crashing the page.
+    // The parent Wrapper guards this path, so this is a purely defensive fallback.
+    return null
   }
 
   return (
