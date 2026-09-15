@@ -49,6 +49,24 @@ const defaults = {
   tagline: "From the unknown to the known.",
 }
 
+function keepChooseRestraintTogether(text: string) {
+  const phrase = "choose restraint"
+  const parts = text.split(phrase)
+
+  if (parts.length === 1) return text
+
+  return parts.flatMap((part, index) =>
+    index === parts.length - 1
+      ? [part]
+      : [
+          part,
+          <span key={`choose-restraint-${index}`} className="whitespace-nowrap">
+            {phrase}
+          </span>,
+        ]
+  )
+}
+
 interface AboutTemplateProps {
   content?: AboutPageSanity
 }
@@ -119,7 +137,7 @@ export default function AboutTemplate({ content }: AboutTemplateProps) {
                       : ""
                   }
                 >
-                  {para.text}
+                  {keepChooseRestraintTogether(para.text)}
                 </motion.p>
               ))}
             </div>
@@ -135,7 +153,7 @@ export default function AboutTemplate({ content }: AboutTemplateProps) {
                       : ""
                   }
                 >
-                  {para.text}
+                  {keepChooseRestraintTogether(para.text)}
                 </motion.p>
               ))}
             </div>
