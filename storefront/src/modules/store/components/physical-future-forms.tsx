@@ -138,16 +138,6 @@ function ComingSoonIcons() {
   )
 }
 
-function ComingSoonMessage() {
-  return (
-    <div className="flex justify-center">
-      <p className="text-sm font-mono uppercase tracking-[0.15em] text-neutral-400">
-        More content coming soon
-      </p>
-    </div>
-  )
-}
-
 function TeaserCell({ teaser }: { teaser: FutureFormTeaser }) {
   const inner = (
     <>
@@ -210,9 +200,6 @@ export function PhysicalFutureForms({
         </div>
       )}
 
-      <div className="mt-16 md:mt-20">
-        <ComingSoonMessage />
-      </div>
     </section>
   )
 }
