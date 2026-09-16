@@ -3,6 +3,9 @@ import { cache } from "react"
 
 // Shipping actions
 export const listCartPaymentMethods = cache(async function (regionId: string) {
+  if (!regionId) {
+    return null
+  }
   return sdk.store.payment
     .listPaymentProviders(
       { region_id: regionId },
