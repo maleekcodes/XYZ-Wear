@@ -48,7 +48,7 @@ async function prepareCheckout() {
 
   if (cart.items?.length) {
     const enrichedItems = await enrichLineItems(cart.items, cart.region_id!)
-    cart.items = enrichedItems as HttpTypes.StoreCartLineItem[]
+    cart = { ...cart, items: enrichedItems as HttpTypes.StoreCartLineItem[] }
   }
 
   return { cart, customer }

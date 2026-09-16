@@ -33,12 +33,13 @@ const fetchCart = async () => {
     return null
   }
 
-  if (cart?.items?.length) {
-    const enrichedItems = await enrichLineItems(cart?.items, cart?.region_id!)
-    cart.items = enrichedItems as HttpTypes.StoreCartLineItem[]
+  let finalCart = cart
+  if (finalCart?.items?.length) {
+    const enrichedItems = await enrichLineItems(finalCart?.items, finalCart?.region_id!)
+    finalCart = { ...finalCart, items: enrichedItems as HttpTypes.StoreCartLineItem[] }
   }
 
-  return cart
+  return finalCart
 }
 
 export default async function Cart() {

@@ -1,0 +1,123 @@
+
+> medusa-2.0-boilerplate-backend@0.0.2 dev
+> medusa develop
+
+{
+  "projectConfig": {
+    "databaseUrl": "postgres://sadiqful@127.0.0.1:5433/xyz_wear",
+    "databaseLogging": false,
+    "workerMode": "shared",
+    "http": {
+      "adminCors": "http://localhost:9000,http://127.0.0.1:9000",
+      "authCors": "http://localhost:9000,http://localhost:8000,http://127.0.0.1:8000",
+      "storeCors": "http://localhost:8000,http://127.0.0.1:8000",
+      "jwtSecret": "94d66bc56d80b40b5518e5492b34ecf2ac3015468dcf75949a1d72f8d4b09a2e",
+      "cookieSecret": "ae697e6560a9c4bc1e1b328c189565482369a0f2c7a47c7b0b8c88c416328c51"
+    },
+    "build": {
+      "rollupOptions": {
+        "external": [
+          "@medusajs/dashboard",
+          "@medusajs/admin-shared"
+        ]
+      }
+    }
+  },
+  "admin": {
+    "backendUrl": "http://localhost:9000",
+    "disable": false,
+    "maxUploadFileSize": 26214400
+  },
+  "modules": [
+    {
+      "key": "file",
+      "resolve": "@medusajs/file",
+      "options": {
+        "providers": [
+          {
+            "resolve": "@medusajs/file-local",
+            "id": "local",
+            "options": {
+              "upload_dir": "static",
+              "backend_url": "http://localhost:9000/static"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "plugins": []
+}
+[32minfo[39m:    redisUrl not found. A fake redis instance will be used.
+[32minfo[39m:    [Watcher] Using standard dev server (restart on file change)
+[32minfo[39m:    [Watcher] Watching filesystem to reload dev server on file change
+{
+  "projectConfig": {
+    "databaseUrl": "postgres://sadiqful@127.0.0.1:5433/xyz_wear",
+    "databaseLogging": false,
+    "workerMode": "shared",
+    "http": {
+      "adminCors": "http://localhost:9000,http://127.0.0.1:9000",
+      "authCors": "http://localhost:9000,http://localhost:8000,http://127.0.0.1:8000",
+      "storeCors": "http://localhost:8000,http://127.0.0.1:8000",
+      "jwtSecret": "94d66bc56d80b40b5518e5492b34ecf2ac3015468dcf75949a1d72f8d4b09a2e",
+      "cookieSecret": "ae697e6560a9c4bc1e1b328c189565482369a0f2c7a47c7b0b8c88c416328c51"
+    },
+    "build": {
+      "rollupOptions": {
+        "external": [
+          "@medusajs/dashboard",
+          "@medusajs/admin-shared"
+        ]
+      }
+    }
+  },
+  "admin": {
+    "backendUrl": "http://localhost:9000",
+    "disable": false,
+    "maxUploadFileSize": 26214400
+  },
+  "modules": [
+    {
+      "key": "file",
+      "resolve": "@medusajs/file",
+      "options": {
+        "providers": [
+          {
+            "resolve": "@medusajs/file-local",
+            "id": "local",
+            "options": {
+              "upload_dir": "static",
+              "backend_url": "http://localhost:9000/static"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "plugins": []
+}
+[32minfo[39m:    redisUrl not found. A fake redis instance will be used.
+- Creating server
+[32minfo[39m:    redisUrl not found. A fake redis instance will be used.
+[32minfo[39m:    redisUrl not found. A fake redis instance will be used.
+[32minfo[39m:    No link to load from /Users/sadiqful/Documents/XYZ-Wear/backend/node_modules/.pnpm/@medusajs+draft-order@2.15.2_@medusajs+admin-sdk@2.15.2_@medusajs+cli@2.15.2_@types+node@20.1_5j2xdwufwpcagpfxj4otbs76ce/node_modules/@medusajs/draft-order/.medusa/server/src/links. skipped.
+[32minfo[39m:    No link to load from /Users/sadiqful/Documents/XYZ-Wear/backend/src/links. skipped.
+[33mwarn[39m:    Local Event Bus installed. This is not recommended for production.
+[32minfo[39m:    Locking module: Using "in-memory" as default.
+[32minfo[39m:    No workflow to load from /Users/sadiqful/Documents/XYZ-Wear/backend/node_modules/.pnpm/@medusajs+draft-order@2.15.2_@medusajs+admin-sdk@2.15.2_@medusajs+cli@2.15.2_@types+node@20.1_5j2xdwufwpcagpfxj4otbs76ce/node_modules/@medusajs/draft-order/.medusa/server/src/workflows. skipped.
+[32minfo[39m:    No subscriber to load from /Users/sadiqful/Documents/XYZ-Wear/backend/node_modules/.pnpm/@medusajs+draft-order@2.15.2_@medusajs+admin-sdk@2.15.2_@medusajs+cli@2.15.2_@types+node@20.1_5j2xdwufwpcagpfxj4otbs76ce/node_modules/@medusajs/draft-order/.medusa/server/src/subscribers. skipped.
+[32minfo[39m:    No job to load from /Users/sadiqful/Documents/XYZ-Wear/backend/node_modules/.pnpm/@medusajs+medusa@2.15.2_@medusajs+admin-sdk@2.15.2_@medusajs+cli@2.15.2_@types+node@20.19.25__cyelrxpfctp4g3ejc4lj2mwsxa/node_modules/@medusajs/medusa/dist/jobs. skipped.
+[32minfo[39m:    No job to load from /Users/sadiqful/Documents/XYZ-Wear/backend/node_modules/.pnpm/@medusajs+draft-order@2.15.2_@medusajs+admin-sdk@2.15.2_@medusajs+cli@2.15.2_@types+node@20.1_5j2xdwufwpcagpfxj4otbs76ce/node_modules/@medusajs/draft-order/.medusa/server/src/jobs. skipped.
+Error: listen EADDRINUSE: address already in use :::9000
+    at Server.setupListenHandle [as _listen2] (node:net:1907:16)
+    at listenInCluster (node:net:1964:12)
+    at Server.listen (node:net:2066:7)
+    at internalStart (/Users/sadiqful/Documents/XYZ-Wear/backend/node_modules/.pnpm/@medusajs+medusa@2.15.2_@medusajs+admin-sdk@2.15.2_@medusajs+cli@2.15.2_@types+node@20.19.25__cyelrxpfctp4g3ejc4lj2mwsxa/node_modules/@medusajs/medusa/src/commands/start.ts:320:15)
+    at async start (/Users/sadiqful/Documents/XYZ-Wear/backend/node_modules/.pnpm/@medusajs+medusa@2.15.2_@medusajs+admin-sdk@2.15.2_@medusajs+cli@2.15.2_@types+node@20.19.25__cyelrxpfctp4g3ejc4lj2mwsxa/node_modules/@medusajs/medusa/src/commands/start.ts:419:12) {
+  code: 'EADDRINUSE',
+  errno: -48,
+  syscall: 'listen',
+  address: '::',
+  port: 9000
+}
