@@ -22,7 +22,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart, variant = "default" }
   const [isOpen, setIsOpen] = React.useState(false)
   const [removeError, setRemoveError] = React.useState<string | null>(null)
 
-  const { promotions = [] } = cart
+  const promotions = cart.promotions ?? []
 
   const promotionCodesKey = promotions
     .filter((p) => !p.is_automatic)

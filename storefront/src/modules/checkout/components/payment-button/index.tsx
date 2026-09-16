@@ -129,7 +129,7 @@ const StripePaymentButton = ({
     }
 
     await stripe
-      .confirmCardPayment(session?.data.client_secret as string, {
+      .confirmCardPayment(session?.data?.client_secret as string, {
         payment_method: {
           card: card,
           billing_details: {
@@ -252,7 +252,7 @@ const PayPalPaymentButton = ({
       <>
         <PayPalButtons
           style={{ layout: "horizontal" }}
-          createOrder={async () => session?.data.id as string}
+          createOrder={async () => session?.data?.id as string}
           onApprove={handlePayment}
           disabled={notReady || submitting || isPending}
           data-testid={dataTestId}

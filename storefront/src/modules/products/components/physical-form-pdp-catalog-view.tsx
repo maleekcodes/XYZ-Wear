@@ -71,7 +71,7 @@ export function PhysicalFormPdpCatalogView({
         {futureActive ? (
           <PhysicalFutureForms items={comingSoon} />
         ) : (
-          catalog?.groups.map((group) => (
+          catalog?.groups?.map((group) => (
             <div
               key={group.id}
               id={group.handle ? `line-${group.handle}` : undefined}
