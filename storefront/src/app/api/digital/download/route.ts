@@ -33,7 +33,11 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Invalid session" }, { status: 400 })
   }
 
-  if (session.payment_status !== "paid") {
+  if (
+    session.mode !== "payment" ||
+    session.status !== "complete" ||
+    session.payment_status !== "paid"
+  ) {
     return NextResponse.json({ error: "Payment not completed" }, { status: 403 })
   }
 

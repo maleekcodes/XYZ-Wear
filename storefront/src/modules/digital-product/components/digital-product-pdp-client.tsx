@@ -237,6 +237,8 @@ export function DigitalProductPdpClient({
                       <img
                         src={previewUrl}
                         alt="Your preview"
+                        draggable={false}
+                        onContextMenu={(event) => event.preventDefault()}
                         className="absolute inset-0 h-full w-full object-fill"
                       />
                       <div className="absolute bottom-3 left-0 right-0 z-10 flex justify-center">
@@ -434,8 +436,8 @@ export function DigitalProductPdpClient({
               Buy
             </h3>
             <p className="mt-2 text-sm text-neutral-500">
-              Secure checkout. After payment you can download the un-watermarked
-              image.
+              This is a watermarked preview. Secure checkout unlocks the
+              un-watermarked, full-resolution image for download.
             </p>
             <button
               type="button"

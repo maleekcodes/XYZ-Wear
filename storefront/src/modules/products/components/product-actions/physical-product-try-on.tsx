@@ -280,6 +280,8 @@ export function PhysicalProductTryOn({
                           <img
                             src={previewUrl}
                             alt="Try-on preview"
+                            draggable={false}
+                            onContextMenu={(event) => event.preventDefault()}
                             className="h-full w-full object-contain"
                           />
                         </div>
