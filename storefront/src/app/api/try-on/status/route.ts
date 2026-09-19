@@ -85,6 +85,15 @@ export async function GET(request: Request) {
   }
 
   if (status === "completed" && output[0]) {
+    if (process.env.NODE_ENV === "development" && !isMinioConfigured()) {
+      return NextResponse.json({
+        status: "completed",
+        persisted: false,
+        predictionId: id,
+        previewUrl: output[0],
+      })
+    }
+
     const key = tryonObjectKeyFromSlug(slug, id)
     if (isMinioConfigured()) {
       const exists = await tryonObjectExists(key)

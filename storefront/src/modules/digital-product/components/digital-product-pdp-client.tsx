@@ -237,7 +237,7 @@ export function DigitalProductPdpClient({
                       <img
                         src={previewUrl}
                         alt="Your preview"
-                        className="absolute inset-0 h-full w-full object-cover object-center"
+                        className="absolute inset-0 h-full w-full object-fill"
                       />
                       <div className="absolute bottom-3 left-0 right-0 z-10 flex justify-center">
                         <label className="cursor-pointer">

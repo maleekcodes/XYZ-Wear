@@ -109,6 +109,8 @@ export async function POST(request: Request) {
       inputs: {
         product_image: productImageForProvider,
         model_image: modelImage,
+        prompt:
+          "Preserve the garment exactly as shown in the product image. Do not remove, rewrite, blur, simplify, or alter any logos, lettering, branding, text, symbols, colors, patterns, patches, zippers, seams, pockets, or construction details, including the XYZ and LONDON marks. Preserve the person's complete head, hair, and face. Zoom out slightly and frame the result with comfortable space above the head and around the body. Do not crop the top of the head or alter the person's identity.",
       },
     }),
   })

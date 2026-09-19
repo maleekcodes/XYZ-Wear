@@ -16,8 +16,7 @@ export function getVirtualTryOnProviderBaseUrl(): string {
  * Prefer VIRTUAL_TRYON_API_KEY. An older env name is still accepted for existing deploys.
  */
 export function getVirtualTryOnApiKey(): string | undefined {
-  return (
-    process.env.VIRTUAL_TRYON_API_KEY?.trim() ||
-    process.env.FASHN_API_KEY?.trim()
-  )
+  const key = process.env.VIRTUAL_TRYON_API_KEY?.trim() || process.env.FASHN_API_KEY?.trim()
+  console.log("[DEBUG] getVirtualTryOnApiKey:", !!key, "Raw process.env:", !!process.env.VIRTUAL_TRYON_API_KEY)
+  return key
 }

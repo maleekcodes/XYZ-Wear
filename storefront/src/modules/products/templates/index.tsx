@@ -33,6 +33,11 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   const tryOnEnabled = Boolean(getVirtualTryOnApiKey())
   const category = productTypeCategory(product)
 
+  console.log("[DEBUG] ProductTemplate rendering:", {
+    tryOnEnabled,
+    key: getVirtualTryOnApiKey(),
+  })
+
   return (
     <>
       <div
