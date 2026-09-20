@@ -118,8 +118,10 @@ export function imagesForAppearance(
   return images.slice(0, Math.min(2, images.length))
 }
 
-function normalizeToken(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]/g, "")
+function normalizeToken(value: string | null | undefined): string {
+  return (typeof value === "string" ? value : "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "")
 }
 
 function colorTokenInUrl(url: string, colors: string[]): string | null {
@@ -136,7 +138,7 @@ function colorTokenInUrl(url: string, colors: string[]): string | null {
 
 function filterImagesByToken(
   images: HttpTypes.StoreProductImage[],
-  selected: string,
+  selected: string | undefined,
   colors: string[],
   defaultColor: string | undefined
 ): HttpTypes.StoreProductImage[] {

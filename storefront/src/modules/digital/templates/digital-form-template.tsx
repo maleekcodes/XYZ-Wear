@@ -23,7 +23,16 @@ export default async function DigitalFormTemplate({
   const withNames = raw.filter((p) => p?.name?.trim())
   const base = withNames.map(sanityDigitalToDisplay)
 
-  const products = await enrichDigitalProductsWithMedusa(base, region?.id)
+  const priority = ["kinetic cap", "kinetic hoodie"]
+  const orderedBase = [...base].sort((a, b) => {
+    const aIndex = priority.indexOf(a.name.trim().toLowerCase())
+    const bIndex = priority.indexOf(b.name.trim().toLowerCase())
+    const aRank = aIndex === -1 ? priority.length : aIndex
+    const bRank = bIndex === -1 ? priority.length : bIndex
+    return aRank - bRank
+  })
+
+  const products = await enrichDigitalProductsWithMedusa(orderedBase, region?.id)
 
   const hero = {
     collectionLabel:

@@ -3,6 +3,7 @@
 .github/
 .pnpm*
 .env.local
+backend/.backend.log
 CLAUDE.md
 docs/handover-print/node_modules/
 docs/handover-print/*.png

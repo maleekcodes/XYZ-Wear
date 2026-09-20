@@ -30,6 +30,7 @@ import {
 } from "@lib/util/product-options"
 import { useProductColor } from "@modules/products/components/product-color-context"
 import SizeGuide from "@modules/products/components/size-guide"
+import { CatalogSubscriptionForm } from "../catalog-subscription-form"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -145,6 +146,11 @@ export default function ProductActions({
     return false
   }, [selectedVariant])
 
+  const isComingSoon =
+    product.metadata?.coming_soon === true ||
+    product.metadata?.coming_soon === "true" ||
+    product.metadata?.launch_status === "coming_soon"
+
   const actionsRef = useRef<HTMLDivElement>(null)
 
   const inView = useIntersection(actionsRef, "0px")
@@ -210,20 +216,44 @@ export default function ProductActions({
           </div>
         )}
 
-        <Button
-          onClick={handleAddToCart}
-          disabled={!inStock || !selectedVariant || !!disabled || isAdding}
-          variant="primary"
-          className="h-12 w-full rounded-none border border-deepBlack bg-deepBlack text-xs font-medium uppercase tracking-[0.15em] text-white transition-colors hover:bg-white hover:text-deepBlack disabled:border-neutral-200 disabled:bg-neutral-100 disabled:text-neutral-400 disabled:hover:bg-neutral-100"
-          isLoading={isAdding}
-          data-testid="add-product-button"
-        >
-          {!selectedVariant
-            ? "Select variant"
-            : !inStock
-            ? "Out of stock"
-            : "Add to bag"}
-        </Button>
+        {isComingSoon ? (
+          <>
+            <Button
+              disabled
+              variant="primary"
+              className="h-12 w-full rounded-none border border-neutral-200 bg-neutral-100 text-xs font-medium uppercase tracking-[0.15em] text-neutral-400"
+            >
+              Coming soon
+            </Button>
+            <CatalogSubscriptionForm productId={product.id} kind="waitlist" />
+          </>
+        ) : !inStock && selectedVariant ? (
+          <>
+            <Button
+              disabled
+              variant="primary"
+              className="h-12 w-full rounded-none border border-neutral-200 bg-neutral-100 text-xs font-medium uppercase tracking-[0.15em] text-neutral-400"
+            >
+              Sold out
+            </Button>
+            <CatalogSubscriptionForm
+              productId={product.id}
+              variantId={selectedVariant.id}
+              kind="restock"
+            />
+          </>
+        ) : (
+          <Button
+            onClick={handleAddToCart}
+            disabled={!selectedVariant || !!disabled || isAdding}
+            variant="primary"
+            className="h-12 w-full rounded-none border border-deepBlack bg-deepBlack text-xs font-medium uppercase tracking-[0.15em] text-white transition-colors hover:bg-white hover:text-deepBlack disabled:border-neutral-200 disabled:bg-neutral-100 disabled:text-neutral-400 disabled:hover:bg-neutral-100"
+            isLoading={isAdding}
+            data-testid="add-product-button"
+          >
+            {!selectedVariant ? "Select variant" : "Add to bag"}
+          </Button>
+        )}
         <SizeGuide product={product} />
         <MobileActions
           product={product}

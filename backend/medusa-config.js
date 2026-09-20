@@ -52,6 +52,9 @@ const medusaConfig = {
   },
   modules: [
     {
+      resolve: './src/modules/catalog-engagement',
+    },
+    {
       key: Modules.FILE,
       resolve: '@medusajs/file',
       options: {
