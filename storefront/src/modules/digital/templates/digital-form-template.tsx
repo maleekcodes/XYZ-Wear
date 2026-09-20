@@ -23,7 +23,7 @@ export default async function DigitalFormTemplate({
   const withNames = raw.filter((p) => p?.name?.trim())
   const base = withNames.map(sanityDigitalToDisplay)
 
-  const priority = ["kinetic cap", "kinetic hoodie"]
+  const priority = ["kinetic hoodie", "kinetic cap"]
   const orderedBase = [...base].sort((a, b) => {
     const aIndex = priority.indexOf(a.name.trim().toLowerCase())
     const bIndex = priority.indexOf(b.name.trim().toLowerCase())
