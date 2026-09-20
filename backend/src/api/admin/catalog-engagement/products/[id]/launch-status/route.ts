@@ -2,6 +2,7 @@ import type { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/frame
 import { Modules } from "@medusajs/framework/utils"
 import { CATALOG_ENGAGEMENT_MODULE } from "../../../../../../modules/catalog-engagement"
 import { EmailTemplates } from "../../../../../../modules/email-notifications/templates"
+import { STOREFRONT_URL } from "../../../../../../lib/constants"
 
 type Body = { status?: "coming_soon" | "pre_order" | "available" }
 
@@ -17,6 +18,19 @@ export async function POST(
   const previousStatus = product.metadata?.launch_status
   const metadata = { ...(product.metadata ?? {}), launch_status: status, coming_soon: status === "coming_soon" }
   const updated = await productService.updateProducts(req.params.id, { metadata })
+
+  const variantPrices = (product.variants ?? [])
+    .flatMap((variant: any) => variant.prices ?? [])
+    .map((price: any) => Number(price.amount))
+    .filter((amount: number) => Number.isFinite(amount))
+  const lowestPrice = variantPrices.length ? Math.min(...variantPrices) : null
+  const currencyCode = product.variants?.[0]?.prices?.[0]?.currency_code ?? "gbp"
+  const price = lowestPrice === null
+    ? undefined
+    : new Intl.NumberFormat("en-GB", { style: "currency", currency: currencyCode.toUpperCase() }).format(lowestPrice / 100)
+  const productUrl = product.handle
+    ? `${STOREFRONT_URL.replace(/\/$/, "")}/products/${encodeURIComponent(product.handle)}`
+    : undefined
 
   let notified = 0
   if (status === "pre_order" && previousStatus !== "pre_order") {
@@ -36,6 +50,9 @@ export async function POST(
           data: {
             kind: "waitlist",
             productName: product.title,
+            imageUrl: product.thumbnail ?? undefined,
+            price,
+            productUrl,
             emailOptions: { subject: `${product.title} is ready to pre-order` },
           },
         })

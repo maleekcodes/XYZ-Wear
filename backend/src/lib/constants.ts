@@ -19,6 +19,9 @@ export const BACKEND_URL =
   process.env.RAILWAY_PUBLIC_DOMAIN_VALUE ??
   `http://localhost:${LOCAL_BACKEND_PORT}`
 
+export const STOREFRONT_URL =
+  process.env.STOREFRONT_URL ?? 'https://www.xyzwear.co'
+
 /**
  * Database URL for Postgres instance used by the backend
  */

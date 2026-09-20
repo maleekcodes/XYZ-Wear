@@ -9,10 +9,11 @@ type Body = {
   variant_id?: string | null
   product_name?: string
   product_url?: string
+  image_url?: string
 }
 
 export async function POST(req: MedusaRequest<Body>, res: MedusaResponse) {
-  const { kind, product_id, variant_id, product_name, product_url } = req.body ?? {}
+  const { kind, product_id, variant_id, product_name, product_url, image_url } = req.body ?? {}
   if (!kind || !product_id || !product_name) {
     return res.status(400).json({ message: "kind, product_id, and product_name are required" })
   }
@@ -33,6 +34,7 @@ export async function POST(req: MedusaRequest<Body>, res: MedusaResponse) {
           kind,
           productName: product_name,
           productUrl: product_url,
+          imageUrl: image_url,
           emailOptions: { subject: kind === "waitlist" ? `${product_name} is ready to pre-order` : `${product_name} is back in stock` },
         },
       })
