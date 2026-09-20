@@ -41,7 +41,6 @@ export function DigitalProductPdpClient({
   const [poll, setPoll] = useState<PollState>({ phase: "idle" })
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [userPhotoPreview, setUserPhotoPreview] = useState<string | null>(null)
-  const [persisted, setPersisted] = useState(false)
   const [predictionId, setPredictionId] = useState<string | null>(null)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
@@ -53,7 +52,6 @@ export function DigitalProductPdpClient({
       setPoll({ phase: "starting" })
       setPreviewUrl(null)
       setPredictionId(null)
-      setPersisted(false)
 
       try {
         const modelImage = await compressImageDataUrl(rawPreview)
@@ -100,7 +98,6 @@ export function DigitalProductPdpClient({
           }
 
           if (j.status === "completed") {
-            setPersisted(!!j.persisted)
             setPreviewUrl(j.previewUrl || null)
             setUserPhotoPreview(null)
             if (j.error && !j.persisted) {
@@ -143,12 +140,6 @@ export function DigitalProductPdpClient({
       )
       return
     }
-    if (!persisted) {
-      setCheckoutError(
-        "Purchase needs a saved try-on file. Configure storage and complete try-on again."
-      )
-      return
-    }
     const r = await fetch("/api/stripe/digital-checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -160,10 +151,16 @@ export function DigitalProductPdpClient({
       return
     }
     window.location.href = j.url
-  }, [slug, predictionId, persisted, countryCode])
+  }, [slug, predictionId, countryCode])
 
   const busy = poll.phase === "starting" || poll.phase === "polling"
   const blocked = product.isComingSoon || !canTryOn
+  const canBuy =
+    !product.isComingSoon &&
+    !!predictionId &&
+    !!previewUrl &&
+    !busy &&
+    poll.phase !== "error"
   const showProcessing =
     poll.phase === "starting" || poll.phase === "polling"
 
@@ -239,7 +236,7 @@ export function DigitalProductPdpClient({
                         alt="Your preview"
                         draggable={false}
                         onContextMenu={(event) => event.preventDefault()}
-                        className="absolute inset-0 h-full w-full object-fill"
+                        className="absolute inset-0 h-full w-full object-contain"
                       />
                       <div className="absolute bottom-3 left-0 right-0 z-10 flex justify-center">
                         <label className="cursor-pointer">
@@ -441,15 +438,13 @@ export function DigitalProductPdpClient({
             </p>
             <button
               type="button"
-              disabled={
-                !!product.isComingSoon ||
-                !predictionId ||
-                !persisted ||
-                busy ||
-                poll.phase === "error"
-              }
+              disabled={!canBuy}
               onClick={() => void buy()}
-              className="mt-4 w-full border border-white/20 bg-white/5 py-3 text-sm font-mono uppercase tracking-widest text-white hover:bg-white/10 disabled:opacity-30"
+              className={`mt-4 w-full border py-3 text-sm font-mono uppercase tracking-widest transition-colors disabled:cursor-not-allowed disabled:opacity-30 ${
+                canBuy
+                  ? "border-blue-400 bg-blue-500 text-white hover:bg-blue-400"
+                  : "border-white/20 bg-white/5 text-white hover:bg-white/10"
+              }`}
             >
               Buy & download
             </button>

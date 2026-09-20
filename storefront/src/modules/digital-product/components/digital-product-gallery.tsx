@@ -30,7 +30,7 @@ export function DigitalProductGallery({ images, productName }: Props) {
         <img
           src={main}
           alt={productName}
-          className="h-full w-full object-fill"
+          className="h-full w-full object-contain"
         />
       </div>
       {list.length > 1 ? (
