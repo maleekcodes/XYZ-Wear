@@ -19,6 +19,7 @@ const ProductLaunchStatusWidget = ({ data }: DetailWidgetProps<HttpTypes.AdminPr
       })
       if (!response.ok) throw new Error("Could not update launch status")
       toast.success("Launch status updated")
+      window.location.reload()
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not update launch status")
     } finally {

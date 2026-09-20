@@ -35,11 +35,12 @@ export async function POST(
   }
 
   const service = req.scope.resolve(CATALOG_ENGAGEMENT_MODULE) as any
+  const variantId = body.variant_id?.trim() || null
   const existing = await service.findActiveSubscription({
     email,
     kind,
     product_id: productId,
-    variant_id: body.variant_id ?? null,
+    variant_id: variantId,
   })
 
   if (existing) {
@@ -50,7 +51,7 @@ export async function POST(
     email,
     kind,
     product_id: productId,
-    variant_id: body.variant_id ?? null,
+    variant_id: variantId,
     source,
     status: "subscribed",
   })

@@ -150,6 +150,7 @@ export default function ProductActions({
     product.metadata?.coming_soon === true ||
     product.metadata?.coming_soon === "true" ||
     product.metadata?.launch_status === "coming_soon"
+  const isPreOrder = product.metadata?.launch_status === "pre_order"
 
   const actionsRef = useRef<HTMLDivElement>(null)
 
@@ -226,6 +227,19 @@ export default function ProductActions({
               Coming soon
             </Button>
             <CatalogSubscriptionForm productId={product.id} kind="waitlist" />
+          </>
+        ) : isPreOrder ? (
+          <>
+            <Button
+              onClick={handleAddToCart}
+              disabled={!selectedVariant || !!disabled || isAdding}
+              variant="primary"
+              className="h-12 w-full rounded-none border border-deepBlack bg-deepBlack text-xs font-medium uppercase tracking-[0.15em] text-white transition-colors hover:bg-white hover:text-deepBlack disabled:border-neutral-200 disabled:bg-neutral-100 disabled:text-neutral-400 disabled:hover:bg-neutral-100"
+              isLoading={isAdding}
+              data-testid="pre-order-button"
+            >
+              Pre-order
+            </Button>
           </>
         ) : !inStock && selectedVariant ? (
           <>

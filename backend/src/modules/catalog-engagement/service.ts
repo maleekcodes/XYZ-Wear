@@ -14,10 +14,12 @@ class CatalogEngagementModuleService extends MedusaService({
       email: input.email,
       kind: input.kind,
       product_id: input.product_id,
-      variant_id: input.variant_id ?? null,
+      ...(input.variant_id ? { variant_id: input.variant_id } : {}),
       status: "subscribed",
     })
-    return rows[0] ?? null
+    return rows.find((row: { variant_id?: string | null }) =>
+      input.variant_id ? row.variant_id === input.variant_id : !row.variant_id
+    ) ?? null
   }
 
   async listActiveSubscriptions(input: {
