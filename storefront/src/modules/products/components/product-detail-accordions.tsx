@@ -98,8 +98,6 @@ function DescriptionBody({ product }: { product: HttpTypes.StoreProduct }) {
 }
 
 export default function ProductDetailAccordions({ product }: Props) {
-  const shippingCopy = productMetadataString(product, "shipping_copy")
-  const returnsCopy = productMetadataString(product, "returns_copy")
   const originLabel =
     productMetadataString(product, "origin_label") ?? product.origin_country
 
@@ -157,32 +155,39 @@ export default function ProductDetailAccordions({ product }: Props) {
           </div>
         </Accordion.Item>
 
-        {(shippingCopy || returnsCopy) && (
-          <Accordion.Item
-            title="Shipping & Returns"
-            headingSize="medium"
-            value="shipping"
-          >
-            <div className="flex flex-col gap-6 pb-8 pt-2 text-sm font-light leading-relaxed text-neutral-600">
-              {shippingCopy && (
-                <section>
-                  <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
-                    Shipping
-                  </h4>
-                  <p className="mt-3 whitespace-pre-line">{shippingCopy}</p>
-                </section>
-              )}
-              {returnsCopy && (
-                <section>
-                  <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
-                    Returns
-                  </h4>
-                  <p className="mt-3 whitespace-pre-line">{returnsCopy}</p>
-                </section>
-              )}
-            </div>
-          </Accordion.Item>
-        )}
+        <Accordion.Item
+          title="Shipping & Return"
+          headingSize="medium"
+          value="shipping"
+        >
+          <div className="flex flex-col gap-6 pb-8 pt-2 text-sm font-light leading-relaxed text-neutral-600">
+            <section>
+              <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
+                Shipping
+              </h4>
+              <p className="mt-3">
+                Delivery times are estimates and may vary depending on location,
+                customs, and external factors.
+              </p>
+              <p className="mt-3">Estimated delivery times:</p>
+              <ul className="mt-2 list-disc space-y-1 pl-5">
+                <li><strong>United Kingdom:</strong> 1–3 business days</li>
+                <li><strong>Europe:</strong> 3–5 business days</li>
+                <li><strong>International:</strong> 5–7 business days</li>
+              </ul>
+            </section>
+
+            <section>
+              <h4 className="text-[10px] font-mono uppercase tracking-[0.15em] text-neutral-400">
+                Returns
+              </h4>
+              <p className="mt-3">
+                Due to the nature of our products, returns may be limited. All
+                sales are final unless the item is faulty.
+              </p>
+            </section>
+          </div>
+        </Accordion.Item>
       </Accordion>
     </div>
   )

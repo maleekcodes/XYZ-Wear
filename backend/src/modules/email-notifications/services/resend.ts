@@ -3,6 +3,7 @@ import { AbstractNotificationProviderService, MedusaError } from '@medusajs/fram
 import { Resend, CreateEmailOptions } from 'resend'
 import { ReactNode } from 'react'
 import { generateEmailTemplate } from '../templates'
+import { RESEND_REPLY_TO } from '../../../lib/constants'
 
 type InjectedDependencies = {
   logger: Logger
@@ -76,7 +77,7 @@ export class ResendNotificationService extends AbstractNotificationProviderServi
       react: emailContent,
       subject: emailOptions.subject ?? 'You have a new notification',
       headers: emailOptions.headers,
-      replyTo: emailOptions.replyTo,
+      replyTo: emailOptions.replyTo ?? RESEND_REPLY_TO,
       cc: emailOptions.cc,
       bcc: emailOptions.bcc,
       tags: emailOptions.tags,
