@@ -3,7 +3,7 @@ import { HttpTypes } from "@medusajs/types"
 const SIZE_ORDER = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"]
 
 export const PRODUCT_DETAIL_FIELDS =
-  "*variants.calculated_price,+variants.inventory_quantity,*variants.options,*variants.images,*options,*options.values,*categories,*collection,*images,+thumbnail,+metadata"
+  "*variants.calculated_price,+variants.inventory_quantity,*variants.options,*variants.images,*variants.metadata,*options,*options.values,*categories,*collection,*images,+thumbnail,+metadata"
 
 export function isAppearanceOption(title?: string | null): boolean {
   const t = title?.toLowerCase() ?? ""

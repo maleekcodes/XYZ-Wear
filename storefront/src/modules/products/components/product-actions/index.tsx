@@ -186,6 +186,23 @@ export default function ProductActions({
           />
         </div>
 
+        {selectedVariant?.manage_inventory !== false && selectedVariant ? (
+          <div className="space-y-2" aria-live="polite">
+            {inStock &&
+            (selectedVariant.metadata as Record<string, unknown> | undefined)
+              ?.restocked_at ? (
+              <p className="font-mono text-[10px] uppercase tracking-widest text-black">
+                RESTOCK
+              </p>
+            ) : null}
+            <p className="font-mono text-[10px] uppercase tracking-widest text-black">
+              {inStock
+                ? `${selectedVariant.inventory_quantity ?? 0} left in stock`
+                : "Sold out"}
+            </p>
+          </div>
+        ) : null}
+
         {productHasSelectableOptions(product) && (
           <div className="flex flex-col gap-y-5">
             {(product.options || []).map((option) => {

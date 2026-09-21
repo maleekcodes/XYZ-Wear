@@ -39,6 +39,11 @@ const Review = ({ cart }: { cart: any }) => {
               By placing your order you agree to our terms of sale and returns
               policy, and acknowledge our privacy policy.
             </Text>
+            <Text className="mt-4 border-l-2 border-deepBlack pl-4 text-sm leading-relaxed text-deepBlack">
+              Orders are processed within 2–5 business days. Delivery is then
+              estimated at 1–3 business days in the UK, 3–7 in Europe, or
+              5–10 internationally.
+            </Text>
           </div>
           <PaymentButton cart={cart} data-testid="submit-order-button" />
         </>

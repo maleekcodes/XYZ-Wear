@@ -11,7 +11,28 @@ export default async function catalogRestockAlerts(container: MedusaContainer) {
 
   for (const product of products) {
     for (const variant of product.variants ?? []) {
-      if (variant.manage_inventory !== false && (variant.inventory_quantity ?? 0) <= 0) continue
+      const inventoryQuantity = variant.inventory_quantity ?? 0
+      const metadata = (variant.metadata ?? {}) as Record<string, unknown>
+      const previousQuantity =
+        typeof metadata.inventory_quantity_last_seen === "number"
+          ? metadata.inventory_quantity_last_seen
+          : null
+      const hasRestocked =
+        previousQuantity !== null && previousQuantity <= 0 && inventoryQuantity > 0
+
+      if (hasRestocked || previousQuantity !== inventoryQuantity) {
+        await productService.updateProductVariants(variant.id, {
+          metadata: {
+            ...metadata,
+            inventory_quantity_last_seen: inventoryQuantity,
+            ...(hasRestocked
+              ? { restocked_at: new Date().toISOString() }
+              : {}),
+          },
+        })
+      }
+
+      if (variant.manage_inventory !== false && inventoryQuantity <= 0) continue
       const subscriptions = await engagement.listActiveSubscriptions({
         kind: "restock",
         product_id: product.id,

@@ -19,6 +19,17 @@ export interface OrderPlacedTemplateProps {
 export const isOrderPlacedTemplateData = (data: any): data is OrderPlacedTemplateProps =>
   typeof data.order === 'object' && typeof data.shippingAddress === 'object'
 
+const deliveryEstimate = (countryCode?: string | null) => {
+  const country = countryCode?.toLowerCase()
+
+  if (country === 'gb') return '1–3 business days after processing'
+  if (['de', 'dk', 'se', 'fr', 'es', 'it'].includes(country ?? '')) {
+    return '3–7 business days after processing'
+  }
+
+  return '5–10 business days after processing'
+}
+
 export const OrderPlacedTemplate: React.FC<OrderPlacedTemplateProps> & {
   PreviewProps: OrderPlacedPreviewProps
 } = ({ order, shippingAddress, preview = 'Your order has been placed!' }) => {
@@ -48,6 +59,12 @@ export const OrderPlacedTemplate: React.FC<OrderPlacedTemplateProps> & {
         </Text>
         <Text style={{ margin: '0 0 20px' }}>
           Total: {order.summary.raw_current_order_total.value} {order.currency_code}
+        </Text>
+
+        <Text style={{ backgroundColor: '#f2f2f2', padding: '14px 16px', margin: '0 0 20px' }}>
+          Orders are processed within 2–5 business days. Your estimated delivery
+          time is {deliveryEstimate(shippingAddress.country_code)}. We’ll send
+          tracking details when your order has been dispatched.
         </Text>
 
         <Hr style={{ margin: '20px 0' }} />
