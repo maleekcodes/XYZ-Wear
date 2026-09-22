@@ -31,7 +31,9 @@ const Item = ({ item, type = "full", previewLayout = "table" }: ItemProps) => {
 
   const { handle } = item.variant?.product ?? {}
   const initialImage =
-    item.variant?.product?.thumbnail || item.variant?.product?.images?.[0]?.url
+    item.variant?.images?.[0]?.url ||
+    item.variant?.product?.thumbnail ||
+    item.variant?.product?.images?.[0]?.url
 
   const changeQuantity = async (quantity: number) => {
     setError(null)
@@ -127,8 +129,8 @@ const Item = ({ item, type = "full", previewLayout = "table" }: ItemProps) => {
         <Table.Cell className="!pl-0 p-4 w-24">
           <LocalizedClientLink href={`/products/${handle}`} className="flex w-16">
             <Thumbnail
-              thumbnail={item.variant?.product?.thumbnail}
-              images={item.variant?.product?.images}
+              thumbnail={item.variant?.images?.[0]?.url}
+              images={item.variant?.images ?? item.variant?.product?.images}
               size="square"
             />
           </LocalizedClientLink>

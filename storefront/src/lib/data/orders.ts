@@ -10,7 +10,10 @@ export const retrieveOrder = cache(async function (id: string) {
   return sdk.store.order
     .retrieve(
       id,
-      { fields: "*payment_collections.payments" },
+      {
+        fields:
+          "*payment_collections.payments,*items.variant.images,*items.variant.product.images,*items.variant.product.thumbnail",
+      },
       { cache: "no-store", next: { tags: ["order"] }, ...headers }
     )
     .then(({ order }) => order)
@@ -24,7 +27,12 @@ export const listOrders = cache(async function (
   const headers = await getAuthHeaders()
   return sdk.store.order
     .list(
-      { limit, offset },
+      {
+        limit,
+        offset,
+        fields:
+          "*items.variant.images,*items.variant.product.images,*items.variant.product.thumbnail",
+      },
       { cache: "no-store", next: { tags: ["order"] }, ...headers }
     )
     .then(({ orders }) => orders)

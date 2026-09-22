@@ -17,7 +17,10 @@ const Item = ({ item }: ItemProps) => {
   const handle = product?.handle
 
   const initialImage =
-    item.thumbnail || product?.thumbnail || product?.images?.[0]?.url
+    item.variant?.images?.[0]?.url ||
+    item.thumbnail ||
+    product?.thumbnail ||
+    product?.images?.[0]?.url
 
   return (
     <div
