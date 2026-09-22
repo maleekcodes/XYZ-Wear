@@ -4,19 +4,36 @@ import { CATALOG_ENGAGEMENT_MODULE } from "../../../../../../modules/catalog-eng
 import { EmailTemplates } from "../../../../../../modules/email-notifications/templates"
 import { STOREFRONT_URL } from "../../../../../../lib/constants"
 
-type Body = { status?: "coming_soon" | "pre_order" | "available" }
+type Body = {
+  status?: "coming_soon" | "pre_order" | "available"
+  pre_order_enabled?: boolean
+  pre_order_opening_date?: string | null
+  pre_order_closing_date?: string | null
+  pre_order_dispatch_date?: string | null
+  pre_order_customer_notifications?: boolean
+}
 
 export async function POST(
   req: AuthenticatedMedusaRequest<Body>,
   res: MedusaResponse
 ) {
-  const status = req.body?.status
+  const body = req.body ?? {}
+  const status = body.status
   if (!status) return res.status(400).json({ message: "status is required" })
 
   const productService = req.scope.resolve(Modules.PRODUCT) as any
   const product = await productService.retrieveProduct(req.params.id)
   const previousStatus = product.metadata?.launch_status
-  const metadata = { ...(product.metadata ?? {}), launch_status: status, coming_soon: status === "coming_soon" }
+  const metadata = {
+    ...(product.metadata ?? {}),
+    launch_status: status,
+    coming_soon: status === "coming_soon",
+    pre_order_enabled: bodyBoolean(body.pre_order_enabled, product.metadata?.pre_order_enabled ?? false),
+    pre_order_opening_date: body.pre_order_opening_date ?? product.metadata?.pre_order_opening_date ?? null,
+    pre_order_closing_date: body.pre_order_closing_date ?? product.metadata?.pre_order_closing_date ?? null,
+    pre_order_dispatch_date: body.pre_order_dispatch_date ?? product.metadata?.pre_order_dispatch_date ?? null,
+    pre_order_customer_notifications: bodyBoolean(body.pre_order_customer_notifications, product.metadata?.pre_order_customer_notifications ?? true),
+  }
   const updated = await productService.updateProducts(req.params.id, { metadata })
 
   const variantPrices = (product.variants ?? [])
@@ -69,4 +86,8 @@ export async function POST(
   }
 
   return res.json({ product: updated, waitlist_matched: notified })
+}
+
+function bodyBoolean(value: boolean | undefined, fallback: unknown) {
+  return typeof value === "boolean" ? value : String(fallback) === "true"
 }

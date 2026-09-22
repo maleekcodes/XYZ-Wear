@@ -146,11 +146,32 @@ export default function ProductActions({
     return false
   }, [selectedVariant])
 
+  const launchStatus = String(product.metadata?.launch_status ?? "available")
+  const preOrderEnabled = String(product.metadata?.pre_order_enabled ?? "false") === "true"
+  const now = Date.now()
+  const openingTime = Date.parse(String(product.metadata?.pre_order_opening_date ?? ""))
+  const closingTime = Date.parse(String(product.metadata?.pre_order_closing_date ?? ""))
+  const dateAwareStatus = preOrderEnabled && Number.isFinite(openingTime)
+    ? now < openingTime
+      ? "coming_soon"
+      : Number.isFinite(closingTime) && now >= closingTime
+        ? "available"
+        : "pre_order"
+    : launchStatus
   const isComingSoon =
     product.metadata?.coming_soon === true ||
     product.metadata?.coming_soon === "true" ||
-    product.metadata?.launch_status === "coming_soon"
-  const isPreOrder = product.metadata?.launch_status === "pre_order"
+    dateAwareStatus === "coming_soon"
+  const isPreOrder = dateAwareStatus === "pre_order"
+  const lowStock = inStock && (selectedVariant?.inventory_quantity ?? 0) === 1
+  const formatDate = (value: unknown) => {
+    if (!value || typeof value !== "string") return null
+    const date = new Date(value)
+    return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" }).format(date)
+  }
+  const openingDate = formatDate(product.metadata?.pre_order_opening_date)
+  const closingDate = formatDate(product.metadata?.pre_order_closing_date)
+  const dispatchDate = product.metadata?.pre_order_dispatch_date
 
   const actionsRef = useRef<HTMLDivElement>(null)
 
@@ -197,7 +218,7 @@ export default function ProductActions({
                 RESTOCK
               </p>
             ) : null}
-            <p className="font-mono text-[10px] uppercase tracking-widest text-black">
+            <p className={`font-mono text-[10px] uppercase tracking-widest ${lowStock ? "text-red-600" : "text-black"}`}>
               {inStock
                 ? `${selectedVariant.inventory_quantity ?? 0} left in stock`
                 : "Sold out"}
@@ -245,6 +266,7 @@ export default function ProductActions({
             >
               Coming soon
             </Button>
+            {openingDate ? <p className="text-center text-xs text-neutral-500">Pre-order opens on {openingDate}</p> : null}
             <CatalogSubscriptionForm productId={product.id} kind="waitlist" />
           </>
         ) : isPreOrder ? (
@@ -260,8 +282,9 @@ export default function ProductActions({
               Pre-order
             </Button>
             <p className="text-center text-xs leading-relaxed text-neutral-500">
-              This product is available for pre-order. You’ll receive it 1–2
-              weeks after successful payment.
+              {closingDate ? `Pre-order closes ${closingDate}. ` : "This product is available for pre-order. "}
+              {dispatchDate ? `Estimated dispatch: ${dispatchDate}. ` : "You’ll receive it 1–2 weeks after successful payment. "}
+              We’ll email you with updates.
             </p>
           </>
         ) : !inStock && selectedVariant ? (

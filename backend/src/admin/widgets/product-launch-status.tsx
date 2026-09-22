@@ -1,11 +1,17 @@
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import { DetailWidgetProps, HttpTypes } from "@medusajs/framework/types"
-import { Button, Container, Heading, Select, Text, toast } from "@medusajs/ui"
+import { Button, Container, Heading, Input, Label, Select, Text, toast } from "@medusajs/ui"
 import { useState } from "react"
 
 const ProductLaunchStatusWidget = ({ data }: DetailWidgetProps<HttpTypes.AdminProduct>) => {
   const current = String(data.metadata?.launch_status ?? "available")
   const [status, setStatus] = useState(current)
+  const metadata = data.metadata ?? {}
+  const [preOrderEnabled, setPreOrderEnabled] = useState(String(metadata.pre_order_enabled ?? "false") === "true")
+  const [openingDate, setOpeningDate] = useState(String(metadata.pre_order_opening_date ?? ""))
+  const [closingDate, setClosingDate] = useState(String(metadata.pre_order_closing_date ?? ""))
+  const [dispatchDate, setDispatchDate] = useState(String(metadata.pre_order_dispatch_date ?? ""))
+  const [notificationsEnabled, setNotificationsEnabled] = useState(String(metadata.pre_order_customer_notifications ?? "true") !== "false")
   const [saving, setSaving] = useState(false)
 
   async function save() {
@@ -15,7 +21,14 @@ const ProductLaunchStatusWidget = ({ data }: DetailWidgetProps<HttpTypes.AdminPr
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({
+          status,
+          pre_order_enabled: preOrderEnabled,
+          pre_order_opening_date: openingDate || null,
+          pre_order_closing_date: closingDate || null,
+          pre_order_dispatch_date: dispatchDate || null,
+          pre_order_customer_notifications: notificationsEnabled,
+        }),
       })
       if (!response.ok) throw new Error("Could not update launch status")
       toast.success("Launch status updated")
@@ -42,6 +55,19 @@ const ProductLaunchStatusWidget = ({ data }: DetailWidgetProps<HttpTypes.AdminPr
         </Select>
         <Button onClick={() => void save()} disabled={saving}>{saving ? "Saving" : "Save status"}</Button>
       </div>
+      {status === "pre_order" ? <div className="mt-6 grid grid-cols-2 gap-4">
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" checked={preOrderEnabled} onChange={(event) => setPreOrderEnabled(event.target.checked)} />
+          Pre-order enabled
+        </label>
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" checked={notificationsEnabled} onChange={(event) => setNotificationsEnabled(event.target.checked)} />
+          Customer notifications enabled
+        </label>
+        <div><Label>Pre-order opening date</Label><Input type="datetime-local" value={openingDate} onChange={(event) => setOpeningDate(event.target.value)} /></div>
+        <div><Label>Pre-order closing date</Label><Input type="datetime-local" value={closingDate} onChange={(event) => setClosingDate(event.target.value)} /></div>
+        <div className="col-span-2"><Label>Estimated dispatch date or range</Label><Input placeholder="15–30 November 2026" value={dispatchDate} onChange={(event) => setDispatchDate(event.target.value)} /></div>
+      </div> : null}
     </Container>
   )
 }
