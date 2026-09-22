@@ -186,7 +186,9 @@ export default function ProductActions({
           />
         </div>
 
-        {selectedVariant?.manage_inventory !== false && selectedVariant ? (
+        {selectedVariant?.manage_inventory !== false &&
+        selectedVariant &&
+        !isPreOrder ? (
           <div className="space-y-2" aria-live="polite">
             {inStock &&
             (selectedVariant.metadata as Record<string, unknown> | undefined)
@@ -257,6 +259,10 @@ export default function ProductActions({
             >
               Pre-order
             </Button>
+            <p className="text-center text-xs leading-relaxed text-neutral-500">
+              This product is available for pre-order. You’ll receive it 1–2
+              weeks after successful payment.
+            </p>
           </>
         ) : !inStock && selectedVariant ? (
           <>
