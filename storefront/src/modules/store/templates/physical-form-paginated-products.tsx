@@ -98,15 +98,17 @@ function CollectionCatalog({
               )}
             </div>
             {group.products.length > 0 ? (
-              <ul className="grid w-full grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
+              <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 {group.products.map((product) => {
                   const cardProps = buildPhysicalProductCardProps(product)
                   if (!cardProps) return null
                   return (
-                    <li key={product.id}>
+                    <li key={product.id} className="w-full">
                       <PhysicalProductCard
                         {...cardProps}
                         compact
+                        catalogMobile
+                        className="max-w-none w-full"
                         isLatest={isLatestInGroup(product, group.products)}
                       />
                     </li>

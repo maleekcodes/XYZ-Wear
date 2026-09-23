@@ -25,6 +25,7 @@ export type PhysicalProductCardProps = {
   defaultVariantId?: string | null
   isLatest?: boolean
   compact?: boolean
+  catalogMobile?: boolean
   fitLabel?: string | null
   className?: string
   launchStatus?: string
@@ -44,6 +45,7 @@ export function PhysicalProductCard({
   swatches,
   isLatest,
   compact,
+  catalogMobile,
   fitLabel,
   className,
   launchStatus = "",
@@ -88,8 +90,12 @@ export function PhysicalProductCard({
       viewport={{ once: true }}
       whileHover={{ y: -5 }}
       transition={{ duration: 0.4 }}
-      className={`group relative flex h-full w-full flex-col justify-between border border-neutral-200 bg-white transition-colors hover:border-neutral-300 ${
-        compact ? "min-h-[360px] p-3" : "min-h-[520px] p-4 md:p-5"
+      className={`group relative flex h-full w-full flex-col border border-neutral-200 bg-white transition-colors hover:border-neutral-300 ${
+        catalogMobile
+          ? "min-h-0 p-5 sm:min-h-[520px] sm:p-4 md:p-5"
+          : compact
+            ? "min-h-[360px] p-3"
+            : "min-h-[520px] p-4 md:p-5"
       } ${className ?? ""}`}
       data-testid="product-wrapper"
     >
@@ -115,7 +121,7 @@ export function PhysicalProductCard({
 
       <LocalizedClientLink
         href={`/products/${handle}`}
-        className={`relative z-0 block flex-grow ${compact ? "py-2" : "py-3"}`}
+        className={`relative z-0 block ${compact ? "py-2" : "py-3"}`}
       >
         <div className="relative aspect-[3/4] w-full overflow-hidden bg-white">
           {previewImage ? (
@@ -136,15 +142,15 @@ export function PhysicalProductCard({
       </LocalizedClientLink>
 
       <div className="relative z-10">
-        <div className="mb-4 flex items-end justify-between gap-3">
+        <div className={`mb-4 flex items-end justify-between gap-3 ${catalogMobile ? "flex-wrap sm:flex-nowrap" : ""}`}>
           <LocalizedClientLink href={`/products/${handle}`} className="min-w-0">
             <h3
-              className={`truncate font-bold tracking-tight ${compact ? "text-xs" : "text-sm"}`}
+              className={`truncate font-bold tracking-tight ${compact ? "text-xs" : "text-sm"} ${catalogMobile ? "text-base sm:text-xs" : ""}`}
               data-testid="product-title"
             >
               {title}
             </h3>
-            <span className="mt-1 block line-clamp-2 text-xs text-neutral-500">
+            <span className={`mt-1 block line-clamp-2 text-xs text-neutral-500 ${catalogMobile ? "text-base sm:text-xs" : ""}`}>
               {subtitle}
             </span>
           </LocalizedClientLink>
@@ -163,7 +169,7 @@ export function PhysicalProductCard({
                       event.stopPropagation()
                       setActiveSwatch(i)
                     }}
-                    className={`h-4 w-4 rounded-full border transition-all ${
+                    className={`h-4 w-4 rounded-full border transition-all ${catalogMobile ? "h-6 w-6 sm:h-4 sm:w-4" : ""} ${
                       selected
                         ? "border-deepBlack ring-1 ring-deepBlack/30"
                         : "border-black/15"
@@ -179,7 +185,7 @@ export function PhysicalProductCard({
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-2 border-t border-neutral-200/60 pt-4 text-[10px] uppercase tracking-widest text-neutral-400">
+        <div className={`flex items-center justify-between gap-2 border-t border-neutral-200/60 pt-4 text-[10px] uppercase tracking-widest text-neutral-400 ${catalogMobile ? "text-xs sm:text-[10px]" : ""}`}>
           <span>{fitLabel}</span>
           <span className="text-right tabular-nums normal-case tracking-normal">
             {priceIsSale && originalPriceFormatted && (
