@@ -275,7 +275,7 @@ export default function ProductActions({
               onClick={handleAddToCart}
               disabled={!selectedVariant || !!disabled || isAdding}
               variant="primary"
-              className="h-12 w-full rounded-none border border-deepBlack bg-deepBlack text-xs font-medium uppercase tracking-[0.15em] text-white transition-colors hover:bg-white hover:text-deepBlack disabled:border-neutral-200 disabled:bg-neutral-100 disabled:text-neutral-400 disabled:hover:bg-neutral-100"
+              className="h-12 w-full rounded-none border border-red-600 bg-white text-xs font-medium uppercase tracking-[0.15em] text-red-600 transition-colors hover:bg-red-600 hover:text-white disabled:border-red-600 disabled:bg-white disabled:text-red-600 disabled:hover:bg-white"
               isLoading={isAdding}
               data-testid="pre-order-button"
             >

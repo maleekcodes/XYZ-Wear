@@ -50,7 +50,7 @@ export function PhysicalProductCard({
   compact,
   fitLabel,
   className,
-  launchStatus = "available",
+  launchStatus = "",
   inventoryQuantity,
   restockedAt,
 }: PhysicalProductCardProps) {
@@ -139,9 +139,11 @@ export function PhysicalProductCard({
             </span>
           ) : null}
         </div>
-        <span className="font-mono text-[10px] uppercase tracking-widest text-red-600">
-          {launchStatus === "coming_soon" ? "Coming Soon" : launchStatus === "pre_order" ? "Pre-Order" : restockedAt ? "Restock" : inventoryQuantity === 0 ? "Sold Out" : ""}
-        </span>
+        {launchStatus === "coming_soon" || launchStatus === "pre_order" || launchStatus === "available" || restockedAt || inventoryQuantity === 0 ? (
+          <span className="shrink-0 rounded-full border border-red-600 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-red-600">
+            {launchStatus === "coming_soon" ? "Coming Soon" : launchStatus === "pre_order" ? "Pre-Order" : restockedAt ? "Restock" : inventoryQuantity === 0 ? "Sold Out" : "Available"}
+          </span>
+        ) : null}
         <button
           type="button"
           aria-label={`Add ${title} to cart`}
