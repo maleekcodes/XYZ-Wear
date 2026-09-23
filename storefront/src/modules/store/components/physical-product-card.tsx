@@ -30,6 +30,9 @@ export type PhysicalProductCardProps = {
   compact?: boolean
   fitLabel?: string | null
   className?: string
+  launchStatus?: string
+  inventoryQuantity?: number | null
+  restockedAt?: string | null
 }
 
 export function PhysicalProductCard({
@@ -47,6 +50,9 @@ export function PhysicalProductCard({
   compact,
   fitLabel,
   className,
+  launchStatus = "available",
+  inventoryQuantity,
+  restockedAt,
 }: PhysicalProductCardProps) {
   const router = useRouter()
   const { countryCode } = useParams()
@@ -133,6 +139,9 @@ export function PhysicalProductCard({
             </span>
           ) : null}
         </div>
+        <span className="font-mono text-[10px] uppercase tracking-widest text-red-600">
+          {launchStatus === "coming_soon" ? "Coming Soon" : launchStatus === "pre_order" ? "Pre-Order" : restockedAt ? "Restock" : inventoryQuantity === 0 ? "Sold Out" : ""}
+        </span>
         <button
           type="button"
           aria-label={`Add ${title} to cart`}

@@ -13,6 +13,9 @@ const ProductLaunchStatusWidget = ({ data }: DetailWidgetProps<HttpTypes.AdminPr
   const [dispatchDate, setDispatchDate] = useState(String(metadata.pre_order_dispatch_date ?? ""))
   const [notificationsEnabled, setNotificationsEnabled] = useState(String(metadata.pre_order_customer_notifications ?? "true") !== "false")
   const [saving, setSaving] = useState(false)
+  const [promotionPrice, setPromotionPrice] = useState(String(metadata.promotion_price ?? ""))
+  const [promotionOriginalPrice, setPromotionOriginalPrice] = useState(String(metadata.promotion_original_price ?? ""))
+  const [promotionDiscountLabel, setPromotionDiscountLabel] = useState(String(metadata.promotion_discount_label ?? ""))
 
   async function save() {
     setSaving(true)
@@ -28,6 +31,9 @@ const ProductLaunchStatusWidget = ({ data }: DetailWidgetProps<HttpTypes.AdminPr
           pre_order_closing_date: closingDate || null,
           pre_order_dispatch_date: dispatchDate || null,
           pre_order_customer_notifications: notificationsEnabled,
+          promotion_price: promotionPrice || null,
+          promotion_original_price: promotionOriginalPrice || null,
+          promotion_discount_label: promotionDiscountLabel || null,
         }),
       })
       if (!response.ok) throw new Error("Could not update launch status")
@@ -68,6 +74,15 @@ const ProductLaunchStatusWidget = ({ data }: DetailWidgetProps<HttpTypes.AdminPr
         <div><Label>Pre-order closing date</Label><Input type="datetime-local" value={closingDate} onChange={(event) => setClosingDate(event.target.value)} /></div>
         <div className="col-span-2"><Label>Estimated dispatch date or range</Label><Input placeholder="15–30 November 2026" value={dispatchDate} onChange={(event) => setDispatchDate(event.target.value)} /></div>
       </div> : null}
+      <div className="mt-6 border-t border-ui-border-base pt-6">
+        <Heading level="h3">Promotion price</Heading>
+        <Text className="mb-4 mt-1 text-ui-fg-subtle">Set a temporary product sale display in one place. Leave blank to use the normal price.</Text>
+        <div className="grid grid-cols-3 gap-4">
+          <div><Label>Promotion price</Label><Input placeholder="£272.11" value={promotionPrice} onChange={(event) => setPromotionPrice(event.target.value)} /></div>
+          <div><Label>Original price</Label><Input placeholder="£453.51" value={promotionOriginalPrice} onChange={(event) => setPromotionOriginalPrice(event.target.value)} /></div>
+          <div><Label>Discount label</Label><Input placeholder="40% off" value={promotionDiscountLabel} onChange={(event) => setPromotionDiscountLabel(event.target.value)} /></div>
+        </div>
+      </div>
     </Container>
   )
 }

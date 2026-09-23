@@ -137,5 +137,8 @@ export function buildPhysicalProductCardProps(
     swatches: extractSwatches(priced),
     defaultVariantId: pickVariantId(priced),
     fitLabel: fitLabelForProduct(priced),
+    launchStatus: String(priced.metadata?.launch_status ?? "available"),
+    inventoryQuantity: priced.variants?.reduce((sum, variant) => sum + (variant.inventory_quantity ?? 0), 0) ?? null,
+    restockedAt: (priced.variants?.find((variant) => typeof variant.metadata?.restocked_at === "string")?.metadata?.restocked_at as string | undefined) ?? null,
   }
 }

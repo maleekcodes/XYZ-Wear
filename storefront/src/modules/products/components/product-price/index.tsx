@@ -16,6 +16,9 @@ export default function ProductPrice({
   })
 
   const selectedPrice = variant ? variantPrice : cheapestPrice
+  const promotionPrice = typeof product.metadata?.promotion_price === "string" ? product.metadata.promotion_price : null
+  const promotionOriginal = typeof product.metadata?.promotion_original_price === "string" ? product.metadata.promotion_original_price : null
+  const promotionLabel = typeof product.metadata?.promotion_discount_label === "string" ? product.metadata.promotion_discount_label : null
 
   if (!selectedPrice) {
     return <div className="block h-10 w-32 animate-pulse bg-concrete" />
@@ -23,6 +26,13 @@ export default function ProductPrice({
 
   return (
     <div className="flex flex-col gap-1 text-deepBlack">
+      {promotionPrice && promotionOriginal ? (
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <span className="text-2xl font-semibold tracking-tight text-red-600" data-testid="promotion-price">{promotionPrice}</span>
+          {promotionLabel ? <span className="text-base text-red-600">({promotionLabel})</span> : null}
+          <span className="text-sm text-neutral-400 line-through">{promotionOriginal}</span>
+        </div>
+      ) : null}
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         {!variant && (
           <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">

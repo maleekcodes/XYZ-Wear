@@ -11,6 +11,9 @@ type Body = {
   pre_order_closing_date?: string | null
   pre_order_dispatch_date?: string | null
   pre_order_customer_notifications?: boolean
+  promotion_price?: string | null
+  promotion_original_price?: string | null
+  promotion_discount_label?: string | null
 }
 
 export async function POST(
@@ -33,6 +36,9 @@ export async function POST(
     pre_order_closing_date: body.pre_order_closing_date ?? product.metadata?.pre_order_closing_date ?? null,
     pre_order_dispatch_date: body.pre_order_dispatch_date ?? product.metadata?.pre_order_dispatch_date ?? null,
     pre_order_customer_notifications: bodyBoolean(body.pre_order_customer_notifications, product.metadata?.pre_order_customer_notifications ?? true),
+    promotion_price: body.promotion_price?.trim() || null,
+    promotion_original_price: body.promotion_original_price?.trim() || null,
+    promotion_discount_label: body.promotion_discount_label?.trim() || null,
   }
   const updated = await productService.updateProducts(req.params.id, { metadata })
 

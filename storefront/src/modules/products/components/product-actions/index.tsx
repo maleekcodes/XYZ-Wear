@@ -163,7 +163,7 @@ export default function ProductActions({
     product.metadata?.coming_soon === "true" ||
     dateAwareStatus === "coming_soon"
   const isPreOrder = dateAwareStatus === "pre_order"
-  const lowStock = inStock && (selectedVariant?.inventory_quantity ?? 0) === 1
+  const lowStock = inStock && (selectedVariant?.inventory_quantity ?? 0) <= 50
   const formatDate = (value: unknown) => {
     if (!value || typeof value !== "string") return null
     const date = new Date(value)
@@ -262,7 +262,7 @@ export default function ProductActions({
             <Button
               disabled
               variant="primary"
-              className="h-12 w-full rounded-none border border-neutral-200 bg-neutral-100 text-xs font-medium uppercase tracking-[0.15em] text-neutral-400"
+              className="h-12 w-full rounded-none border border-red-600 bg-white text-xs font-medium uppercase tracking-[0.15em] text-red-600"
             >
               Coming soon
             </Button>
@@ -281,7 +281,7 @@ export default function ProductActions({
             >
               Pre-order
             </Button>
-            <p className="text-center text-xs leading-relaxed text-neutral-500">
+            <p className="text-center text-xs leading-relaxed text-black">
               {closingDate ? `Pre-order closes ${closingDate}. ` : "This product is available for pre-order. "}
               {dispatchDate ? `Estimated dispatch: ${dispatchDate}. ` : "You’ll receive it 1–2 weeks after successful payment. "}
               We’ll email you with updates.
@@ -292,7 +292,7 @@ export default function ProductActions({
             <Button
               disabled
               variant="primary"
-              className="h-12 w-full rounded-none border border-neutral-200 bg-neutral-100 text-xs font-medium uppercase tracking-[0.15em] text-neutral-400"
+              className="h-12 w-full rounded-none border border-red-600 bg-white text-xs font-medium uppercase tracking-[0.15em] text-red-600"
             >
               Sold out
             </Button>
