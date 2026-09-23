@@ -2,11 +2,8 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { useParams, useRouter } from "next/navigation"
-import { Loader2, Plus } from "lucide-react"
-import { useMemo, useState, type MouseEvent } from "react"
+import { useMemo, useState } from "react"
 
-import { addToCart } from "@lib/data/cart"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
 
@@ -45,7 +42,6 @@ export function PhysicalProductCard({
   originalPriceFormatted,
   priceIsSale,
   swatches,
-  defaultVariantId,
   isLatest,
   compact,
   fitLabel,
@@ -54,20 +50,14 @@ export function PhysicalProductCard({
   inventoryQuantity,
   restockedAt,
 }: PhysicalProductCardProps) {
-  const router = useRouter()
-  const { countryCode } = useParams()
   const swatchItems = swatches?.slice(0, 5) ?? []
   const [activeSwatch, setActiveSwatch] = useState(0)
-  const [isAdding, setIsAdding] = useState(false)
 
   const previewImage = useMemo(() => {
     const active = swatchItems[activeSwatch]?.imageUrl
     if (active) return active
     return imageUrl
   }, [activeSwatch, imageUrl, swatchItems])
-
-  const activeVariantId =
-    swatchItems[activeSwatch]?.variantId ?? defaultVariantId ?? null
 
   const fallbackSwatchColor = (label: string): string => {
     const normalized = label.toLowerCase()
@@ -89,29 +79,6 @@ export function PhysicalProductCard({
     if (normalized.includes("orange")) return "#c2410c"
     if (normalized.includes("yellow") || normalized.includes("gold")) return "#ca8a04"
     return "#d4d4d4"
-  }
-
-  const handleAddToCart = async (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-    if (!activeVariantId || isAdding) return
-
-    const country = Array.isArray(countryCode) ? countryCode[0] : countryCode
-    if (!country) return
-
-    setIsAdding(true)
-    try {
-      await addToCart({
-        variantId: activeVariantId,
-        quantity: 1,
-        countryCode: country,
-      })
-      router.refresh()
-    } catch (error) {
-      console.error("Add to cart failed", error)
-    } finally {
-      setIsAdding(false)
-    }
   }
 
   return (
@@ -140,25 +107,10 @@ export function PhysicalProductCard({
           ) : null}
         </div>
         {launchStatus === "coming_soon" || launchStatus === "pre_order" || launchStatus === "available" || restockedAt || inventoryQuantity === 0 ? (
-          <span className="shrink-0 rounded-full border border-red-600 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-red-600">
+          <span className="shrink-0 rounded-full border border-red-600 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-black">
             {launchStatus === "coming_soon" ? "Coming Soon" : launchStatus === "pre_order" ? "Pre-Order" : restockedAt ? "Restock" : inventoryQuantity === 0 ? "Sold Out" : "Available"}
           </span>
         ) : null}
-        <button
-          type="button"
-          aria-label={`Add ${title} to cart`}
-          data-testid="product-card-add"
-          data-variant-id={activeVariantId ?? ""}
-          disabled={!activeVariantId || isAdding}
-          onClick={handleAddToCart}
-          className="text-neutral-400 transition-colors hover:text-deepBlack disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          {isAdding ? (
-            <Loader2 size={18} className="animate-spin" />
-          ) : (
-            <Plus size={18} />
-          )}
-        </button>
       </div>
 
       <LocalizedClientLink
