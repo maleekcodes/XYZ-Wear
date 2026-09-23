@@ -266,7 +266,7 @@ export default function ProductActions({
             >
               Coming soon
             </Button>
-            {openingDate ? <p className="text-center text-xs text-neutral-500">Pre-order opens on {openingDate}</p> : null}
+            {openingDate ? <p className="text-center text-sm text-red-600">Pre-order opens on {openingDate}</p> : null}
             <CatalogSubscriptionForm productId={product.id} kind="waitlist" />
           </>
         ) : isPreOrder ? (
@@ -281,7 +281,7 @@ export default function ProductActions({
             >
               Pre-order
             </Button>
-            <p className="text-center text-xs leading-relaxed text-black">
+            <p className="text-left text-sm leading-relaxed text-black">
               {closingDate ? `Pre-order closes ${closingDate}. ` : "This product is available for pre-order. "}
               {dispatchDate ? `Estimated dispatch: ${dispatchDate}. ` : "You’ll receive it 1–2 weeks after successful payment. "}
               We’ll email you with updates.
