@@ -262,7 +262,7 @@ export default function ProductActions({
             <Button
               disabled
               variant="primary"
-              className="h-12 w-full rounded-none border border-neutral-200 bg-neutral-100 text-xs font-medium uppercase tracking-[0.15em] text-red-600"
+              className="h-12 w-full rounded-none border border-neutral-200 bg-neutral-100 text-xs font-medium uppercase tracking-[0.15em] !text-red-600 disabled:!text-red-600"
             >
               Coming soon
             </Button>
@@ -292,7 +292,7 @@ export default function ProductActions({
             <Button
               disabled
               variant="primary"
-              className="h-12 w-full rounded-none border border-neutral-200 bg-neutral-100 text-xs font-medium uppercase tracking-[0.15em] text-red-600"
+              className="h-12 w-full rounded-none border border-neutral-200 bg-neutral-100 text-xs font-medium uppercase tracking-[0.15em] !text-red-600 disabled:!text-red-600"
             >
               Sold out
             </Button>
