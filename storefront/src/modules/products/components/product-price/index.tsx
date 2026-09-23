@@ -31,7 +31,7 @@ export default function ProductPrice({
         )}
         <span
           className={clx(
-            "text-2xl font-semibold tracking-tight tabular-nums",
+            "text-3xl font-semibold tracking-tight tabular-nums",
             selectedPrice.price_type === "sale"
               ? "text-red-600"
               : "text-deepBlack"
@@ -43,7 +43,7 @@ export default function ProductPrice({
         </span>
         {selectedPrice.price_type === "sale" && (
           <span
-            className="text-sm text-neutral-400 line-through tabular-nums"
+            className="text-3xl font-semibold tracking-tight text-neutral-400 line-through tabular-nums"
             data-testid="original-product-price"
             data-value={selectedPrice.original_price_number}
           >
