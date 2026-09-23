@@ -196,8 +196,8 @@ export default function ProductActions({
   return (
     <>
       <div className="flex flex-col gap-y-6" ref={actionsRef}>
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-max flex-1">
             <ProductPrice product={product} variant={selectedVariant} />
           </div>
           <PhysicalProductTryOn

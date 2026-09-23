@@ -22,8 +22,8 @@ export default function ProductPrice({
   }
 
   return (
-    <div className="flex flex-col gap-1 text-deepBlack">
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+    <div className="text-deepBlack">
+      <div className="flex items-baseline gap-x-2 whitespace-nowrap">
         {!variant && (
           <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">
             From
@@ -31,7 +31,7 @@ export default function ProductPrice({
         )}
         <span
           className={clx(
-            "text-3xl font-semibold tracking-tight tabular-nums",
+            "text-xl font-semibold tracking-tight tabular-nums",
             selectedPrice.price_type === "sale"
               ? "text-red-600"
               : "text-deepBlack"
@@ -43,19 +43,19 @@ export default function ProductPrice({
         </span>
         {selectedPrice.price_type === "sale" && (
           <span
-            className="text-3xl font-semibold tracking-tight text-neutral-400 line-through tabular-nums"
+            className="text-base font-medium tracking-tight text-neutral-400 line-through tabular-nums"
             data-testid="original-product-price"
             data-value={selectedPrice.original_price_number}
           >
             {selectedPrice.original_price}
           </span>
         )}
+        {selectedPrice.price_type === "sale" && (
+          <span className="text-xs font-mono text-red-600">
+            ({selectedPrice.percentage_diff}% off)
+          </span>
+        )}
       </div>
-      {selectedPrice.price_type === "sale" && (
-        <span className="text-xs font-mono text-red-600">
-          ({selectedPrice.percentage_diff}% off)
-        </span>
-      )}
     </div>
   )
 }
