@@ -76,7 +76,7 @@ const ProductLaunchStatusWidget = ({ data }: DetailWidgetProps<HttpTypes.AdminPr
         <div className="max-w-xs">
           <Label htmlFor="promotion-percentage">Discount percentage</Label>
           <div className="flex items-center gap-2">
-            <Input id="promotion-percentage" type="number" min="1" max="99" step="1" placeholder="40" value={promotionPercentage} onChange={(event) => setPromotionPercentage(event.target.value)} />
+            <Input id="promotion-percentage" type="number" min="0" max="99" step="1" placeholder="40" value={promotionPercentage} onChange={(event) => setPromotionPercentage(event.target.value)} />
             <span className="text-ui-fg-subtle">%</span>
           </div>
         </div>

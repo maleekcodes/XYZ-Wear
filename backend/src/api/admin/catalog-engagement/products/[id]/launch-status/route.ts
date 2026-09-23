@@ -28,8 +28,8 @@ export async function POST(
   const promotionPercentage = body.promotion_percentage == null || body.promotion_percentage === ""
     ? null
     : Number(body.promotion_percentage)
-  if (promotionPercentage !== null && (!Number.isInteger(promotionPercentage) || promotionPercentage < 1 || promotionPercentage > 99)) {
-    return res.status(400).json({ message: "Discount percentage must be a whole number from 1 to 99" })
+  if (promotionPercentage !== null && (!Number.isInteger(promotionPercentage) || promotionPercentage < 0 || promotionPercentage > 99)) {
+    return res.status(400).json({ message: "Discount percentage must be a whole number from 0 to 99" })
   }
   const metadata = {
     ...(product.metadata ?? {}),
