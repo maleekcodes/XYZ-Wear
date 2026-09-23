@@ -52,8 +52,8 @@ export default function ProductPrice({
         )}
       </div>
       {selectedPrice.price_type === "sale" && (
-        <span className="text-xs font-mono text-neutral-500">
-          Save {selectedPrice.percentage_diff}%
+        <span className="text-xs font-mono text-red-600">
+          ({selectedPrice.percentage_diff}% off)
         </span>
       )}
     </div>
