@@ -1,5 +1,5 @@
 import type { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { Modules } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { CATALOG_ENGAGEMENT_MODULE } from "../../../../../../modules/catalog-engagement"
 import { EmailTemplates } from "../../../../../../modules/email-notifications/templates"
 import { STOREFRONT_URL } from "../../../../../../lib/constants"
@@ -23,7 +23,9 @@ export async function POST(
   if (!status) return res.status(400).json({ message: "status is required" })
 
   const productService = req.scope.resolve(Modules.PRODUCT) as any
-  const product = await productService.retrieveProduct(req.params.id)
+  const product = await productService.retrieveProduct(req.params.id, {
+    relations: ["variants", "variants.prices"],
+  })
   const previousStatus = product.metadata?.launch_status
   const promotionPercentage = body.promotion_percentage == null || body.promotion_percentage === ""
     ? null
@@ -45,6 +47,7 @@ export async function POST(
     promotion_original_price: null,
     promotion_discount_label: null,
   }
+  await syncProductSalePriceList(req, product, promotionPercentage)
   const updated = await productService.updateProducts(req.params.id, { metadata })
 
   const variantPrices = (product.variants ?? [])
@@ -97,6 +100,80 @@ export async function POST(
   }
 
   return res.json({ product: updated, waitlist_matched: notified })
+}
+
+async function syncProductSalePriceList(req: AuthenticatedMedusaRequest<Body>, product: any, percentage: number | null) {
+  const pricing = req.scope.resolve(Modules.PRICING) as any
+  const remoteLink = req.scope.resolve(ContainerRegistrationKeys.LINK) as any
+  const title = `Product sale ${product.id}`
+  const existing = await pricing.listPriceLists({ q: title }, { take: 100, relations: ["prices"] })
+  const priceList = existing.find((entry: any) => entry.metadata?.product_id === product.id)
+
+  if (percentage === null || percentage === 0) {
+    if (priceList) {
+      await pricing.updatePriceLists([{ id: priceList.id, status: "draft" }])
+    }
+    return
+  }
+
+  const variantIds = (product.variants ?? []).map((variant: any) => variant.id)
+  const variantPriceSetLinks = variantIds.length
+    ? await remoteLink.getLinkModule(Modules.PRODUCT, "variant_id", Modules.PRICING, "price_set_id").list(
+      { variant_id: variantIds },
+      { select: ["variant_id", "price_set_id"] }
+    )
+    : []
+  const priceSetIds = variantPriceSetLinks.map((link: any) => link.price_set_id)
+  const priceSets = priceSetIds.length
+    ? await pricing.listPriceSets({ id: priceSetIds }, { relations: ["prices"] })
+    : []
+  const priceSetByVariantId = new Map(variantPriceSetLinks.map((link: any) => [link.variant_id, link.price_set_id]))
+  const priceSetById = new Map(priceSets.map((priceSet: any) => [priceSet.id, priceSet]))
+  const prices = (product.variants ?? []).flatMap((variant: any) => {
+    const priceSetId = priceSetByVariantId.get(variant.id)
+    const priceSet: any = priceSetId ? priceSetById.get(priceSetId) : null
+    const basePrices = priceSet?.prices ?? variant.prices ?? []
+    return basePrices
+      .filter((price: any) => Number.isFinite(Number(price.amount)) && Number(price.amount) > 0)
+      .map((price: any) => ({
+        price_set_id: priceSetId,
+        currency_code: price.currency_code,
+        amount: Math.round(Number(price.amount) * (100 - percentage) / 100),
+      }))
+      .filter((price: any) => !!price.price_set_id)
+  })
+
+  if (!prices.length) {
+    throw new Error("Cannot apply the sale because this product has no priced variants")
+  }
+
+  if (priceList) {
+    const oldPrices = priceList.prices ?? []
+    if (oldPrices.length) {
+      await pricing.updatePriceListPrices([{
+        price_list_id: priceList.id,
+        prices: prices.map((price: any) => {
+          const existing = oldPrices.find((entry: any) => entry.price_set_id === price.price_set_id && entry.currency_code === price.currency_code)
+          return existing ? { id: existing.id, amount: price.amount } : { ...price }
+        }),
+      }])
+      const stale = oldPrices.filter((entry: any) => !prices.some((price: any) => price.price_set_id === entry.price_set_id && price.currency_code === entry.currency_code))
+      if (stale.length) await pricing.removePrices(stale.map((price: any) => price.id))
+    } else {
+      await pricing.addPriceListPrices([{ price_list_id: priceList.id, prices }])
+    }
+    await pricing.updatePriceLists([{ id: priceList.id, status: "active", metadata: { product_id: product.id, promotion_percentage: percentage } }])
+    return
+  }
+
+  await pricing.createPriceLists([{
+    title,
+    description: `Automatic ${percentage}% sale for ${product.title}`,
+    type: "sale",
+    status: "active",
+    metadata: { product_id: product.id, promotion_percentage: percentage },
+    prices,
+  }])
 }
 
 function bodyBoolean(value: boolean | undefined, fallback: unknown) {

@@ -2,34 +2,30 @@ import { HttpTypes } from "@medusajs/types"
 import { getPercentageDiff } from "./get-precentage-diff"
 import { convertToLocale } from "./money"
 
-export const getPricesForVariant = (variant: any, promotionPercentage?: number) => {
+export const getPricesForVariant = (variant: any) => {
   if (!variant?.calculated_price?.calculated_amount) {
     return null
   }
 
-  const originalAmount = promotionPercentage
-    ? variant.calculated_price.original_amount ?? variant.calculated_price.calculated_amount
-    : variant.calculated_price.calculated_amount
-  const promotedAmount = promotionPercentage && promotionPercentage > 0 && promotionPercentage < 100
-    ? Math.round(originalAmount * (100 - promotionPercentage) / 100)
-    : originalAmount
+  const calculatedAmount = variant.calculated_price.calculated_amount
+  const originalAmount = variant.calculated_price.original_amount
 
   return {
-    calculated_price_number: promotedAmount,
+    calculated_price_number: calculatedAmount,
     calculated_price: convertToLocale({
-      amount: promotedAmount,
+      amount: calculatedAmount,
       currency_code: variant.calculated_price.currency_code,
     }),
-    original_price_number: promotionPercentage ? originalAmount : variant.calculated_price.original_amount,
+    original_price_number: originalAmount,
     original_price: convertToLocale({
-      amount: promotionPercentage ? originalAmount : variant.calculated_price.original_amount,
+      amount: originalAmount,
       currency_code: variant.calculated_price.currency_code,
     }),
     currency_code: variant.calculated_price.currency_code,
-    price_type: promotionPercentage ? "sale" : variant.calculated_price.calculated_price.price_list_type,
+    price_type: variant.calculated_price.calculated_price.price_list_type,
     percentage_diff: getPercentageDiff(
-      promotionPercentage ? originalAmount : variant.calculated_price.original_amount,
-      promotedAmount
+      originalAmount,
+      calculatedAmount
     ),
   }
 }
@@ -59,7 +55,7 @@ export function getProductPrice({
         )
       })[0]
 
-    return getPricesForVariant(cheapestVariant, readPromotionPercentage(product.metadata))
+    return getPricesForVariant(cheapestVariant)
   }
 
   const variantPrice = () => {
@@ -75,7 +71,7 @@ export function getProductPrice({
       return null
     }
 
-    return getPricesForVariant(variant, readPromotionPercentage(product.metadata))
+    return getPricesForVariant(variant)
   }
 
   return {
@@ -83,9 +79,4 @@ export function getProductPrice({
     cheapestPrice: cheapestPrice(),
     variantPrice: variantPrice(),
   }
-}
-
-function readPromotionPercentage(metadata: HttpTypes.StoreProduct["metadata"]): number | undefined {
-  const value = Number(metadata?.promotion_percentage)
-  return Number.isInteger(value) && value > 0 && value < 100 ? value : undefined
 }

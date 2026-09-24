@@ -72,7 +72,7 @@ const ProductLaunchStatusWidget = ({ data }: DetailWidgetProps<HttpTypes.AdminPr
       </div> : null}
       <div className="mt-6 border-t border-ui-border-base pt-6">
         <Heading level="h3">Promotion price</Heading>
-        <Text className="mb-4 mt-1 text-ui-fg-subtle">Enter a discount percentage. The sale price and savings are calculated from the product price. Leave blank to use the normal price.</Text>
+        <Text className="mb-4 mt-1 text-ui-fg-subtle">Enter a discount percentage. Medusa applies the discounted variant prices at checkout. Leave blank to disable the sale.</Text>
         <div className="max-w-xs">
           <Label htmlFor="promotion-percentage">Discount percentage</Label>
           <div className="flex items-center gap-2">
