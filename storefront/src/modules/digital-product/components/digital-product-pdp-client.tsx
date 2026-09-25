@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useCallback, useState } from "react"
 
 import { compressImageDataUrl, fileToDataUrl } from "@lib/util/client-image"
-import { CYBERX_SLUG } from "@lib/digital/cyberx-effects"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { DigitalProductGallery } from "./digital-product-gallery"
 import type { DigitalProductDetailSanity } from "@/types/xyz"
@@ -199,7 +198,6 @@ export function DigitalProductPdpClient({
               <DigitalProductGallery
                 images={images}
                 productName={product.name || "Digital product"}
-                slug={slug}
               />
             </div>
 
@@ -428,13 +426,6 @@ export function DigitalProductPdpClient({
               Your photo is used only for this session to build the preview.
               Purchase unlocks the full-resolution file.
             </p>
-            {slug === CYBERX_SLUG ? (
-              <p className="text-xs leading-relaxed text-neutral-500">
-                Your CyberX result is a still photo with the floating XYZ logo
-                and jacket light effects. The product display shows the moving
-                version.
-              </p>
-            ) : null}
           </div>
 
           <div className="border border-neutral-800 bg-neutral-950/60 p-6">

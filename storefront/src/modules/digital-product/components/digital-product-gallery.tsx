@@ -2,15 +2,12 @@
 
 import { useMemo, useState } from "react"
 
-import { CyberxVisual, isCyberxVisual } from "@modules/digital/components/cyberx-visual"
-
 type Props = {
   images: string[]
   productName: string
-  slug: string
 }
 
-export function DigitalProductGallery({ images, productName, slug }: Props) {
+export function DigitalProductGallery({ images, productName }: Props) {
   const list = useMemo(
     () => images.filter((u) => typeof u === "string" && u.length > 0),
     [images]
@@ -29,16 +26,12 @@ export function DigitalProductGallery({ images, productName, slug }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <div className="relative flex aspect-[3/4] w-full max-h-[min(80vh,720px)] items-center justify-center overflow-hidden rounded-sm border border-neutral-800 bg-neutral-950">
-        {isCyberxVisual(slug, main) ? (
-          <CyberxVisual image={main} alt={productName} controls />
-        ) : (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={main}
-            alt={productName}
-            className="h-full w-full object-contain"
-          />
-        )}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={main}
+          alt={productName}
+          className="h-full w-full object-contain"
+        />
       </div>
       {list.length > 1 ? (
         <div className="flex flex-wrap gap-2">

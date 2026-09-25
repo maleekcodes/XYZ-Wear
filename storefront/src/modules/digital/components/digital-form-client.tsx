@@ -11,8 +11,6 @@ import { Shape } from "@modules/common/components/xyz/Shape"
 import { asShapeType } from "@modules/journal/lib/shape-type"
 import type { DigitalExternalLinks, DigitalFormProductDisplay } from "@/types/xyz"
 
-import { CyberxVisual, isCyberxVisual } from "./cyberx-visual"
-
 type Hero = {
   collectionLabel: string
   title: string
@@ -84,18 +82,12 @@ function DigitalProductCard({ product }: { product: DigitalFormProductDisplay })
       <div className="relative my-3 flex aspect-[3/4] w-full items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-blue-500/5 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         {product.previewImage ? (
-          isCyberxVisual(digitalSlug, product.previewImage) ? (
-            <div className="relative z-10 flex h-full w-full items-center justify-center">
-              <CyberxVisual image={product.previewImage} alt={product.name} />
-            </div>
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={product.previewImage}
-              alt={product.name}
-              className="absolute inset-0 h-full w-full object-contain object-center z-10 group-hover:scale-105 transition-transform duration-500"
-            />
-          )
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={product.previewImage}
+            alt={product.name}
+            className="absolute inset-0 h-full w-full object-contain object-center z-10 group-hover:scale-105 transition-transform duration-500"
+          />
         ) : (
           <Shape
             type={asShapeType(product.shape, "hexagon")}
