@@ -4,8 +4,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useCallback, useState } from "react"
 
 import { compressImageDataUrl, fileToDataUrl } from "@lib/util/client-image"
+import { getDigitalProductCopy } from "@lib/digital/digital-product-copy"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { DigitalProductGallery } from "./digital-product-gallery"
+import { DigitalProductInformation, DigitalProductSizeInfo, DigitalShippingReturns } from "./digital-product-information"
 import type { DigitalProductDetailSanity } from "@/types/xyz"
 
 type PollState =
@@ -35,6 +37,7 @@ export function DigitalProductPdpClient({
   fetchError,
 }: Props) {
   const slug = product.slug
+  const editorial = getDigitalProductCopy(slug, product.name)
   const productImageUrl = images[0]
   const canTryOn = !!productImageUrl && !product.isComingSoon
 
@@ -393,11 +396,17 @@ export function DigitalProductPdpClient({
             </div>
           </div>
 
-          {product.description ? (
+          {editorial ? (
+            <DigitalProductInformation
+              copy={editorial}
+              productName={product.name || ""}
+            />
+          ) : product.description ? (
             <p className="max-w-xl whitespace-pre-line text-sm leading-relaxed text-neutral-400">
               {product.description}
             </p>
           ) : null}
+          <DigitalShippingReturns />
         </div>
 
         <aside className="flex flex-col gap-8 lg:col-span-5 lg:sticky lg:top-28 lg:max-w-md lg:self-start xl:col-span-4">
@@ -452,6 +461,7 @@ export function DigitalProductPdpClient({
               <p className="mt-2 text-sm text-red-400">{checkoutError}</p>
             ) : null}
           </div>
+          {editorial ? <DigitalProductSizeInfo copy={editorial} /> : null}
         </aside>
       </div>
     </>

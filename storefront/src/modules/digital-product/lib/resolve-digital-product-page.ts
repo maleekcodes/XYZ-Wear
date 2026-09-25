@@ -1,5 +1,5 @@
 import { getDigitalProductBySlug, type DigitalProductPageResult } from "@lib/sanity/queries"
-import { digitalProductDescription } from "@lib/digital/cyberx-product-copy"
+import { digitalProductDescription } from "@lib/digital/digital-product-copy"
 
 export type ResolvedDigitalProductPage = {
   context: DigitalProductPageResult
@@ -21,6 +21,7 @@ export async function resolveDigitalProductPage(
           ...data.product,
           description: digitalProductDescription(
             data.product.slug,
+            data.product.name,
             data.product.description
           ),
         },

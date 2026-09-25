@@ -112,12 +112,6 @@ function DigitalProductCard({ product }: { product: DigitalFormProductDisplay })
         <p className="text-xs text-neutral-500 uppercase tracking-widest mb-3">
           {product.category}
         </p>
-        {product.description ? (
-          <p className="mb-3 line-clamp-2 text-xs leading-relaxed text-neutral-400">
-            {product.description}
-          </p>
-        ) : null}
-
         {product.platforms && product.platforms.length > 0 ? (
           <div className="flex flex-wrap gap-1 mb-3">
             {product.platforms.slice(0, 3).map((platform) => (
