@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "source": "repository Physical Form image assets",
+  "scopeNote": "This covers files in backend/src/scripts/assets, not any additional images stored only in a remote Medusa catalog.",
+  "sourceImageCount": 31,
+  "productCount": 7,
+  "variantCount": 13,
+  "reconstructionRequirements": [
+    "Confirm each garment's dimensions, fit and fabric properties.",
+    "Obtain patterns or recreate and approve them from physical samples.",
+    "Check hidden construction, seams, trims and logos against the item.",
+    "Export editable source, GLB and clean try-on renders only after visual approval."
+  ],
+  "items": [
+    {
+      "productHandle": "x-money-orders-tee",
+      "variant": "unspecified",
+      "kind": "tee",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/x-money-orders-tee-back.jpg",
+        "front": "backend/src/scripts/assets/x-money-orders-tee-front.jpg"
+      },
+      "missingViews": [
+        "side"
+      ],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "x-money-orders-tee",
+      "variant": "green",
+      "kind": "tee",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/x-money-orders-tee-green-back.png",
+        "front": "backend/src/scripts/assets/x-money-orders-tee-green-front.jpg"
+      },
+      "missingViews": [
+        "side"
+      ],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "x-money-orders-tee",
+      "variant": "purple",
+      "kind": "tee",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/x-money-orders-tee-purple-back.jpg",
+        "front": "backend/src/scripts/assets/x-money-orders-tee-purple-front.jpg"
+      },
+      "missingViews": [
+        "side"
+      ],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "x-monogram-flat-peak-snapback-cap",
+      "variant": "black",
+      "kind": "cap",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/x-monogram-flat-peak-snapback-cap-black-back.jpg",
+        "front": "backend/src/scripts/assets/x-monogram-flat-peak-snapback-cap-black-front.jpg",
+        "side": "backend/src/scripts/assets/x-monogram-flat-peak-snapback-cap-black-side.jpg"
+      },
+      "missingViews": [],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "x-monogram-tonal-stealth-cap",
+      "variant": "black",
+      "kind": "cap",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/x-monogram-tonal-stealth-cap-black-back.jpg",
+        "front": "backend/src/scripts/assets/x-monogram-tonal-stealth-cap-black-front.jpg",
+        "side": "backend/src/scripts/assets/x-monogram-tonal-stealth-cap-black-side.jpg"
+      },
+      "missingViews": [],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "y-26-suede-mesh-trucker-cap",
+      "variant": "black",
+      "kind": "cap",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/y-26-suede-mesh-trucker-cap-black-back.jpg",
+        "front": "backend/src/scripts/assets/y-26-suede-mesh-trucker-cap-black-front.jpg",
+        "side": "backend/src/scripts/assets/y-26-suede-mesh-trucker-cap-black-side.jpg"
+      },
+      "missingViews": [],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "y-vintage-patina-luxe-tee",
+      "variant": "brown",
+      "kind": "tee",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/y-vintage-patina-luxe-tee-brown-back.jpg",
+        "front": "backend/src/scripts/assets/y-vintage-patina-luxe-tee-brown-front.jpg"
+      },
+      "missingViews": [
+        "side"
+      ],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "y-vintage-patina-luxe-tee",
+      "variant": "faded-green",
+      "kind": "tee",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/y-vintage-patina-luxe-tee-faded-green-back.jpg",
+        "front": "backend/src/scripts/assets/y-vintage-patina-luxe-tee-faded-green-front.jpg"
+      },
+      "missingViews": [
+        "side"
+      ],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "y-vintage-patina-luxe-tee",
+      "variant": "gray",
+      "kind": "tee",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/y-vintage-patina-luxe-tee-gray-back.jpg",
+        "front": "backend/src/scripts/assets/y-vintage-patina-luxe-tee-gray-front.jpg"
+      },
+      "missingViews": [
+        "side"
+      ],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "z-26-vintage-washed-organic-cap",
+      "variant": "olive",
+      "kind": "cap",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/z-26-vintage-washed-organic-cap-olive-back.jpg",
+        "detail": "backend/src/scripts/assets/z-26-vintage-washed-organic-cap-olive-detail.jpg",
+        "front": "backend/src/scripts/assets/z-26-vintage-washed-organic-cap-olive-front.jpg",
+        "side": "backend/src/scripts/assets/z-26-vintage-washed-organic-cap-olive-side.jpg"
+      },
+      "missingViews": [],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "z-script-logo-luxe-tee",
+      "variant": "black",
+      "kind": "tee",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/z-script-logo-luxe-tee-black-back.jpg",
+        "front": "backend/src/scripts/assets/z-script-logo-luxe-tee-black-front.jpg"
+      },
+      "missingViews": [
+        "side"
+      ],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "z-script-logo-luxe-tee",
+      "variant": "cream",
+      "kind": "tee",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/z-script-logo-luxe-tee-cream-back.jpg",
+        "front": "backend/src/scripts/assets/z-script-logo-luxe-tee-cream-front.jpg"
+      },
+      "missingViews": [
+        "side"
+      ],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    },
+    {
+      "productHandle": "z-script-logo-luxe-tee",
+      "variant": "white",
+      "kind": "tee",
+      "sourceImages": {
+        "back": "backend/src/scripts/assets/z-script-logo-luxe-tee-white-back.jpg",
+        "front": "backend/src/scripts/assets/z-script-logo-luxe-tee-white-front.jpg"
+      },
+      "missingViews": [
+        "side"
+      ],
+      "reconstructionStatus": "source-images-inventoried",
+      "geometry": null,
+      "editableProject": null,
+      "approvedTryOnRender": null
+    }
+  ]
+}

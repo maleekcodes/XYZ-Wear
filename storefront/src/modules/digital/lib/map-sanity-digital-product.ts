@@ -1,4 +1,5 @@
 import { normalizeDigitalPdpSlug } from "@lib/digital/normalize-digital-slug"
+import { digitalProductDescription } from "@lib/digital/cyberx-product-copy"
 import type {
   DigitalFormProductDisplay,
   DigitalFormProductSanity,
@@ -17,7 +18,7 @@ export function sanityDigitalToDisplay(
     productType: p.line || "Digital",
     category: p.category || "",
     shape: p.shape,
-    description: p.description ?? undefined,
+    description: digitalProductDescription(normalizedSlug, p.description),
     previewImage: p.previewImage ?? null,
     platforms: p.platforms?.filter(Boolean) as string[] | undefined,
     price: p.price ?? null,

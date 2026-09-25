@@ -112,8 +112,7 @@ export type SiteSettingsSanity = {
   organizationDescription?: string | null
   socialLinks?: {
     instagram?: string | null
-    twitter?: string | null
-    pinterest?: string | null
+    tiktok?: string | null
     email?: string | null
   } | null
 }

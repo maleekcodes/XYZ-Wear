@@ -107,6 +107,22 @@ export async function putTryonImageFromUrl(
   )
 }
 
+export async function putTryonImageBuffer(
+  key: string,
+  image: Buffer,
+  effectVersion?: string
+): Promise<void> {
+  await getDigitalS3Client().send(
+    new PutObjectCommand({
+      Bucket: digitalTryonBucket(),
+      Key: key,
+      Body: image,
+      ContentType: "image/png",
+      ...(effectVersion ? { Metadata: { "effect-version": effectVersion } } : {}),
+    })
+  )
+}
+
 export async function tryonObjectExists(key: string): Promise<boolean> {
   if (!isMinioConfigured()) {
     return false
@@ -122,6 +138,18 @@ export async function tryonObjectExists(key: string): Promise<boolean> {
     return true
   } catch {
     return false
+  }
+}
+
+export async function tryonObjectEffectVersion(key: string): Promise<string | null> {
+  if (!isMinioConfigured()) return null
+  try {
+    const head = await getDigitalS3Client().send(
+      new HeadObjectCommand({ Bucket: digitalTryonBucket(), Key: key })
+    )
+    return head.Metadata?.["effect-version"] || null
+  } catch {
+    return null
   }
 }
 

@@ -2,8 +2,13 @@ import { NextResponse } from "next/server"
 import Stripe from "stripe"
 
 import { normalizeDigitalPdpSlug } from "@lib/digital/normalize-digital-slug"
+import { CYBERX_EFFECT_VERSION, CYBERX_SLUG } from "@lib/digital/cyberx-effects"
 import { loadDigitalProductForApi } from "@lib/digital/load-product-for-api"
-import { digitalTryonObjectKey, tryonObjectExists } from "@lib/digital/minio-server"
+import {
+  digitalTryonObjectKey,
+  tryonObjectEffectVersion,
+  tryonObjectExists,
+} from "@lib/digital/minio-server"
 import { getBaseURL } from "@lib/util/env"
 
 export const runtime = "nodejs"
@@ -51,6 +56,15 @@ export async function POST(request: Request) {
         error:
           "Try-on file is not available yet. Complete try-on with MinIO configured, then try again.",
       },
+      { status: 400 }
+    )
+  }
+  if (
+    slug === CYBERX_SLUG &&
+    (await tryonObjectEffectVersion(key)) !== CYBERX_EFFECT_VERSION
+  ) {
+    return NextResponse.json(
+      { error: "The enhanced CyberX image is not ready yet. Please finish try-on." },
       { status: 400 }
     )
   }
@@ -114,6 +128,7 @@ export async function POST(request: Request) {
       slug,
       prediction_id: predictionId,
       minio_key: key,
+      ...(slug === CYBERX_SLUG ? { effect_version: CYBERX_EFFECT_VERSION } : {}),
     },
     success_url: successUrl,
     cancel_url: cancelUrl,

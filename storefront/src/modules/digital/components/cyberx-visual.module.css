@@ -1,0 +1,117 @@
+.frame {
+  position: relative;
+  width: 100%;
+  max-height: 100%;
+  aspect-ratio: 992 / 1067;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.image,
+.effects {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.image {
+  object-fit: contain;
+}
+
+.effects {
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.sweep {
+  animation: cyberx-sweep 6s linear infinite;
+}
+
+.traces path {
+  stroke-dasharray: 90 1650;
+  animation: cyberx-trace 6s linear infinite;
+  opacity: .85;
+}
+
+.traces path:nth-child(2),
+.traces path:nth-child(4) {
+  animation-delay: -3s;
+}
+
+.logoLeft,
+.logoRight {
+  position: absolute;
+  width: 10%;
+  aspect-ratio: 187 / 150;
+  pointer-events: none;
+  background: #8df6ff;
+  mask: url('/xyz-london-logo.png') center / contain no-repeat;
+  -webkit-mask: url('/xyz-london-logo.png') center / contain no-repeat;
+  filter: drop-shadow(0 0 8px rgb(90 240 255 / .8));
+  opacity: .55;
+  animation: cyberx-float 6s ease-in-out infinite;
+}
+
+.logoLeft { left: 3%; top: 25%; }
+
+.logoRight {
+  right: 3%;
+  top: 23%;
+  background: #e9a4f5;
+  animation-delay: -3s;
+}
+
+.control {
+  position: absolute;
+  right: .75rem;
+  bottom: .75rem;
+  z-index: 2;
+  border: 1px solid rgb(255 255 255 / .5);
+  background: rgb(0 0 0 / .75);
+  color: white;
+  padding: .4rem .6rem;
+  font: 500 .625rem/1.25 monospace;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  cursor: pointer;
+}
+
+.control:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.paused .sweep,
+.paused .traces path,
+.paused .logoLeft,
+.paused .logoRight {
+  animation-play-state: paused;
+}
+
+@keyframes cyberx-sweep {
+  from { transform: translateX(0); }
+  to { transform: translateX(1650px); }
+}
+
+@keyframes cyberx-trace {
+  from { stroke-dashoffset: 1740; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes cyberx-float {
+  0%, 100% { transform: translateY(0); opacity: .45; }
+  50% { transform: translateY(-12px); opacity: .75; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sweep,
+  .traces path,
+  .logoLeft,
+  .logoRight {
+    animation: none;
+  }
+
+  .sweep { transform: translateX(730px); }
+  .traces path { stroke-dasharray: 160 1650; stroke-dashoffset: 0; }
+}

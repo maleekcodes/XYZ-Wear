@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server"
 
 import { assertTryOnProductResolvable } from "@lib/digital/load-product-for-api"
+import { composeCyberxStill } from "@lib/digital/compose-cyberx-still"
+import { CYBERX_EFFECT_VERSION, CYBERX_SLUG } from "@lib/digital/cyberx-effects"
 import { normalizeDigitalPdpSlug } from "@lib/digital/normalize-digital-slug"
 import {
   isMinioConfigured,
+  putTryonImageBuffer,
   putTryonImageFromUrl,
   tryonObjectExists,
   tryonObjectKeyFromSlug,
@@ -85,6 +88,47 @@ export async function GET(request: Request) {
   }
 
   if (status === "completed" && output[0]) {
+    // Exact XYZ lettering is drawn locally before preview or purchase.
+    if (slug === CYBERX_SLUG) {
+      try {
+        const sourceRes = await fetch(output[0], { cache: "no-store" })
+        if (!sourceRes.ok) throw new Error("Could not load the try-on output")
+        const enhanced = await composeCyberxStill(
+          Buffer.from(await sourceRes.arrayBuffer())
+        )
+        if (process.env.NODE_ENV === "development" && !isMinioConfigured()) {
+          return NextResponse.json({
+            status: "completed",
+            persisted: false,
+            predictionId: id,
+            effectVersion: CYBERX_EFFECT_VERSION,
+            previewUrl: `data:image/png;base64,${enhanced.toString("base64")}`,
+          })
+        }
+        if (!isMinioConfigured()) {
+          throw new Error("Storage is not configured for enhanced try-on checkout")
+        }
+        await putTryonImageBuffer(
+          tryonObjectKeyFromSlug(slug, id),
+          enhanced,
+          CYBERX_EFFECT_VERSION
+        )
+        return NextResponse.json({
+          status: "completed",
+          persisted: true,
+          predictionId: id,
+          effectVersion: CYBERX_EFFECT_VERSION,
+          previewUrl: issueSignedPreviewPath(slug, id),
+        })
+      } catch (error) {
+        console.error("CyberX effect composition failed:", error)
+        return NextResponse.json({
+          status: "failed",
+          error: "Could not place jacket effects accurately. Try another photo.",
+        })
+      }
+    }
+
     if (process.env.NODE_ENV === "development" && !isMinioConfigured()) {
       return NextResponse.json({
         status: "completed",

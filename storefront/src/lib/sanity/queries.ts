@@ -554,8 +554,7 @@ const siteSettingsQuery = `*[_type == "siteSettings"][0] {
   "twitterImage": twitterImage.asset->url,
   socialLinks {
     instagram,
-    twitter,
-    pinterest,
+    tiktok,
     email
   }
 }`

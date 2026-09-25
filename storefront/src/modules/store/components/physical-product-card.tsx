@@ -99,8 +99,8 @@ export function PhysicalProductCard({
       } ${className ?? ""}`}
       data-testid="product-wrapper"
     >
-      <div className="relative z-10 flex items-start justify-between">
-        <div className="flex flex-wrap items-center gap-1.5">
+      <div className="relative z-10 flex flex-wrap items-start justify-between gap-1.5">
+        <div className="flex min-w-0 flex-wrap items-center gap-1.5">
           {isLatest && (
             <span className="rounded-full bg-deepBlack px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-white">
               Latest
@@ -113,7 +113,7 @@ export function PhysicalProductCard({
           ) : null}
         </div>
         {launchStatus === "coming_soon" || launchStatus === "pre_order" || launchStatus === "available" || restockedAt || inventoryQuantity === 0 ? (
-          <span className="shrink-0 rounded-full border border-red-600 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-black">
+          <span className="ml-auto max-w-full shrink-0 rounded-full border border-red-600 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-black">
             {launchStatus === "coming_soon" ? "Coming Soon" : launchStatus === "pre_order" ? "Pre-Order" : restockedAt ? "Restock" : inventoryQuantity === 0 ? "Sold Out" : "Available"}
           </span>
         ) : null}

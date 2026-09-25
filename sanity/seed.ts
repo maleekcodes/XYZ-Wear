@@ -197,9 +197,8 @@ const siteSettings = {
   heroHeadline: 'From the unknown to the known.',
   heroSubheadline: 'A fashion house exploring identity through physical and digital expression.',
   socialLinks: {
-    instagram: 'https://instagram.com/xyzlondon',
-    twitter: 'https://x.com/xyzlondon',
-    pinterest: 'https://pinterest.com/xyzlondon',
+    instagram: 'https://www.instagram.com/xyzlondonofficial/',
+    tiktok: 'https://www.tiktok.com/@xyzlondon',
     email: 'contact@xyzwear.com',
   },
 }
@@ -305,8 +304,8 @@ const siteFooter = {
   connectSectionHeading: 'Connect',
   connectLinks: [
     { _key: 'c1', label: 'Contact', href: '/contact' },
-    { _key: 'c2', label: 'Instagram', href: 'https://instagram.com' },
-    { _key: 'c3', label: 'Twitter / X', href: 'https://x.com' },
+    { _key: 'c2', label: 'Instagram', href: 'https://www.instagram.com/xyzlondonofficial/' },
+    { _key: 'c3', label: 'TikTok', href: 'https://www.tiktok.com/@xyzlondon' },
     { _key: 'c4', label: 'contact@wearxyz.co', href: 'mailto:contact@wearxyz.co' },
   ],
   bottomTagline: 'Physical / Digital',

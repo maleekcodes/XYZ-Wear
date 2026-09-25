@@ -11,10 +11,9 @@ export function buildOrganizationSchema(
   settings?: SiteSettingsSanity | null
 ): Record<string, unknown> {
   const sameAs = [
-    settings?.socialLinks?.instagram,
-    settings?.socialLinks?.twitter,
-    settings?.socialLinks?.pinterest,
-  ].filter((url): url is string => typeof url === "string" && url.length > 0)
+    "https://www.instagram.com/xyzlondonofficial/",
+    "https://www.tiktok.com/@xyzlondon",
+  ]
 
   return {
     "@context": "https://schema.org",

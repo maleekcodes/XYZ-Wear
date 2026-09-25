@@ -91,7 +91,7 @@ export default function ContactTemplate() {
             <ul className="flex flex-col gap-4 text-sm text-neutral-600 sm:flex-row sm:gap-10">
               <li>
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/xyzlondonofficial/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border-b border-neutral-300 pb-0.5 transition-colors hover:border-deepBlack hover:text-deepBlack"
@@ -101,12 +101,12 @@ export default function ContactTemplate() {
               </li>
               <li>
                 <a
-                  href="https://x.com"
+                  href="https://www.tiktok.com/@xyzlondon"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border-b border-neutral-300 pb-0.5 transition-colors hover:border-deepBlack hover:text-deepBlack"
                 >
-                  Twitter / X
+                  TikTok
                 </a>
               </li>
               <li>

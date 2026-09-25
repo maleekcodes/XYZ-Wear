@@ -71,13 +71,8 @@ export default defineType({
           type: 'url',
         }),
         defineField({
-          name: 'twitter',
-          title: 'Twitter/X URL',
-          type: 'url',
-        }),
-        defineField({
-          name: 'pinterest',
-          title: 'Pinterest URL',
+          name: 'tiktok',
+          title: 'TikTok URL',
           type: 'url',
         }),
         defineField({

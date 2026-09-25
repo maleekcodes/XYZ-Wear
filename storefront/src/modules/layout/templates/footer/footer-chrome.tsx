@@ -51,9 +51,9 @@ const DEFAULT_FOOTER = {
     { label: "Contact", href: "/contact" },
     {
       label: "Instagram",
-      href: "https://instagram.com",
+      href: "https://www.instagram.com/xyzlondonofficial/",
     },
-    { label: "Twitter / X", href: "https://x.com" },
+    { label: "TikTok", href: "https://www.tiktok.com/@xyzlondon" },
     { label: "contact@wearxyz.co", href: "mailto:contact@wearxyz.co" },
   ],
   bottomTagline: "Physical / Digital",
@@ -81,10 +81,44 @@ function mergeFooter(site?: SiteFooterSanity | null): SiteFooterSanity {
       ? site.legalLinks
       : (d.legalLinks ?? [])
 
-  const connectLinks =
+  const configuredConnectLinks =
     site?.connectLinks && site.connectLinks.length > 0
       ? site.connectLinks
       : (d.connectLinks ?? [])
+  const connectLinks = configuredConnectLinks
+    .filter(
+      (link) =>
+        !/twitter|(^|\W)x\.com|pinterest/i.test(`${link.label} ${link.href}`)
+    )
+    .map((link) => {
+      if (/instagram/i.test(`${link.label} ${link.href}`)) {
+        return {
+          ...link,
+          label: "Instagram",
+          href: "https://www.instagram.com/xyzlondonofficial/",
+        }
+      }
+      if (/tiktok/i.test(`${link.label} ${link.href}`)) {
+        return {
+          ...link,
+          label: "TikTok",
+          href: "https://www.tiktok.com/@xyzlondon",
+        }
+      }
+      return link
+    })
+  if (!connectLinks.some((link) => link.label === "Instagram")) {
+    connectLinks.push({
+      label: "Instagram",
+      href: "https://www.instagram.com/xyzlondonofficial/",
+    })
+  }
+  if (!connectLinks.some((link) => link.label === "TikTok")) {
+    connectLinks.push({
+      label: "TikTok",
+      href: "https://www.tiktok.com/@xyzlondon",
+    })
+  }
 
   return {
     brandSectionHeading:
