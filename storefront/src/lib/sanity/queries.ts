@@ -7,7 +7,6 @@ import type {
   DigitalProductDetailSanity,
   JournalEntry,
   HomePageSanity,
-  AboutPageSanity,
   ArFitPageSanity,
   PrivateExpressionsPageSanity,
   SiteFooterSanity,
@@ -373,51 +372,6 @@ export const getHomePage = cache(async function getHomePage(): Promise<HomePageR
     return { page: null, sanityConfigured: true, fetchError: true }
   }
 })
-
-// ============ About Page ============
-
-const aboutPageQuery = `*[_type == "aboutPage"][0] {
-  label,
-  title,
-  leadQuote,
-  bodyParagraphs[] {
-    _key,
-    text,
-    column,
-    isHighlighted
-  },
-  sustainabilityNote,
-  closingLine1,
-  closingLine2,
-  tagline,
-  seoTitle,
-  seoDescription
-}`
-
-export type AboutPageResult = {
-  page: AboutPageSanity | null
-  sanityConfigured: boolean
-  fetchError: boolean
-}
-
-export async function getAboutPage(): Promise<AboutPageResult> {
-  const client = getSanityClient()
-  if (!client) {
-    return { page: null, sanityConfigured: false, fetchError: false }
-  }
-
-  try {
-    const page = await client.fetch<AboutPageSanity | null>(aboutPageQuery)
-    return {
-      page: page ?? null,
-      sanityConfigured: true,
-      fetchError: false,
-    }
-  } catch (e) {
-    console.error("Sanity about page fetch error:", e)
-    return { page: null, sanityConfigured: true, fetchError: true }
-  }
-}
 
 // ============ AR Fit (Virtual Try-On) Page ============
 

@@ -1,6 +1,7 @@
 import { Suspense } from "react"
 
 import { Container } from "@modules/common/components/xyz/Container"
+import { BrandStatement } from "@modules/common/components/xyz/BrandStatement"
 import { PhysicalFormStoreHero } from "@modules/store/components/physical-form-store-hero"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
@@ -37,6 +38,7 @@ const PhysicalFormStoreTemplate = async ({
           </Suspense>
         </section>
       </Container>
+      <BrandStatement placement="product" />
     </div>
   )
 }

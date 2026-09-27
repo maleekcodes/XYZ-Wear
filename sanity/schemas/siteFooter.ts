@@ -18,17 +18,6 @@ export default defineType({
       description: 'Each item becomes its own line in the Philosophy block.',
     }),
     defineField({
-      name: 'brandStoryLinkLabel',
-      title: 'Brand — “story” link label',
-      type: 'string',
-    }),
-    defineField({
-      name: 'brandStoryLinkPath',
-      title: 'Brand — story link path',
-      type: 'string',
-      description: 'Localized path without country, e.g. /about',
-    }),
-    defineField({
       name: 'productSectionHeading',
       title: 'Product column — heading',
       type: 'string',

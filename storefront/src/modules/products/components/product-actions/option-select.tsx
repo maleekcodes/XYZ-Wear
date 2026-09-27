@@ -1,4 +1,4 @@
-import { sortedDisplayValues } from "@lib/util/product-options"
+import { isSizeOption, sortedDisplayValues } from "@lib/util/product-options"
 import { HttpTypes } from "@medusajs/types"
 import { clx } from "@medusajs/ui"
 import React from "react"
@@ -25,6 +25,12 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
   disabled,
 }) => {
   const filteredOptions = sortedDisplayValues(title, option.values)
+  const frameSizes: Record<string, string> = {
+    S: "Lean",
+    M: "Balanced",
+    L: "Athletic",
+    XL: "Broad",
+  }
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -41,13 +47,17 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
         data-testid={dataTestId}
       >
         {filteredOptions.map((v) => {
+          const frameName = isSizeOption(title)
+            ? frameSizes[v?.trim().toUpperCase() ?? ""]
+            : undefined
+
           return (
             <button
               onClick={() => updateOption(option.title ?? "", v ?? "")}
               key={v}
               type="button"
               className={clx(
-                "min-h-10 min-w-[2.5rem] flex-1 border border-neutral-200 bg-white px-3 py-2 text-sm text-deepBlack transition-colors",
+                "group relative min-h-10 min-w-[2.5rem] flex-1 border border-neutral-200 bg-white px-3 py-2 text-sm text-deepBlack transition-colors",
                 {
                   "border-deepBlack bg-concrete": v === current,
                   "hover:border-deepBlack": v !== current,
@@ -55,8 +65,17 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
               )}
               disabled={disabled}
               data-testid="option-button"
+              aria-label={frameName ? `${v}, ${frameName} frame` : undefined}
             >
               {v}
+              {frameName && (
+                <span
+                  role="tooltip"
+                  className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 whitespace-nowrap border border-neutral-200 bg-deepBlack px-3 py-2 text-xs font-normal text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                >
+                  {frameName}
+                </span>
+              )}
             </button>
           )
         })}

@@ -80,9 +80,6 @@ export default function NavChrome({
 
         <div className="flex min-w-0 items-center justify-end">
           <nav className="hidden md:flex min-w-0 justify-end items-center gap-5 lg:gap-8 text-sm font-medium tracking-wide flex-nowrap whitespace-nowrap [&_a]:shrink-0">
-            <LocalizedClientLink href="/about" className={link}>
-              About
-            </LocalizedClientLink>
             <LocalizedClientLink href="/journal" className={link}>
               Journal
             </LocalizedClientLink>

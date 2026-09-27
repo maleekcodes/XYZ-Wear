@@ -1,6 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
+import type { ReactNode } from "react"
 
 import type { SiteFooterSanity } from "@/types/xyz"
 
@@ -9,34 +10,20 @@ import { isOOORoute } from "@lib/util/is-ooo-route"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Container } from "@modules/common/components/xyz/Container"
 
-/** Matches storefront defaults before Sanity was wired (used when CMS row missing). */
+const BRAND_PHILOSOPHY_LEAD =
+  "XYZ London exists to reveal identity through form, not define it by gender."
+const BRAND_PHILOSOPHY_BODY =
+  "We believe fashion is more than fabric and seasonal trends — it is an extension of identity. Expression emerges through form and proportion — beyond labels, gender, and convention. We see physical and digital fashion as parallel expressions of the same philosophy to express identity."
+
+const OUR_APPROACH = [
+  "Our garments are designed beyond gender for natural movement, comfort, and longevity, with silhouettes and proportions developed to adapt naturally across different body frames through our engineered fit and sizing philosophy.",
+  "We select responsibly sourced materials with consideration for quality, longevity, environmental impact, prioritising intention over volume and fleeting trend.",
+  "Every decision is guided by craftsmanship, restraint, discipline, and respect — from construction and proportion to our evolving colour language.",
+]
+
 const DEFAULT_FOOTER = {
   brandSectionHeading: "Brand Philosophy",
-  brandBodyLines: [
-    "XYZ London exists to uncover identity through form.",
-    "We believe in expression through movement, proportion, and restraint.",
-    "Our garments are designed for longevity, not trends.",
-    "Our digital expressions explore identity beyond physical constraints.",
-  ],
-  brandStoryLinkLabel: "Read Our Story",
-  brandStoryLinkPath: "/about",
-  productSectionHeading: "Product",
-  productItems: [
-    {
-      label: "Highest Expression",
-      internalPath: "/private-expressions",
-    },
-    {
-      label: "Materials: Sustainable fabrics",
-    },
-    {
-      label: "Care: Longevity focused",
-    },
-    {
-      label: "Archive: 2024 - 2026",
-    },
-  ],
-  legalSectionHeading: "Legal",
+  brandBodyLines: [BRAND_PHILOSOPHY_LEAD, BRAND_PHILOSOPHY_BODY],
   legalLinks: [
     { label: "Terms of Service", path: "/content/terms-of-use" },
     { label: "Privacy Policy", path: "/content/privacy-policy" },
@@ -46,101 +33,24 @@ const DEFAULT_FOOTER = {
       path: "/content/privacy-policy#cookies",
     },
   ],
-  connectSectionHeading: "Connect",
-  connectLinks: [
-    { label: "Contact", href: "/contact" },
-    {
-      label: "Instagram",
-      href: "https://www.instagram.com/xyzlondonofficial/",
-    },
-    { label: "TikTok", href: "https://www.tiktok.com/@xyzlondon" },
-    { label: "contact@wearxyz.co", href: "mailto:contact@wearxyz.co" },
-  ],
   bottomTagline: "Physical / Digital",
   copyrightName: "XYZ London",
 } satisfies SiteFooterSanity
 
 function mergeFooter(site?: SiteFooterSanity | null): SiteFooterSanity {
   const d = DEFAULT_FOOTER
-  const hasLines =
-    site?.brandBodyLines?.some((l) => typeof l === "string" && l.trim().length > 0) ??
-    false
-  const lines = hasLines
-    ? (site!.brandBodyLines ?? []).filter(
-        (l): l is string => typeof l === "string" && l.trim().length > 0
-      )
-    : (d.brandBodyLines ?? [])
-
-  const productItems =
-    site?.productItems && site.productItems.length > 0
-      ? site.productItems
-      : (d.productItems ?? [])
-
-  const legalLinks =
+  const configuredLegalLinks =
     site?.legalLinks && site.legalLinks.length > 0
       ? site.legalLinks
       : (d.legalLinks ?? [])
-
-  const configuredConnectLinks =
-    site?.connectLinks && site.connectLinks.length > 0
-      ? site.connectLinks
-      : (d.connectLinks ?? [])
-  const connectLinks = configuredConnectLinks
-    .filter(
-      (link) =>
-        !/twitter|(^|\W)x\.com|pinterest/i.test(`${link.label} ${link.href}`)
-    )
-    .map((link) => {
-      if (/instagram/i.test(`${link.label} ${link.href}`)) {
-        return {
-          ...link,
-          label: "Instagram",
-          href: "https://www.instagram.com/xyzlondonofficial/",
-        }
-      }
-      if (/tiktok/i.test(`${link.label} ${link.href}`)) {
-        return {
-          ...link,
-          label: "TikTok",
-          href: "https://www.tiktok.com/@xyzlondon",
-        }
-      }
-      return link
-    })
-  if (!connectLinks.some((link) => link.label === "Instagram")) {
-    connectLinks.push({
-      label: "Instagram",
-      href: "https://www.instagram.com/xyzlondonofficial/",
-    })
-  }
-  if (!connectLinks.some((link) => link.label === "TikTok")) {
-    connectLinks.push({
-      label: "TikTok",
-      href: "https://www.tiktok.com/@xyzlondon",
-    })
-  }
+  const legalLinks = configuredLegalLinks.filter(
+    (item) => !/(^|\/)about(?:\/|$)/i.test(item.path ?? "")
+  )
 
   return {
-    brandSectionHeading:
-      site?.brandSectionHeading?.trim() ?? d.brandSectionHeading ?? undefined,
-    brandBodyLines: lines,
-    brandStoryLinkLabel:
-      site?.brandStoryLinkLabel?.trim() ?? d.brandStoryLinkLabel ?? undefined,
-    brandStoryLinkPath:
-      site?.brandStoryLinkPath?.trim() ?? d.brandStoryLinkPath ?? undefined,
-    productSectionHeading:
-      site?.productSectionHeading?.trim() ??
-      d.productSectionHeading ??
-      undefined,
-    productItems,
-    legalSectionHeading:
-      site?.legalSectionHeading?.trim() ?? d.legalSectionHeading ?? undefined,
+    brandSectionHeading: d.brandSectionHeading,
+    brandBodyLines: d.brandBodyLines,
     legalLinks,
-    connectSectionHeading:
-      site?.connectSectionHeading?.trim() ??
-      d.connectSectionHeading ??
-      undefined,
-    connectLinks,
     bottomTagline: site?.bottomTagline?.trim() ?? d.bottomTagline ?? undefined,
     copyrightName: site?.copyrightName?.trim() ?? d.copyrightName ?? undefined,
   }
@@ -150,37 +60,65 @@ type Props = {
   siteFooter?: SiteFooterSanity | null
 }
 
-function ConnectRow({
-  label,
-  href,
-  linkClass,
+type FooterIcon = "facebook" | "instagram" | "tiktok" | "email" | "gdpr"
+type FooterIconCrop = { width: number; height: number; x: number; y: number }
+
+const FOOTER_ICON_SPRITE: Record<FooterIcon, FooterIconCrop> = {
+  facebook: { width: 35, height: 36, x: 7, y: 1 },
+  instagram: { width: 37, height: 36, x: 44, y: 1 },
+  tiktok: { width: 37, height: 36, x: 81, y: 1 },
+  email: { width: 32, height: 24, x: 120, y: 8 },
+  gdpr: { width: 34, height: 36, x: 157, y: 1 },
+}
+
+function FooterIconImage({
+  icon,
+  invert = false,
 }: {
-  label: string
-  href: string
-  linkClass: string
+  icon: FooterIcon
+  invert?: boolean
 }) {
-  const isExternal =
-    href.startsWith("http://") ||
-    href.startsWith("https://") ||
-    href.startsWith("mailto:")
-  if (isExternal) {
-    const isBlank = href.startsWith("http")
-    return (
-      <a
-        href={href}
-        className={linkClass}
-        {...(isBlank
-          ? ({ target: "_blank", rel: "noopener noreferrer" } as const)
-          : {})}
-      >
-        {label}
-      </a>
-    )
-  }
+  const crop = FOOTER_ICON_SPRITE[icon]
+
   return (
-    <LocalizedClientLink href={href} className={linkClass}>
-      {label}
-    </LocalizedClientLink>
+    <span
+      aria-hidden="true"
+      className="block shrink-0 bg-no-repeat"
+      style={{
+        width: `${crop.width}px`,
+        height: `${crop.height}px`,
+        backgroundImage: "url('/footer-icon-sprite.png')",
+        backgroundSize: "202px auto",
+        backgroundPosition: `-${crop.x}px -${crop.y}px`,
+        filter: invert ? "invert(1)" : undefined,
+        mixBlendMode: invert ? "screen" : "multiply",
+      }}
+    />
+  )
+}
+
+function FooterIconLink({
+  href,
+  label,
+  icon,
+  invert = false,
+}: {
+  href: string
+  label: string
+  icon: FooterIcon
+  invert?: boolean
+}) {
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      className="inline-flex h-10 items-center justify-center transition-opacity hover:opacity-60"
+      {...(href.startsWith("http")
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
+    >
+      <FooterIconImage icon={icon} invert={invert} />
+    </a>
   )
 }
 
@@ -199,101 +137,96 @@ export default function FooterChrome({ siteFooter }: Props) {
 
   const heading = digital ? "text-white" : "text-deepBlack"
   const body = digital ? "text-neutral-400" : "text-neutral-500"
-  const storyLink = digital
-    ? "text-sm font-medium text-white border-b border-white pb-0.5 hover:opacity-60 transition-opacity inline-block"
-    : "text-sm font-medium text-deepBlack border-b border-deepBlack pb-0.5 hover:opacity-60 transition-opacity inline-block"
   const bottomBorder = digital ? "border-neutral-800" : "border-neutral-200"
   const copyrightClass = digital ? "text-neutral-500" : "text-neutral-400"
   const taglineClass = digital ? "text-neutral-500" : "text-neutral-300"
-
-  const linkClass = "hover:opacity-70 transition-opacity"
-
   return (
     <footer className={shell}>
-      <Container>
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-12 mb-24">
-          <div className="space-y-4 sm:col-span-2 lg:col-span-5">
+      <Container className="md:px-14">
+        <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-x-16">
+          <div className="space-y-1">
             <h4 className={`text-xs font-bold uppercase tracking-widest ${heading}`}>
               {f.brandSectionHeading}
             </h4>
-            <p className={`text-sm leading-relaxed ${body}`}>
-              {f.brandBodyLines?.map((line, i) => (
-                <span key={i}>
-                  {i > 0 ? <br /> : null}
-                  {line}
-                </span>
-              ))}
-            </p>
-            {f.brandStoryLinkPath && f.brandStoryLinkLabel ? (
-              <LocalizedClientLink href={f.brandStoryLinkPath} className={storyLink}>
-                {f.brandStoryLinkLabel}
-              </LocalizedClientLink>
-            ) : null}
+            <div className={`text-[13px] leading-[1.4] ${body}`}>
+              <div>{BRAND_PHILOSOPHY_LEAD}</div>
+              <div>{BRAND_PHILOSOPHY_BODY}</div>
+            </div>
           </div>
 
-          <div className="space-y-4 lg:col-span-2">
+          <div className="space-y-1">
             <h4 className={`text-xs font-bold uppercase tracking-widest ${heading}`}>
-              {f.productSectionHeading}
+              Our Approach
             </h4>
-            <ul className={`space-y-2 text-sm ${body}`}>
-              {f.productItems?.map((item, idx) => (
-                <li key={item._key ?? `p-${idx}`}>
-                  {item.internalPath?.trim() ? (
-                    <LocalizedClientLink
-                      href={item.internalPath.trim()}
-                      className={`${linkClass} ${body}`}
-                    >
-                      {item.label}
-                    </LocalizedClientLink>
-                  ) : (
-                    <span>{item.label}</span>
-                  )}
-                </li>
+            <div className={`space-y-1 text-[13px] leading-[1.4] ${body}`}>
+              {OUR_APPROACH.map((line) => (
+                <p key={line}>{line}</p>
               ))}
-            </ul>
-          </div>
-
-          <div className="space-y-4 lg:col-span-2">
-            <h4 className={`text-xs font-bold uppercase tracking-widest ${heading}`}>
-              {f.legalSectionHeading}
-            </h4>
-            <ul className={`space-y-2 text-sm ${body}`}>
-              {f.legalLinks?.map((item, idx) => (
-                <li key={item._key ?? `l-${idx}`}>
-                  {item.path?.trim() ? (
-                    <LocalizedClientLink href={item.path.trim()} className={linkClass}>
-                      {item.label}
-                    </LocalizedClientLink>
-                  ) : (
-                    <span>{item.label}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="space-y-4 lg:col-span-3">
-            <h4 className={`text-xs font-bold uppercase tracking-widest ${heading}`}>
-              {f.connectSectionHeading}
-            </h4>
-            <ul className={`space-y-2 text-sm ${body}`}>
-              {f.connectLinks?.map((item, idx) =>
-                item.href?.trim() && item.label?.trim() ? (
-                  <li key={item._key ?? `c-${idx}`}>
-                    <ConnectRow
-                      label={item.label.trim()}
-                      href={item.href.trim()}
-                      linkClass={linkClass}
-                    />
-                  </li>
-                ) : null
-              )}
-            </ul>
+            </div>
           </div>
         </div>
 
+        <div className="grid grid-cols-1 items-center gap-5 pt-0 sm:grid-cols-[1fr_auto_1fr]">
+          <LocalizedClientLink
+            href="/content/privacy-policy"
+            className={`inline-flex items-center gap-1 justify-self-center text-xs hover:opacity-70 sm:justify-self-start ${digital ? "text-emerald-300" : "text-emerald-700"}`}
+          >
+            <FooterIconImage icon="gdpr" invert={digital} />
+            <span>GDPR Compliant</span>
+          </LocalizedClientLink>
+          <nav
+            aria-label="Social media"
+            className="flex items-center justify-center gap-3"
+          >
+            <FooterIconLink
+              href="https://www.facebook.com/profile.php?id=61567883735913"
+              label="Facebook"
+              icon="facebook"
+              invert={digital}
+            />
+            <FooterIconLink
+              href="https://www.instagram.com/xyzlondonofficial/"
+              label="Instagram"
+              icon="instagram"
+              invert={digital}
+            />
+            <FooterIconLink
+              href="https://www.tiktok.com/@xyzlondon"
+              label="TikTok"
+              icon="tiktok"
+              invert={digital}
+            />
+            <FooterIconLink
+              href="mailto:contact@wearxyz.co"
+              label="Email XYZ London"
+              icon="email"
+              invert={digital}
+            />
+          </nav>
+          <span aria-hidden="true" />
+        </div>
+
+        <nav
+          aria-label="Legal links"
+          className={`flex flex-wrap items-center justify-center gap-x-7 gap-y-3 border-t py-3 text-[13px] text-deepBlack ${bottomBorder}`}
+        >
+          {f.legalLinks?.map((item, idx) =>
+            item.path?.trim() ? (
+              <LocalizedClientLink
+                key={item._key ?? `l-${idx}`}
+                href={item.path.trim()}
+                className="hover:opacity-70"
+              >
+                {item.label}
+              </LocalizedClientLink>
+            ) : (
+              <span key={item._key ?? `l-${idx}`}>{item.label}</span>
+            )
+          )}
+        </nav>
+
         <div
-          className={`flex flex-col items-center justify-between border-t pt-8 md:flex-row ${bottomBorder}`}
+          className="flex flex-col items-center justify-between pt-4 md:flex-row"
         >
           <span
             className={`text-[10px] uppercase tracking-widest md:text-xs ${copyrightClass}`}

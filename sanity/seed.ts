@@ -280,13 +280,9 @@ const siteFooter = {
   _type: 'siteFooter',
   brandSectionHeading: 'Brand Philosophy',
   brandBodyLines: [
-    'XYZ London exists to uncover identity through form.',
-    'We believe in expression through movement, proportion, and restraint.',
-    'Our garments are designed for longevity, not trends.',
-    'Our digital expressions explore identity beyond physical constraints.',
+    'XYZ London exists to reveal identity through form, not define it by gender.',
+    'We believe fashion is more than fabric and seasonal trends — it is an extension of identity. Expression emerges through form and proportion — beyond labels, gender, and convention. We see physical and digital fashion as parallel expressions of the same philosophy to express identity.',
   ],
-  brandStoryLinkLabel: 'Read Our Story',
-  brandStoryLinkPath: '/about',
   productSectionHeading: 'Product',
   productItems: [
     { _key: 'p1', label: 'Highest Expression', internalPath: '/private-expressions' },
@@ -310,48 +306,6 @@ const siteFooter = {
   ],
   bottomTagline: 'Physical / Digital',
   copyrightName: 'XYZ London',
-}
-
-const aboutPage = {
-  _id: 'aboutPage',
-  _type: 'aboutPage',
-  label: 'Identity & Form',
-  title: 'ABOUT US',
-  leadQuote: 'XYZ London is a fashion house built on intent.',
-  bodyParagraphs: [
-    {
-      _key: 'body-1',
-      column: 'left',
-      text: 'In a world of noise, speed, and constant repetition, we choose restraint. We do not chase trends or mass attention. Instead, we focus on form, premium material, and proportion — the quiet elements that shape how identity is expressed.',
-    },
-    {
-      _key: 'body-2',
-      column: 'left',
-      text: 'XYZ London exists to uncover identity, not define it.',
-      isHighlighted: true,
-    },
-    {
-      _key: 'body-3',
-      column: 'left',
-      text: 'We believe expression emerges through form, movement, and proportion — not labels, not gender, not rules imposed from the outside.',
-    },
-    {
-      _key: 'body-4',
-      column: 'right',
-      text: 'Our garments are designed beyond gender, created to move naturally across different body forms. Each piece is considered for comfort, durability, and longevity — made to be lived in, (not replaced)*.',
-    },
-    {
-      _key: 'body-5',
-      column: 'right',
-      text: 'Alongside physical garments, XYZ London explores digital expression. Our virtual designs extend identity beyond physical constraints, allowing form and presence to exist in new spaces without limitation. Physical and digital are not opposites to us — they are parallel expressions of the same philosophy.',
-    },
-  ],
-  sustainabilityNote: 'We work with premium sustainable materials and (responsible construction)*, prioritising quality over volume and intention over excess. Every decision is guided by clarity, discipline, and respect for the individual.',
-  closingLine1: 'XYZ London is not about fitting in.',
-  closingLine2: 'It is about standing as your original self.',
-  tagline: 'From the unknown to the known.',
-  seoTitle: 'About | XYZ London',
-  seoDescription: 'Learn about XYZ London - a fashion house exploring identity through physical and digital expression.',
 }
 
 // Try-on page — Sanity document (storefront uses Next.js template at /virtual-try-on)
@@ -579,16 +533,6 @@ async function seedHomePage() {
   }
 }
 
-async function seedAboutPage() {
-  console.log('\n--- Seeding About Page ---')
-
-  try {
-    await createIfMissing(aboutPage, 'About Page')
-  } catch (error) {
-    console.error(`  [FAIL] About Page:`, error)
-  }
-}
-
 async function seedArFitPage() {
   console.log('\n--- Seeding Try-on page ---')
 
@@ -694,7 +638,6 @@ async function main() {
   await seedJournalPosts()
   await seedSiteSettings()
   await seedHomePage()
-  await seedAboutPage()
   await seedArFitPage()
   await seedDigitalFormPage()
   await seedPrivateExpressionsPage()
@@ -703,7 +646,7 @@ async function main() {
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(2)
 
-  const totalDocuments = journalPosts.length + 8
+  const totalDocuments = journalPosts.length + 7
 
   console.log('\n' + '='.repeat(60))
   console.log('SEED COMPLETE')

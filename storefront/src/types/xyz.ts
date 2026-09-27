@@ -202,8 +202,6 @@ export type SiteFooterConnectLink = {
 export type SiteFooterSanity = {
   brandSectionHeading?: string | null
   brandBodyLines?: string[] | null
-  brandStoryLinkLabel?: string | null
-  brandStoryLinkPath?: string | null
   productSectionHeading?: string | null
   productItems?: SiteFooterProductItem[] | null
   legalSectionHeading?: string | null
@@ -212,28 +210,6 @@ export type SiteFooterSanity = {
   connectLinks?: SiteFooterConnectLink[] | null
   bottomTagline?: string | null
   copyrightName?: string | null
-}
-
-/** About page body paragraph item */
-export type AboutBodyParagraph = {
-  _key?: string
-  text?: string | null
-  column?: "left" | "right" | null
-  isHighlighted?: boolean | null
-}
-
-/** Full about page content from Sanity */
-export type AboutPageSanity = {
-  label?: string | null
-  title?: string | null
-  leadQuote?: string | null
-  bodyParagraphs?: AboutBodyParagraph[] | null
-  sustainabilityNote?: string | null
-  closingLine1?: string | null
-  closingLine2?: string | null
-  tagline?: string | null
-  seoTitle?: string | null
-  seoDescription?: string | null
 }
 
 /** AR Fit (Virtual Try-On) page step item */

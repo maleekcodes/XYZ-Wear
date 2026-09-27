@@ -14,7 +14,6 @@ const SideMenuItems = {
   "Physical Form": "/store",
   "Digital Form": "/digital",
   OOO: "/private-expressions",
-  About: "/about",
   Journal: "/journal",
   "Try-on": "/virtual-try-on",
   Search: "/search",

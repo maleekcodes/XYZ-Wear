@@ -13,7 +13,6 @@ type Entry = {
 /** Core storefront paths (aligned with xyz-london-v2 IA). */
 const STATIC_PATHS: Entry[] = [
   { path: "", changeFrequency: "weekly", priority: 1 },
-  { path: "/about", changeFrequency: "monthly", priority: 0.9 },
   { path: "/store", changeFrequency: "weekly", priority: 0.9 },
   { path: "/digital", changeFrequency: "weekly", priority: 0.9 },
   { path: "/virtual-try-on", changeFrequency: "monthly", priority: 0.85 },
