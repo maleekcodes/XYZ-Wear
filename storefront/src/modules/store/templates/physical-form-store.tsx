@@ -38,7 +38,7 @@ const PhysicalFormStoreTemplate = async ({
           </Suspense>
         </section>
       </Container>
-      <BrandStatement placement="product" />
+      <BrandStatement />
     </div>
   )
 }

@@ -235,12 +235,9 @@ const homePage = {
       ],
     },
   ],
-  // Philosophy / Manifesto section - v1 style with 4 lines
+  // Philosophy / Manifesto
   manifestoLines: [
-    'XYZ London exists to uncover identity, not define it.',
-    'We believe expression emerges through form, movement, and proportion.',
-    'Physical and digital are not opposites — they are parallel expressions.',
-    'The greatest discoveries are always found in the unknown.',
+    'XYZ London is for those who explore, question, and move beyond familiarity. The greatest discoveries are always found in the unknown.',
   ],
   philosophyCtaLabel: 'DIGITAL FORM PREVIEW',
   // Try-on section

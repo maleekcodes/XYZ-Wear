@@ -4,7 +4,6 @@ import { motion } from "framer-motion"
 import { Plus } from "lucide-react"
 
 import { Container } from "@modules/common/components/xyz/Container"
-import { BrandStatement } from "@modules/common/components/xyz/BrandStatement"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import type {
   CollectionShape,
@@ -174,7 +173,6 @@ export function Collection({
 
         <PhysicalFutureForms items={futureForms ?? layout?.futureForms} />
       </Container>
-      <BrandStatement placement="home" />
     </section>
   )
 }

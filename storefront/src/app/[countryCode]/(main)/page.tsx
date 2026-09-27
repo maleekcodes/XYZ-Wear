@@ -95,8 +95,10 @@ export default async function Home({
 
       <div id="digital">
         <Philosophy
-          lines={page?.manifestoLines ?? undefined}
-          ctaLabel={page?.philosophyCtaLabel ?? undefined}
+          lines={[
+            "XYZ London is for those who explore, question, and move beyond familiarity. The greatest discoveries are always found in the unknown.",
+          ]}
+          ctaLabel="DIGITAL FORM PREVIEW"
         />
       </div>
       <div id="virtual-try-on">

@@ -10,15 +10,13 @@ interface PhilosophyProps {
 }
 
 const defaultManifestoLines = [
-  "XYZ London exists to uncover identity, not define it.",
-  "We believe expression emerges through form, movement, and proportion.",
-  "Physical and digital are not opposites — they are parallel expressions.",
-  "The greatest discoveries are always found in the unknown.",
+  "XYZ London is for those who explore, question, and move beyond familiarity. The greatest discoveries are always found in the unknown.",
 ]
 
 export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
   const manifestoLines =
     lines && lines.length > 0 ? lines : defaultManifestoLines
+  const previewLabel = ctaLabel?.trim() || "Digital Form Preview"
 
   return (
     <section className="py-48 bg-white overflow-hidden" id="philosophy">
@@ -28,7 +26,7 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
             href="/digital"
             className="font-mono text-xs text-neutral-400 hover:text-deepBlack transition-colors uppercase tracking-widest"
           >
-            {ctaLabel || "DIGITAL FORM PREVIEW"}
+            {previewLabel}
           </LocalizedClientLink>
         </div>
         <div className="space-y-24">
