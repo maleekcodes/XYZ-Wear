@@ -37,9 +37,18 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="hidden max-w-4xl md:block"
         >
-          <h3 className="text-3xl font-light leading-tight tracking-tight text-deepBlack md:text-5xl">
-            {manifestoLines.join(" ")}
-          </h3>
+          <div className="space-y-3 md:space-y-5">
+            {manifestoLines.map((line, index) => (
+              <h3
+                key={index}
+                className={`text-3xl font-light leading-tight tracking-tight md:text-5xl ${
+                  index === 1 ? "italic text-neutral-500" : "text-deepBlack"
+                }`}
+              >
+                {line}
+              </h3>
+            ))}
+          </div>
           <div className="mt-6 h-px w-12 bg-neutral-300" />
         </motion.div>
         <div className="space-y-2.5 md:hidden">

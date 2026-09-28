@@ -47,7 +47,7 @@ export default function NavChrome({
     >
       <div className="grid w-full grid-cols-3 items-center h-24 px-6 md:px-12 max-w-[90rem] mx-auto">
         <div className="flex min-w-0 items-center justify-start">
-          <nav className="hidden md:flex gap-8 text-sm font-medium tracking-wide">
+          <nav className="hidden min-w-0 flex-nowrap items-center gap-2 whitespace-nowrap text-xs font-medium tracking-wide md:flex lg:gap-8 lg:text-sm [&_a]:shrink-0">
             <LocalizedClientLink href="/store" className={link}>
               Physical Form
             </LocalizedClientLink>

@@ -78,6 +78,41 @@ function FooterIconImage({
   icon: FooterIcon
   invert?: boolean
 }) {
+  if (icon === "instagram") {
+    const circle = invert ? "#fff" : "#000"
+    const mark = invert ? "#000" : "#fff"
+
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 128 128"
+        className="block h-9 w-9 shrink-0"
+        focusable="false"
+      >
+        <circle cx="64" cy="64" r="64" fill={circle} />
+        <rect
+          x="29"
+          y="29"
+          width="70"
+          height="70"
+          rx="17"
+          fill="none"
+          stroke={mark}
+          strokeWidth="8"
+        />
+        <circle
+          cx="64"
+          cy="64"
+          r="20"
+          fill="none"
+          stroke={mark}
+          strokeWidth="8"
+        />
+        <circle cx="87" cy="42" r="5.5" fill={mark} />
+      </svg>
+    )
+  }
+
   if (icon === "email") {
     const circle = invert ? "#fff" : "#000"
     const envelope = invert ? "#000" : "#fff"
