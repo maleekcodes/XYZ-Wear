@@ -26,6 +26,7 @@ export type PhysicalProductCardProps = {
   isLatest?: boolean
   compact?: boolean
   catalogMobile?: boolean
+  alignNameRight?: boolean
   fitLabel?: string | null
   className?: string
   launchStatus?: string
@@ -46,6 +47,7 @@ export function PhysicalProductCard({
   isLatest,
   compact,
   catalogMobile,
+  alignNameRight,
   fitLabel,
   className,
   launchStatus = "",
@@ -143,7 +145,10 @@ export function PhysicalProductCard({
 
       <div className="relative z-10">
         <div className={`mb-4 flex items-end justify-between gap-3 ${catalogMobile ? "flex-wrap sm:flex-nowrap" : ""}`}>
-          <LocalizedClientLink href={`/products/${handle}`} className="min-w-0">
+          <LocalizedClientLink
+            href={`/products/${handle}`}
+            className={`min-w-0 ${alignNameRight ? "text-right md:text-left" : ""}`}
+          >
             <h3
               className={`truncate font-bold tracking-tight ${compact ? "text-xs" : "text-sm"} ${catalogMobile ? "text-base sm:text-xs" : ""}`}
               data-testid="product-title"

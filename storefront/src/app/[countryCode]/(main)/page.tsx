@@ -96,7 +96,8 @@ export default async function Home({
       <div id="digital">
         <Philosophy
           lines={[
-            "XYZ London is for those who explore, question, and move beyond familiarity. The greatest discoveries are always found in the unknown.",
+            "XYZ London is for those who explore, question, and move beyond familiarity.",
+            "The greatest discoveries are always found in the unknown.",
           ]}
           ctaLabel="DIGITAL FORM PREVIEW"
         />

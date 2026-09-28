@@ -78,6 +78,38 @@ function FooterIconImage({
   icon: FooterIcon
   invert?: boolean
 }) {
+  if (icon === "email") {
+    const circle = invert ? "#fff" : "#000"
+    const envelope = invert ? "#000" : "#fff"
+    const detail = invert ? "#fff" : "#000"
+
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 128 128"
+        className="block h-9 w-9 shrink-0"
+        focusable="false"
+      >
+        <circle cx="64" cy="64" r="64" fill={circle} />
+        <path
+          d="M22 34h84v60H22z"
+          fill={envelope}
+          stroke={detail}
+          strokeWidth="5"
+          strokeLinejoin="round"
+        />
+        <path
+          d="m24 38 34 31c4 4 8 4 12 0l34-31M24 92l32-29m48 29L72 63"
+          fill="none"
+          stroke={detail}
+          strokeWidth="5"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+      </svg>
+    )
+  }
+
   const crop = FOOTER_ICON_SPRITE[icon]
 
   return (

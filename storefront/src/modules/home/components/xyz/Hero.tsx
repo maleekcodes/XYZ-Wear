@@ -37,8 +37,8 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="w-48 h-48 md:w-80 md:h-80 bg-deepBlack shadow-2xl rotate-45"
         />
-        <div className="absolute bottom-8 left-8">
-          <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">
+        <div className="absolute left-8 top-8 z-20 md:bottom-8 md:top-auto">
+          <span className="text-xs font-mono uppercase tracking-widest text-neutral-700">
             {figureLabels?.physical || "Fig 01. Physical"}
           </span>
         </div>

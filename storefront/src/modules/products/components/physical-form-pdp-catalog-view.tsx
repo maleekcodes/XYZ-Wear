@@ -96,10 +96,16 @@ export function PhysicalFormPdpCatalogView({
                 )}
               </div>
               {group.cards.length > 0 ? (
-                <ul className="grid w-full grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
+                <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                   {group.cards.map((card) => (
                     <li key={card.id}>
-                      <PhysicalProductCard {...card} compact />
+                      <PhysicalProductCard
+                        {...card}
+                        compact
+                        catalogMobile
+                        alignNameRight
+                        className="w-full max-w-none"
+                      />
                     </li>
                   ))}
                 </ul>

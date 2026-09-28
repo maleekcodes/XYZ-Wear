@@ -144,7 +144,7 @@ export function Collection({
   const fallback = !layout && items.length > 0 ? items : []
 
   return (
-    <section className="py-32 bg-white" id="collection">
+    <section className="bg-white pt-8 pb-32 md:py-32" id="collection">
       <Container>
         <div className="flex justify-between items-end mb-20 border-b border-neutral-100 pb-6">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-balance">

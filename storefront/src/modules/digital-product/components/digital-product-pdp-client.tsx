@@ -1,7 +1,8 @@
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion"
-import { useCallback, useState } from "react"
+import { useCallback, useRef, useState } from "react"
+import { Scan } from "lucide-react"
 
 import { compressImageDataUrl, fileToDataUrl } from "@lib/util/client-image"
 import { getDigitalProductCopy } from "@lib/digital/digital-product-copy"
@@ -46,6 +47,7 @@ export function DigitalProductPdpClient({
   const [userPhotoPreview, setUserPhotoPreview] = useState<string | null>(null)
   const [predictionId, setPredictionId] = useState<string | null>(null)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const photoInputRef = useRef<HTMLInputElement>(null)
 
   const runTryOn = useCallback(
     async (file: File) => {
@@ -184,8 +186,25 @@ export function DigitalProductPdpClient({
         <span className="text-neutral-300">{product.name}</span>
       </nav>
 
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-x-10 xl:gap-x-14">
-        <div className="flex flex-col gap-10 lg:col-span-7 xl:col-span-8">
+      <div className="mb-8 lg:hidden">
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          {product.name}
+        </h1>
+        {product.category ? (
+          <p className="mt-2 text-xs uppercase tracking-widest text-neutral-500">
+            {product.category}
+            {product.line ? ` · ${product.line}` : ""}
+          </p>
+        ) : null}
+        {priceLabel ? (
+          <p className="mt-4 text-2xl font-mono text-white">{priceLabel}</p>
+        ) : (
+          <p className="mt-4 text-sm text-neutral-500">Price on request</p>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-x-10 xl:gap-x-14">
+        <div className="order-1 flex min-w-0 flex-col gap-8 lg:order-1 lg:col-start-1 lg:col-span-7 lg:row-start-1 xl:col-span-8">
           {collectionLabel ? (
             <span className="text-xs font-mono uppercase tracking-widest text-blue-400">
               {collectionLabel}
@@ -209,6 +228,23 @@ export function DigitalProductPdpClient({
                 Your look
               </p>
               <div className="relative aspect-[3/4] w-full max-h-[min(80vh,720px)] overflow-hidden rounded-sm border border-neutral-800 bg-neutral-950">
+                <input
+                  ref={photoInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={busy || blocked}
+                  onChange={onFileChange}
+                />
+                <button
+                  type="button"
+                  disabled={busy || blocked}
+                  onClick={() => photoInputRef.current?.click()}
+                  className="absolute left-1/2 top-4 z-20 inline-flex -translate-x-1/2 items-center gap-2 border border-neutral-300 bg-white px-3 py-2 text-[10px] font-mono uppercase tracking-widest text-neutral-900 transition-colors hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Try on
+                  <Scan size={15} strokeWidth={1.7} aria-hidden="true" />
+                </button>
                 <div className="absolute inset-0">
                   <AnimatePresence mode="wait">
                   {blocked ? (
@@ -321,7 +357,7 @@ export function DigitalProductPdpClient({
                       key="idle"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-5 sm:p-6 text-center overflow-y-auto"
+                      className="absolute inset-0 flex flex-col items-center justify-center gap-4 overflow-y-auto px-5 pb-5 pt-16 text-center sm:px-6 sm:pb-6 sm:pt-16"
                     >
                       <div className="max-w-sm space-y-4 text-left">
                         <p className="text-sm text-neutral-400 leading-relaxed">
@@ -396,21 +432,10 @@ export function DigitalProductPdpClient({
             </div>
           </div>
 
-          {editorial ? (
-            <DigitalProductInformation
-              copy={editorial}
-              productName={product.name || ""}
-            />
-          ) : product.description ? (
-            <p className="max-w-xl whitespace-pre-line text-sm leading-relaxed text-neutral-400">
-              {product.description}
-            </p>
-          ) : null}
-          <DigitalShippingReturns />
         </div>
 
-        <aside className="flex flex-col gap-8 lg:col-span-5 lg:sticky lg:top-28 lg:max-w-md lg:self-start xl:col-span-4">
-          <div>
+        <aside className="order-2 flex flex-col gap-6 lg:order-2 lg:col-start-8 lg:col-span-5 lg:row-start-1 lg:sticky lg:top-28 lg:max-w-md lg:self-start xl:col-start-9 xl:col-span-4">
+          <div className="hidden lg:block">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
               {product.name}
             </h1>
@@ -421,13 +446,13 @@ export function DigitalProductPdpClient({
               </p>
             ) : null}
             {priceLabel ? (
-              <p className="mt-6 text-2xl font-mono text-white">{priceLabel}</p>
+              <p className="mt-4 text-2xl font-mono text-white">{priceLabel}</p>
             ) : (
-              <p className="mt-6 text-sm text-neutral-500">Price on request</p>
+              <p className="mt-4 text-sm text-neutral-500">Price on request</p>
             )}
           </div>
 
-          <div className="space-y-3 border border-neutral-800 bg-neutral-950/40 p-5">
+          <div className="space-y-3 border border-neutral-800 bg-neutral-950/40 p-4 sm:p-5">
             <h2 className="text-xs font-mono uppercase tracking-widest text-blue-400">
               Try on
             </h2>
@@ -437,7 +462,7 @@ export function DigitalProductPdpClient({
             </p>
           </div>
 
-          <div className="border border-neutral-800 bg-neutral-950/60 p-6">
+          <div className="border border-neutral-800 bg-neutral-950/60 p-4 sm:p-6">
             <h3 className="text-xs font-mono uppercase tracking-widest text-neutral-400">
               Buy
             </h3>
@@ -463,6 +488,19 @@ export function DigitalProductPdpClient({
           </div>
           {editorial ? <DigitalProductSizeInfo copy={editorial} /> : null}
         </aside>
+      </div>
+      <div className="mt-8 space-y-8">
+        <DigitalShippingReturns />
+        {editorial ? (
+          <DigitalProductInformation
+            copy={editorial}
+            productName={product.name || ""}
+          />
+        ) : product.description ? (
+          <p className="max-w-xl whitespace-pre-line text-sm leading-relaxed text-neutral-400">
+            {product.description}
+          </p>
+        ) : null}
       </div>
     </>
   )

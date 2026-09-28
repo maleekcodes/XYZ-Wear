@@ -37,7 +37,10 @@ export default async function DigitalFormTemplate({
     return aRank - bRank
   })
 
-  const products = await enrichDigitalProductsWithMedusa(orderedBase, region?.id)
+  const products = await enrichDigitalProductsWithMedusa(
+    orderedBase.slice(0, 5),
+    region?.id
+  )
 
   const hero = {
     collectionLabel:

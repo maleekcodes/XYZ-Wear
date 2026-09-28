@@ -60,7 +60,7 @@ function IntroBody({ content }: { content: IntroContent }) {
 
 export function Introduction({ text }: IntroductionProps) {
   return (
-    <section className="py-32 bg-white">
+    <section className="bg-white pt-24 pb-8 md:py-32">
       <Container className="flex justify-center">
         <motion.div
           initial={{ opacity: 0, y: 40 }}

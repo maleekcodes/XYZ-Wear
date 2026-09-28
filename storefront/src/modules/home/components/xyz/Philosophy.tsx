@@ -10,7 +10,8 @@ interface PhilosophyProps {
 }
 
 const defaultManifestoLines = [
-  "XYZ London is for those who explore, question, and move beyond familiarity. The greatest discoveries are always found in the unknown.",
+  "XYZ London is for those who explore, question, and move beyond familiarity.",
+  "The greatest discoveries are always found in the unknown.",
 ]
 
 export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
@@ -29,7 +30,19 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
             {previewLabel}
           </LocalizedClientLink>
         </div>
-        <div className="space-y-24">
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-20%" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="hidden max-w-4xl md:block"
+        >
+          <h3 className="text-3xl font-light leading-tight tracking-tight text-deepBlack md:text-5xl">
+            {manifestoLines.join(" ")}
+          </h3>
+          <div className="mt-6 h-px w-12 bg-neutral-300" />
+        </motion.div>
+        <div className="space-y-2.5 md:hidden">
           {manifestoLines.map((line, index) => (
             <motion.div
               key={index}
@@ -39,10 +52,13 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="max-w-4xl"
             >
-              <h3 className="text-3xl md:text-5xl font-light tracking-tight text-deepBlack leading-tight">
+              <h3
+                className={`text-2xl font-light leading-tight tracking-tight sm:text-3xl ${
+                  index === 1 ? "italic text-neutral-500" : "text-deepBlack"
+                }`}
+              >
                 {line}
               </h3>
-              <div className="mt-6 w-12 h-[1px] bg-neutral-300" />
             </motion.div>
           ))}
         </div>

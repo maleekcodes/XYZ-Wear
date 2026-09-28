@@ -53,8 +53,9 @@ function DigitalProductCard({ product }: { product: DigitalFormProductDisplay })
   const isClickable = hasExternal || hasDigitalPdp || hasMedusa
 
   const displayPrice =
-    product.medusaFromPrice ||
-    formatDigitalPrice(product.price ?? null, product.currency ?? null)
+    product.price != null
+      ? formatDigitalPrice(product.price, product.currency ?? null)
+      : product.medusaFromPrice || null
 
   const CardInner = (
     <motion.div

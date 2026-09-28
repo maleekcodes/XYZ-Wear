@@ -9,7 +9,6 @@ import {
   isLineCollectionHandle,
   normalizeHandle,
 } from "@lib/util/line-collections"
-import { Container } from "@modules/common/components/xyz/Container"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { PhysicalProductCard } from "@modules/store/components/physical-product-card"
 import { buildPhysicalProductCardProps } from "@modules/store/lib/build-physical-product-card-props"
@@ -87,7 +86,7 @@ export default async function RelatedProducts({
   }
 
   return (
-    <Container data-testid="similar-items">
+    <div data-testid="similar-items">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4 md:mb-14">
         <h2 className="text-3xl font-bold tracking-tighter text-deepBlack md:text-4xl">
           Similar items
@@ -125,7 +124,7 @@ export default async function RelatedProducts({
               )}
             </div>
             {group.products.length > 0 ? (
-              <ul className="grid w-full grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
+              <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 {group.products.map((item) => {
                   const cardProps = buildPhysicalProductCardProps(item)
                   if (!cardProps) return null
@@ -134,6 +133,9 @@ export default async function RelatedProducts({
                       <PhysicalProductCard
                         {...cardProps}
                         compact
+                        catalogMobile
+                        alignNameRight
+                        className="w-full max-w-none"
                         isLatest={isLatestInGroup(item, group.products)}
                       />
                     </li>
@@ -148,6 +150,6 @@ export default async function RelatedProducts({
           </div>
         ))}
       </div>
-    </Container>
+    </div>
   )
 }
