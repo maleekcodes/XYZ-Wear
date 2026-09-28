@@ -33,6 +33,13 @@ export default defineType({
       of: [
         {
           type: 'object',
+          fieldsets: [
+            {
+              name: 'pricing',
+              title: 'Price & currency',
+              options: { columns: 2 },
+            },
+          ],
           fields: [
             defineField({
               name: 'isFeatured',
@@ -90,6 +97,33 @@ export default defineType({
               type: 'string',
             }),
             defineField({
+              name: 'price',
+              title: 'Price',
+              type: 'number',
+              fieldset: 'pricing',
+              description:
+                'Enter the amount in the selected currency (for example, 45 means 45.00). Changing currency does not convert this amount.',
+              validation: (Rule) => Rule.min(0),
+            }),
+            defineField({
+              name: 'currency',
+              title: 'Price currency (EUR / USD)',
+              type: 'string',
+              fieldset: 'pricing',
+              description:
+                'Choose EUR (€) or USD ($). This controls the storefront price and checkout currency for this digital product.',
+              initialValue: 'GBP',
+              options: {
+                list: [
+                  { title: 'EUR (€)', value: 'EUR' },
+                  { title: 'USD ($)', value: 'USD' },
+                  { title: 'GBP (£)', value: 'GBP' },
+                  { title: 'ETH', value: 'ETH' },
+                ],
+                layout: 'dropdown',
+              },
+            }),
+            defineField({
               name: 'line',
               title: 'Line',
               type: 'string',
@@ -133,28 +167,6 @@ export default defineType({
                   ],
                 }),
               ],
-            }),
-            defineField({
-              name: 'price',
-              title: 'Price',
-              type: 'number',
-              description: 'Selling price in major units (e.g. 45 for £45.00).',
-              validation: (Rule) => Rule.min(0),
-            }),
-            defineField({
-              name: 'currency',
-              title: 'Currency',
-              type: 'string',
-              initialValue: 'GBP',
-              options: {
-                list: [
-                  { title: 'GBP (£)', value: 'GBP' },
-                  { title: 'EUR (€)', value: 'EUR' },
-                  { title: 'USD ($)', value: 'USD' },
-                  { title: 'ETH', value: 'ETH' },
-                ],
-                layout: 'dropdown',
-              },
             }),
             defineField({
               name: 'platforms',

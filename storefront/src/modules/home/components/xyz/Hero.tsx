@@ -21,19 +21,19 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
 
   const titleContent: ReactNode = headline ? (
     <>
-      <span className="min-[700px]:hidden">{headline}</span>
-      <span className="hidden whitespace-pre-line min-[700px]:inline">
+      <span className="min-[700px]:max-large:hidden">{headline}</span>
+      <span className="hidden whitespace-pre-line min-[700px]:max-large:inline">
         {headline.replace(/\s+(the known\.?\s*)$/i, "\n$1")}
       </span>
     </>
   ) : (
     <>
-      <span className="min-[700px]:hidden">
+      <span className="min-[700px]:max-large:hidden">
         From the unknown
         <br />
         to the known.
       </span>
-      <span className="hidden min-[700px]:inline">
+      <span className="hidden min-[700px]:max-large:inline">
         From the unknown to
         <br />
         the known.
@@ -44,34 +44,34 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
   return (
     <section className="relative min-h-screen flex flex-col min-[700px]:flex-row overflow-hidden">
       {/* Left: Physical (Solid) */}
-      <div className="relative flex flex-1 flex-col items-center justify-center border-r border-white bg-concrete p-12 min-[700px]:max-medium:p-8">
+      <div className="flex-1 bg-concrete flex flex-col justify-center items-center p-12 relative border-r border-white">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="w-48 h-48 bg-deepBlack shadow-2xl rotate-45 min-[700px]:max-medium:h-[21vw] min-[700px]:max-medium:w-[21vw] min-[700px]:max-medium:rotate-0 min-[1280px]:w-80 min-[1280px]:h-80"
+          className="w-48 h-48 bg-deepBlack shadow-2xl rotate-45 min-[700px]:max-large:h-[clamp(10rem,25vw,20rem)] min-[700px]:max-large:w-[clamp(10rem,25vw,20rem)] min-[1440px]:w-80 min-[1440px]:h-80"
         />
         <div className="absolute bottom-8 left-8 max-[699px]:top-8 max-[699px]:bottom-auto max-[699px]:z-20">
-          <span className="text-xs font-mono uppercase tracking-widest text-neutral-400 max-[699px]:text-neutral-700 min-[700px]:max-medium:text-[10px]">
+          <span className="text-xs font-mono uppercase tracking-widest text-neutral-400 max-[699px]:text-neutral-700">
             {figureLabels?.physical || "Fig 01. Physical"}
           </span>
         </div>
       </div>
 
       {/* Right: Digital (Wireframe) */}
-      <div className="relative flex flex-1 flex-col items-center justify-center bg-white p-12 min-[700px]:max-medium:p-8">
+      <div className="flex-1 bg-white flex flex-col justify-center items-center p-12 relative">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
-          className="relative flex h-48 w-48 rotate-45 items-center justify-center border-[1px] border-deepBlack min-[700px]:max-medium:h-[21vw] min-[700px]:max-medium:w-[21vw] min-[700px]:max-medium:rotate-0 min-[1280px]:h-80 min-[1280px]:w-80"
+          className="relative flex h-48 w-48 rotate-45 items-center justify-center border-[1px] border-deepBlack min-[700px]:max-large:h-[clamp(10rem,25vw,20rem)] min-[700px]:max-large:w-[clamp(10rem,25vw,20rem)] min-[1440px]:h-80 min-[1440px]:w-80"
         >
           <div className="absolute inset-0 border-[0.5px] border-neutral-300 transform scale-75" />
           <div className="absolute inset-0 border-[0.5px] border-neutral-200 transform scale-50" />
           <div className="absolute inset-0 border-[0.5px] border-neutral-100 transform scale-[0.25]" />
         </motion.div>
         <div className="absolute bottom-8 right-8 text-right">
-          <span className="text-xs font-mono uppercase tracking-widest text-neutral-400 min-[700px]:max-medium:text-[10px]">
+          <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">
             {figureLabels?.digital || "Fig 02. Digital"}
           </span>
         </div>
@@ -83,7 +83,7 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="max-w-2xl text-4xl font-bold leading-tight tracking-tighter min-[700px]:max-medium:text-[clamp(2rem,4.5vw,3.75rem)] min-[1280px]:text-7xl"
+          className="max-w-2xl text-4xl font-bold leading-tight tracking-tighter min-[700px]:max-large:text-[clamp(2.5rem,5vw,4.5rem)] min-[1440px]:text-7xl"
         >
           {titleContent}
         </motion.h1>
@@ -92,7 +92,7 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.8 }}
-          className="mx-auto mt-6 max-w-md text-sm font-light tracking-wide md:text-base min-[700px]:max-medium:mt-4 min-[700px]:max-medium:text-sm"
+          className="mx-auto mt-6 max-w-md text-sm font-light tracking-wide min-[700px]:max-large:text-[clamp(0.875rem,1.5vw,1rem)] min-[1440px]:text-base"
         >
           {subheadline ||
             "A fashion house exploring identity through physical and digital expression."}
@@ -104,12 +104,12 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="pointer-events-auto absolute bottom-12 left-1/2 -translate-x-1/2 transform min-[700px]:max-medium:bottom-8"
+        className="absolute bottom-12 left-1/2 transform -translate-x-1/2 pointer-events-auto"
       >
         <button
           type="button"
           onClick={scrollToIntro}
-          className="group flex flex-col items-center gap-2 text-xs uppercase tracking-[0.2em] text-deepBlack transition-colors hover:text-neutral-500 min-[700px]:max-medium:text-[10px]"
+          className="group flex flex-col items-center gap-2 text-xs uppercase tracking-[0.2em] text-deepBlack hover:text-neutral-500 transition-colors"
         >
           <span>{cta || "Explore Form"}</span>
           <ArrowDown
