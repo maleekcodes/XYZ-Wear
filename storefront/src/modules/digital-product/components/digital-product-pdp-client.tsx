@@ -472,7 +472,6 @@ export function DigitalProductPdpClient({
         </aside>
       </div>
       <div className="mt-8 space-y-8">
-        <DigitalShippingReturns />
         {editorial ? (
           <DigitalProductInformation
             copy={editorial}
@@ -483,6 +482,7 @@ export function DigitalProductPdpClient({
             {product.description}
           </p>
         ) : null}
+        <DigitalShippingReturns />
       </div>
     </>
   )
