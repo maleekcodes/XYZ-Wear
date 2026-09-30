@@ -10,7 +10,7 @@ interface PhilosophyProps {
 }
 
 const defaultManifestoLines = [
-  "XYZ London is for those who explore, question, and move beyond familiarity.",
+  "XYZ London, for those who explore, question, and move beyond familiarity.",
   "The greatest discoveries are always found in the unknown.",
 ]
 
@@ -41,8 +41,8 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
             {manifestoLines.map((line, index) => (
               <h3
                 key={index}
-                className={`text-3xl font-light leading-tight tracking-tight md:text-5xl ${
-                  index === 1 ? "italic text-neutral-500" : "text-deepBlack"
+                className={`text-3xl font-light uppercase leading-tight tracking-tight md:text-5xl ${
+                  index === 1 ? "text-neutral-500" : "text-deepBlack"
                 }`}
               >
                 {line}
@@ -62,8 +62,8 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
               className="max-w-4xl"
             >
               <h3
-                className={`text-2xl font-light leading-tight tracking-tight sm:text-3xl ${
-                  index === 1 ? "italic text-neutral-500" : "text-deepBlack"
+                className={`text-2xl font-light uppercase leading-tight tracking-tight sm:text-3xl ${
+                  index === 1 ? "text-neutral-500" : "text-deepBlack"
                 }`}
               >
                 {line}

@@ -186,23 +186,6 @@ export function DigitalProductPdpClient({
         <span className="text-neutral-300">{product.name}</span>
       </nav>
 
-      <div className="mb-8 lg:hidden">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {product.name}
-        </h1>
-        {product.category ? (
-          <p className="mt-2 text-xs uppercase tracking-widest text-neutral-500">
-            {product.category}
-            {product.line ? ` · ${product.line}` : ""}
-          </p>
-        ) : null}
-        {priceLabel ? (
-          <p className="mt-4 text-2xl font-mono text-white">{priceLabel}</p>
-        ) : (
-          <p className="mt-4 text-sm text-neutral-500">Price on request</p>
-        )}
-      </div>
-
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-x-10 xl:gap-x-14">
         <div className="order-1 flex min-w-0 flex-col gap-8 lg:order-1 lg:col-start-1 lg:col-span-7 lg:row-start-1 xl:col-span-8">
           {collectionLabel ? (
@@ -221,6 +204,22 @@ export function DigitalProductPdpClient({
                 images={images}
                 productName={product.name || "Digital product"}
               />
+              <div className="pt-2">
+                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                  {product.name}
+                </h1>
+                {product.category ? (
+                  <p className="mt-2 text-xs uppercase tracking-widest text-neutral-500">
+                    {product.category}
+                    {product.line ? ` · ${product.line}` : ""}
+                  </p>
+                ) : null}
+                {priceLabel ? (
+                  <p className="mt-4 text-2xl font-mono text-white">{priceLabel}</p>
+                ) : (
+                  <p className="mt-4 text-sm text-neutral-500">Price on request</p>
+                )}
+              </div>
             </div>
 
             <div className="min-w-0 space-y-3">
@@ -435,23 +434,6 @@ export function DigitalProductPdpClient({
         </div>
 
         <aside className="order-2 flex flex-col gap-6 lg:order-2 lg:col-start-8 lg:col-span-5 lg:row-start-1 lg:sticky lg:top-28 lg:max-w-md lg:self-start xl:col-start-9 xl:col-span-4">
-          <div className="hidden lg:block">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {product.name}
-            </h1>
-            {product.category ? (
-              <p className="mt-2 text-xs uppercase tracking-widest text-neutral-500">
-                {product.category}
-                {product.line ? ` · ${product.line}` : ""}
-              </p>
-            ) : null}
-            {priceLabel ? (
-              <p className="mt-4 text-2xl font-mono text-white">{priceLabel}</p>
-            ) : (
-              <p className="mt-4 text-sm text-neutral-500">Price on request</p>
-            )}
-          </div>
-
           <div className="space-y-3 border border-neutral-800 bg-neutral-950/40 p-4 sm:p-5">
             <h2 className="text-xs font-mono uppercase tracking-widest text-blue-400">
               Try on

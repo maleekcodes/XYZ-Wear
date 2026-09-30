@@ -42,14 +42,14 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
   )
 
   return (
-    <section className="relative min-h-screen flex flex-col min-[700px]:flex-row overflow-hidden">
+    <section className="relative min-h-screen min-[700px]:min-h-[100svh] flex flex-col min-[700px]:flex-row overflow-hidden">
       {/* Left: Physical (Solid) */}
       <div className="flex-1 bg-concrete flex flex-col justify-center items-center p-12 relative border-r border-white">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="w-48 h-48 bg-deepBlack shadow-2xl rotate-45 min-[700px]:max-large:h-[clamp(10rem,25vw,20rem)] min-[700px]:max-large:w-[clamp(10rem,25vw,20rem)] min-[1440px]:w-80 min-[1440px]:h-80"
+          className="w-48 h-48 bg-deepBlack shadow-2xl rotate-45 min-[700px]:max-[1439px]:h-[clamp(6rem,min(25vw,calc(70svh-6.3rem)),20rem)] min-[700px]:max-[1439px]:w-[clamp(6rem,min(25vw,calc(70svh-6.3rem)),20rem)] min-[1440px]:w-80 min-[1440px]:h-80"
         />
         <div className="absolute bottom-8 left-8 max-[699px]:top-8 max-[699px]:bottom-auto max-[699px]:z-20">
           <span className="text-xs font-mono uppercase tracking-widest text-neutral-400 max-[699px]:text-neutral-700">
@@ -64,7 +64,7 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
-          className="relative flex h-48 w-48 rotate-45 items-center justify-center border-[1px] border-deepBlack min-[700px]:max-large:h-[clamp(10rem,25vw,20rem)] min-[700px]:max-large:w-[clamp(10rem,25vw,20rem)] min-[1440px]:h-80 min-[1440px]:w-80"
+          className="relative flex h-48 w-48 rotate-45 items-center justify-center border-[1px] border-deepBlack min-[700px]:max-[1439px]:h-[clamp(6rem,min(25vw,calc(70svh-6.3rem)),20rem)] min-[700px]:max-[1439px]:w-[clamp(6rem,min(25vw,calc(70svh-6.3rem)),20rem)] min-[1440px]:h-80 min-[1440px]:w-80"
         >
           <div className="absolute inset-0 border-[0.5px] border-neutral-300 transform scale-75" />
           <div className="absolute inset-0 border-[0.5px] border-neutral-200 transform scale-50" />

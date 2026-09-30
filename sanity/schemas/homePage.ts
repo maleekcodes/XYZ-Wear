@@ -85,6 +85,20 @@ export default defineType({
         'Introduction copy for the home page. Press Enter for a new paragraph — formatting is preserved on the storefront.',
       of: [simpleRichTextMember],
     }),
+    defineField({ name: 'collectionHeading', title: 'Collection heading', type: 'string' }),
+    defineField({ name: 'collectionSubheading', title: 'Collection subheading', type: 'string' }),
+    defineField({
+      name: 'futureFormStatement1',
+      title: 'Statement after Future Forms — black line',
+      type: 'text',
+      rows: 2,
+    }),
+    defineField({
+      name: 'futureFormStatement2',
+      title: 'Statement after Future Forms — grey line',
+      type: 'text',
+      rows: 2,
+    }),
 
     // Philosophy / Digital Form Section
     defineField({
@@ -141,6 +155,12 @@ export default defineType({
       title: 'Try-on — paragraph',
       type: 'text',
       rows: 4,
+    }),
+    defineField({
+      name: 'arFitCtaLabel',
+      title: 'Try-on — button label',
+      type: 'string',
+      description: 'Text on the link to the try-on information page.',
     }),
   ],
   preview: {

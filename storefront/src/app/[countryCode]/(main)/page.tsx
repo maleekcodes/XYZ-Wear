@@ -90,16 +90,22 @@ export default async function Home({
         <Introduction text={page?.introText ?? undefined} />
       </div>
       <div id="physical">
-        <Collection layout={homeCollection} />
+        <Collection
+          layout={homeCollection}
+          heading={page?.collectionHeading?.trim() || undefined}
+          subheading={page?.collectionSubheading?.trim() || undefined}
+        />
       </div>
 
       <div id="digital">
         <Philosophy
           lines={[
-            "XYZ London is for those who explore, question, and move beyond familiarity.",
-            "The greatest discoveries are always found in the unknown.",
+            page?.futureFormStatement1?.trim() ||
+              "XYZ London, for those who explore, question, and move beyond familiarity.",
+            page?.futureFormStatement2?.trim() ||
+              "The greatest discoveries are always found in the unknown.",
           ]}
-          ctaLabel="DIGITAL FORM PREVIEW"
+          ctaLabel={page?.philosophyCtaLabel?.trim() || "DIGITAL FORM PREVIEW"}
         />
       </div>
       <div id="virtual-try-on">

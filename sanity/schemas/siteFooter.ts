@@ -18,6 +18,23 @@ export default defineType({
       description: 'Each item becomes its own line in the Philosophy block.',
     }),
     defineField({
+      name: 'approachHeading',
+      title: 'Our Approach — heading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'approachBodyLines',
+      title: 'Our Approach — paragraphs',
+      type: 'array',
+      of: [{ type: 'text', rows: 3 }],
+    }),
+    defineField({
+      name: 'socialHeading',
+      title: 'Social icons — heading',
+      type: 'string',
+      initialValue: 'Follow us',
+    }),
+    defineField({
       name: 'productSectionHeading',
       title: 'Product column — heading',
       type: 'string',

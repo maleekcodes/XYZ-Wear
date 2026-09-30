@@ -135,10 +135,14 @@ export function Collection({
   layout,
   items = [],
   futureForms,
+  heading = "The Collection",
+  subheading = "Latest releases",
 }: {
   layout?: HomeCollectionLayout
   items?: HomeCollectionItem[]
   futureForms?: ComingSoonCategory[]
+  heading?: string
+  subheading?: string
 }) {
   const categories = layout?.categories ?? []
   const fallback = !layout && items.length > 0 ? items : []
@@ -148,10 +152,10 @@ export function Collection({
       <Container>
         <div className="flex justify-between items-end mb-20 border-b border-neutral-100 pb-6">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-balance">
-            The Collection
+            {heading}
           </h2>
           <span className="font-mono text-xs text-neutral-400">
-            Latest releases
+            {subheading}
           </span>
         </div>
 

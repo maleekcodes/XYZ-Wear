@@ -24,6 +24,9 @@ const OUR_APPROACH = [
 const DEFAULT_FOOTER = {
   brandSectionHeading: "Brand Philosophy",
   brandBodyLines: [BRAND_PHILOSOPHY_LEAD, BRAND_PHILOSOPHY_BODY],
+  approachHeading: "Our Approach",
+  approachBodyLines: OUR_APPROACH,
+  socialHeading: "Follow us",
   legalLinks: [
     { label: "Terms of Service", path: "/content/terms-of-use" },
     { label: "Privacy Policy", path: "/content/privacy-policy" },
@@ -48,8 +51,11 @@ function mergeFooter(site?: SiteFooterSanity | null): SiteFooterSanity {
   )
 
   return {
-    brandSectionHeading: d.brandSectionHeading,
-    brandBodyLines: d.brandBodyLines,
+    brandSectionHeading: site?.brandSectionHeading?.trim() || d.brandSectionHeading,
+    brandBodyLines: site?.brandBodyLines?.length ? site.brandBodyLines : d.brandBodyLines,
+    approachHeading: site?.approachHeading?.trim() || d.approachHeading,
+    approachBodyLines: site?.approachBodyLines?.length ? site.approachBodyLines : d.approachBodyLines,
+    socialHeading: site?.socialHeading?.trim() || d.socialHeading,
     legalLinks,
     bottomTagline: site?.bottomTagline?.trim() ?? d.bottomTagline ?? undefined,
     copyrightName: site?.copyrightName?.trim() ?? d.copyrightName ?? undefined,
@@ -216,17 +222,16 @@ export default function FooterChrome({ siteFooter }: Props) {
               {f.brandSectionHeading}
             </h4>
             <div className={`text-[13px] leading-[1.4] ${body}`}>
-              <div>{BRAND_PHILOSOPHY_LEAD}</div>
-              <div>{BRAND_PHILOSOPHY_BODY}</div>
+              {f.brandBodyLines?.map((line, index) => <p key={index}>{line}</p>)}
             </div>
           </div>
 
           <div className="space-y-1">
             <h4 className={`text-xs font-bold uppercase tracking-widest ${heading}`}>
-              Our Approach
+              {f.approachHeading}
             </h4>
             <div className={`space-y-1 text-[13px] leading-[1.4] ${body}`}>
-              {OUR_APPROACH.map((line) => (
+              {f.approachBodyLines?.map((line) => (
                 <p key={line}>{line}</p>
               ))}
             </div>
@@ -241,35 +246,38 @@ export default function FooterChrome({ siteFooter }: Props) {
             <FooterIconImage icon="gdpr" invert={digital} />
             <span>GDPR Compliant</span>
           </LocalizedClientLink>
-          <nav
-            aria-label="Social media"
-            className="flex items-center justify-center gap-3"
-          >
-            <FooterIconLink
-              href="https://www.facebook.com/profile.php?id=61567883735913"
-              label="Facebook"
-              icon="facebook"
-              invert={digital}
-            />
-            <FooterIconLink
-              href="https://www.instagram.com/xyzlondonofficial/"
-              label="Instagram"
-              icon="instagram"
-              invert={digital}
-            />
-            <FooterIconLink
-              href="https://www.tiktok.com/@xyzlondon"
-              label="TikTok"
-              icon="tiktok"
-              invert={digital}
-            />
-            <FooterIconLink
-              href="mailto:contact@wearxyz.co"
-              label="Email XYZ London"
-              icon="email"
-              invert={digital}
-            />
-          </nav>
+          <div className="flex flex-col items-start gap-1">
+            <p className={`text-sm ${heading}`}>{f.socialHeading}</p>
+            <nav
+              aria-label="Social media"
+              className="flex items-center gap-3"
+            >
+              <FooterIconLink
+                href="https://www.facebook.com/profile.php?id=61567883735913"
+                label="Facebook"
+                icon="facebook"
+                invert={digital}
+              />
+              <FooterIconLink
+                href="https://www.instagram.com/xyzlondonofficial/"
+                label="Instagram"
+                icon="instagram"
+                invert={digital}
+              />
+              <FooterIconLink
+                href="https://www.tiktok.com/@xyzlondon"
+                label="TikTok"
+                icon="tiktok"
+                invert={digital}
+              />
+              <FooterIconLink
+                href="mailto:contact@wearxyz.co"
+                label="Email XYZ London"
+                icon="email"
+                invert={digital}
+              />
+            </nav>
+          </div>
           <span aria-hidden="true" />
         </div>
 

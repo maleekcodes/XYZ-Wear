@@ -235,6 +235,10 @@ const homePage = {
       ],
     },
   ],
+  collectionHeading: 'The Collection',
+  collectionSubheading: 'Latest releases',
+  futureFormStatement1: 'XYZ London, for those who explore, question, and move beyond familiarity.',
+  futureFormStatement2: 'The greatest discoveries are always found in the unknown.',
   // Philosophy / Manifesto
   manifestoLines: [
     'XYZ London is for those who explore, question, and move beyond familiarity. The greatest discoveries are always found in the unknown.',
@@ -280,6 +284,13 @@ const siteFooter = {
     'XYZ London exists to reveal identity through form, not define it by gender.',
     'We believe fashion is more than fabric and seasonal trends — it is an extension of identity. Expression emerges through form and proportion — beyond labels, gender, and convention. We see physical and digital fashion as parallel expressions of the same philosophy to express identity.',
   ],
+  approachHeading: 'Our Approach',
+  approachBodyLines: [
+    'Our garments are designed beyond gender for natural movement, comfort, and longevity, with silhouettes and proportions developed to adapt naturally across different body frames through our engineered fit and sizing philosophy.',
+    'We select responsibly sourced materials with consideration for quality, longevity, environmental impact, prioritising intention over volume and fleeting trend.',
+    'Every decision is guided by craftsmanship, restraint, discipline, and respect — from construction and proportion to our evolving colour language.',
+  ],
+  socialHeading: 'Follow us',
   productSectionHeading: 'Product',
   productItems: [
     { _key: 'p1', label: 'Highest Expression', internalPath: '/private-expressions' },

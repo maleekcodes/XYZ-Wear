@@ -146,6 +146,10 @@ export type HomePageSanity = PageSeoFields & {
   introHeadlineAccent?: string | null
   introParagraph?: string | null
   introText?: unknown[] | string | null
+  collectionHeading?: string | null
+  collectionSubheading?: string | null
+  futureFormStatement1?: string | null
+  futureFormStatement2?: string | null
   // Philosophy
   philosophyTitle?: string | null
   philosophyComingLabel?: string | null
@@ -202,6 +206,9 @@ export type SiteFooterConnectLink = {
 export type SiteFooterSanity = {
   brandSectionHeading?: string | null
   brandBodyLines?: string[] | null
+  approachHeading?: string | null
+  approachBodyLines?: string[] | null
+  socialHeading?: string | null
   productSectionHeading?: string | null
   productItems?: SiteFooterProductItem[] | null
   legalSectionHeading?: string | null
