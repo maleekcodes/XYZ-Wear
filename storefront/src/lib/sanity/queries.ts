@@ -338,6 +338,13 @@ const homePageQuery = `*[_type == "homePage"][0] {
   introText,
   collectionHeading,
   collectionSubheading,
+  collectionShopLabel,
+  collectionComingSoonTitle,
+  collectionComingSoonDescription,
+  collectionSoonLabel,
+  futureFormsHeading,
+  brandStoryLinkLabel,
+  brandStoryLinkPath,
   futureFormStatement1,
   futureFormStatement2,
   philosophyTitle,
@@ -349,7 +356,8 @@ const homePageQuery = `*[_type == "homePage"][0] {
   arFitLabel,
   arFitTitle,
   arFitParagraph,
-  arFitCtaLabel
+  arFitCtaLabel,
+  arFitVisualLabels { photo, preview, status }
 }`
 
 export type HomePageResult = {

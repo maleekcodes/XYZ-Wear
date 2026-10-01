@@ -148,6 +148,13 @@ export type HomePageSanity = PageSeoFields & {
   introText?: unknown[] | string | null
   collectionHeading?: string | null
   collectionSubheading?: string | null
+  collectionShopLabel?: string | null
+  collectionComingSoonTitle?: string | null
+  collectionComingSoonDescription?: string | null
+  collectionSoonLabel?: string | null
+  futureFormsHeading?: string | null
+  brandStoryLinkLabel?: string | null
+  brandStoryLinkPath?: string | null
   futureFormStatement1?: string | null
   futureFormStatement2?: string | null
   // Philosophy
@@ -162,6 +169,7 @@ export type HomePageSanity = PageSeoFields & {
   arFitTitle?: string | null
   arFitParagraph?: string | null
   arFitCtaLabel?: string | null
+  arFitVisualLabels?: { photo?: string | null; preview?: string | null; status?: string | null } | null
 }
 
 /** Singleton: `/private-expressions` + home PrivateGate teaser — source of truth in Studio */

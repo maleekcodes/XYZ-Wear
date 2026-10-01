@@ -241,7 +241,7 @@ export default function FooterChrome({ siteFooter }: Props) {
         <div className="grid grid-cols-1 items-center gap-5 pt-0 sm:grid-cols-[1fr_auto_1fr]">
           <LocalizedClientLink
             href="/content/privacy-policy"
-            className={`inline-flex items-center gap-1 justify-self-center text-xs hover:opacity-70 sm:justify-self-start ${digital ? "text-emerald-300" : "text-emerald-700"}`}
+            className={`inline-flex items-center gap-1 justify-self-start text-xs hover:opacity-70 ${digital ? "text-emerald-300" : "text-emerald-700"}`}
           >
             <FooterIconImage icon="gdpr" invert={digital} />
             <span>GDPR Compliant</span>

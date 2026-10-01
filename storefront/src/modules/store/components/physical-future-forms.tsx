@@ -166,8 +166,10 @@ function TeaserCell({ teaser }: { teaser: FutureFormTeaser }) {
 
 export function PhysicalFutureForms({
   items,
+  heading,
 }: {
   items?: ComingSoonCategory[]
+  heading?: string
 }) {
   const teasers = resolveTeasers(items)
 
@@ -182,7 +184,7 @@ export function PhysicalFutureForms({
           id="future-forms-heading"
           className="text-3xl font-bold tracking-tighter text-deepBlack md:text-4xl"
         >
-          Future Forms
+          {heading || "Future Forms"}
         </h2>
 
         <div className="flex justify-center">

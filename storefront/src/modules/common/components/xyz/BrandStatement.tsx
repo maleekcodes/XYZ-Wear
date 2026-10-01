@@ -1,8 +1,8 @@
 export function BrandStatement() {
   return (
     <section className="py-12 text-center md:py-16">
-      <div className="mx-auto max-w-4xl">
-        <h2 className="mx-auto max-w-4xl text-lg font-medium leading-relaxed tracking-wide text-deepBlack sm:text-xl md:text-2xl">
+      <div className="mx-auto max-w-4xl px-6 sm:px-0">
+        <h2 className="mx-auto max-w-4xl text-sm font-medium leading-relaxed tracking-wide text-deepBlack sm:text-xl md:text-2xl">
           <span className="block">XYZ LONDON IS NOT ABOUT FITTING IN.</span>
           <span className="mt-3 block text-neutral-400">
             IT IS ABOUT EXPRESSING YOUR ORIGINAL SELF.

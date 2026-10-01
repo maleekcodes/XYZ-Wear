@@ -87,13 +87,18 @@ export default async function Home({
         />
       </div>
       <div id="intro">
-        <Introduction text={page?.introText ?? undefined} />
+        <Introduction text={page?.introText ?? undefined} storyLinkLabel={page?.brandStoryLinkLabel ?? undefined} storyLinkPath={page?.brandStoryLinkPath ?? undefined} />
       </div>
       <div id="physical">
         <Collection
           layout={homeCollection}
           heading={page?.collectionHeading?.trim() || undefined}
           subheading={page?.collectionSubheading?.trim() || undefined}
+          shopLabel={page?.collectionShopLabel?.trim() || undefined}
+          comingSoonTitle={page?.collectionComingSoonTitle?.trim() || undefined}
+          comingSoonDescription={page?.collectionComingSoonDescription?.trim() || undefined}
+          soonLabel={page?.collectionSoonLabel?.trim() || undefined}
+          futureFormsHeading={page?.futureFormsHeading?.trim() || undefined}
         />
       </div>
 
@@ -114,6 +119,7 @@ export default async function Home({
           title={page?.arFitTitle ?? undefined}
           paragraph={page?.arFitParagraph ?? undefined}
           ctaLabel={page?.arFitCtaLabel ?? undefined}
+          visualLabels={page?.arFitVisualLabels ?? undefined}
         />
       </div>
       <div id="private">

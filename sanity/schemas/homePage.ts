@@ -87,6 +87,13 @@ export default defineType({
     }),
     defineField({ name: 'collectionHeading', title: 'Collection heading', type: 'string' }),
     defineField({ name: 'collectionSubheading', title: 'Collection subheading', type: 'string' }),
+    defineField({ name: 'collectionShopLabel', title: 'Collection category link prefix', type: 'string', description: 'Text before the category name, e.g. Shop' }),
+    defineField({ name: 'collectionComingSoonTitle', title: 'Empty product card title', type: 'string' }),
+    defineField({ name: 'collectionComingSoonDescription', title: 'Empty product card description', type: 'string', description: 'Use {line} where the product line should appear.' }),
+    defineField({ name: 'collectionSoonLabel', title: 'Empty product card status', type: 'string' }),
+    defineField({ name: 'futureFormsHeading', title: 'Future Forms heading', type: 'string' }),
+    defineField({ name: 'brandStoryLinkLabel', title: 'Brand story link label', type: 'string' }),
+    defineField({ name: 'brandStoryLinkPath', title: 'Brand story link path', type: 'string', description: 'Path to the story page, e.g. /about' }),
     defineField({
       name: 'futureFormStatement1',
       title: 'Statement after Future Forms — black line',
@@ -162,6 +169,11 @@ export default defineType({
       type: 'string',
       description: 'Text on the link to the try-on information page.',
     }),
+    defineField({ name: 'arFitVisualLabels', title: 'Try-on visual labels', type: 'object', fields: [
+      defineField({ name: 'photo', title: 'Photo', type: 'string' }),
+      defineField({ name: 'preview', title: 'Preview', type: 'string' }),
+      defineField({ name: 'status', title: 'Status', type: 'string' }),
+    ] }),
   ],
   preview: {
     prepare() {

@@ -38,7 +38,9 @@ function CollectionShapeGraphic({ shape }: { shape: CollectionShape }) {
   )
 }
 
-function ComingSoonCard({ item }: { item: HomeCollectionItem }) {
+type CollectionCopy = { shopLabel?: string; comingSoonTitle?: string; comingSoonDescription?: string; soonLabel?: string }
+
+function ComingSoonCard({ item, copy }: { item: HomeCollectionItem; copy: CollectionCopy }) {
   return (
     <LocalizedClientLink href={item.href} className="block h-full min-h-[360px]">
       <motion.div
@@ -63,12 +65,12 @@ function ComingSoonCard({ item }: { item: HomeCollectionItem }) {
         </div>
 
         <div>
-          <h3 className="truncate text-xs font-bold tracking-tight">Coming soon</h3>
+          <h3 className="truncate text-xs font-bold tracking-tight">{copy.comingSoonTitle || "Coming soon"}</h3>
           <span className="mt-1 block text-xs text-neutral-500">
-            {item.line} releases are on the way.
+            {(copy.comingSoonDescription || "{line} releases are on the way.").replaceAll("{line}", item.line)}
           </span>
           <div className="mt-4 flex items-center justify-between border-t border-neutral-200/60 pt-4 font-mono text-[10px] uppercase tracking-widest text-neutral-400">
-            <span>Soon</span>
+            <span>{copy.soonLabel || "Soon"}</span>
             <span>—</span>
           </div>
         </div>
@@ -77,7 +79,7 @@ function ComingSoonCard({ item }: { item: HomeCollectionItem }) {
   )
 }
 
-function CollectionCard({ item }: { item: HomeCollectionItem }) {
+function CollectionCard({ item, copy }: { item: HomeCollectionItem; copy: CollectionCopy }) {
   if (item.card) {
     return (
       <PhysicalProductCard
@@ -88,10 +90,10 @@ function CollectionCard({ item }: { item: HomeCollectionItem }) {
     )
   }
 
-  return <ComingSoonCard item={item} />
+  return <ComingSoonCard item={item} copy={copy} />
 }
 
-function CategoryBlock({ section }: { section: HomeCategorySection }) {
+function CategoryBlock({ section, copy }: { section: HomeCategorySection; copy: CollectionCopy }) {
   return (
     <section aria-labelledby={`home-cat-${section.id}`}>
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
@@ -115,7 +117,7 @@ function CategoryBlock({ section }: { section: HomeCategorySection }) {
             href={`/categories/${section.handle}`}
             className="font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-400 hover:text-deepBlack transition-colors"
           >
-            Shop {section.name}
+            {copy.shopLabel || "Shop"} {section.name}
           </LocalizedClientLink>
         )}
       </div>
@@ -123,7 +125,7 @@ function CategoryBlock({ section }: { section: HomeCategorySection }) {
       <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         {section.items.map((item) => (
           <li key={item.id}>
-            <CollectionCard item={item} />
+            <CollectionCard item={item} copy={copy} />
           </li>
         ))}
       </ul>
@@ -137,13 +139,20 @@ export function Collection({
   futureForms,
   heading = "The Collection",
   subheading = "Latest releases",
+  shopLabel,
+  comingSoonTitle,
+  comingSoonDescription,
+  soonLabel,
+  futureFormsHeading,
 }: {
   layout?: HomeCollectionLayout
   items?: HomeCollectionItem[]
   futureForms?: ComingSoonCategory[]
   heading?: string
   subheading?: string
-}) {
+  futureFormsHeading?: string
+} & CollectionCopy) {
+  const copy = { shopLabel, comingSoonTitle, comingSoonDescription, soonLabel }
   const categories = layout?.categories ?? []
   const fallback = !layout && items.length > 0 ? items : []
 
@@ -163,7 +172,7 @@ export function Collection({
           <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {fallback.map((item) => (
               <li key={item.id}>
-                <CollectionCard item={item} />
+                <CollectionCard item={item} copy={copy} />
               </li>
             ))}
           </ul>
@@ -171,11 +180,11 @@ export function Collection({
 
         <div className="space-y-24 md:space-y-28">
           {categories.map((section) => (
-            <CategoryBlock key={section.id} section={section} />
+            <CategoryBlock key={section.id} section={section} copy={copy} />
           ))}
         </div>
 
-        <PhysicalFutureForms items={futureForms ?? layout?.futureForms} />
+        <PhysicalFutureForms items={futureForms ?? layout?.futureForms} heading={futureFormsHeading} />
       </Container>
     </section>
   )

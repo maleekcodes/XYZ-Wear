@@ -614,6 +614,11 @@ async function seedSiteFooterDoc() {
 
   try {
     await createIfMissing(siteFooter, 'Site footer')
+    await client.patch(siteFooter._id).setIfMissing({
+      approachHeading: siteFooter.approachHeading,
+      approachBodyLines: siteFooter.approachBodyLines,
+    }).commit()
+    console.log('  [OK] Our Approach — filled missing fields without replacing edits')
   } catch (error) {
     console.error(`  [FAIL] Site footer:`, error)
   }

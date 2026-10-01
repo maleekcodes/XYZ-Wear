@@ -4,6 +4,7 @@ import { PortableText } from "@portabletext/react"
 import { motion } from "framer-motion"
 
 import { Container } from "@modules/common/components/xyz/Container"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import {
   introParagraphClassName,
   introPortableTextComponents,
@@ -14,6 +15,8 @@ type IntroContent = unknown[] | string | null | undefined
 
 interface IntroductionProps {
   text?: IntroContent
+  storyLinkLabel?: string
+  storyLinkPath?: string
 }
 
 const defaultText =
@@ -58,7 +61,7 @@ function IntroBody({ content }: { content: IntroContent }) {
   )
 }
 
-export function Introduction({ text }: IntroductionProps) {
+export function Introduction({ text, storyLinkLabel, storyLinkPath }: IntroductionProps) {
   return (
     <section className="bg-white pt-24 pb-8 md:py-32">
       <Container className="flex justify-center">
@@ -70,6 +73,11 @@ export function Introduction({ text }: IntroductionProps) {
           className="max-w-2xl text-center"
         >
           <IntroBody content={text} />
+          {storyLinkLabel?.trim() && storyLinkPath?.startsWith("/") && (
+            <LocalizedClientLink href={storyLinkPath} className="mt-8 inline-block text-xs uppercase tracking-widest underline underline-offset-4 hover:opacity-60">
+              {storyLinkLabel}
+            </LocalizedClientLink>
+          )}
           <div className="w-px h-16 bg-neutral-200 mx-auto mt-12" />
         </motion.div>
       </Container>

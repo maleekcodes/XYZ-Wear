@@ -10,6 +10,7 @@ interface VirtualTryOnSectionProps {
   title?: string
   paragraph?: string
   ctaLabel?: string
+  visualLabels?: { photo?: string | null; preview?: string | null; status?: string | null }
 }
 
 export function VirtualTryOnSection({
@@ -17,6 +18,7 @@ export function VirtualTryOnSection({
   title,
   paragraph,
   ctaLabel,
+  visualLabels,
 }: VirtualTryOnSectionProps) {
   return (
     <section className="py-24 bg-white">
@@ -74,9 +76,9 @@ export function VirtualTryOnSection({
                 </div>
 
                 <div className="h-12 border-t border-deepBlack flex items-center justify-between px-4 font-mono text-[10px] bg-concrete">
-                  <span>PHOTO</span>
-                  <span>PREVIEW</span>
-                  <span className="animate-pulse">VT ON</span>
+                  <span>{visualLabels?.photo || "PHOTO"}</span>
+                  <span>{visualLabels?.preview || "PREVIEW"}</span>
+                  <span className="animate-pulse">{visualLabels?.status || "VT ON"}</span>
                 </div>
               </div>
             </div>

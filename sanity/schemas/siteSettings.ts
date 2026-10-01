@@ -76,6 +76,11 @@ export default defineType({
           type: 'url',
         }),
         defineField({
+          name: 'twitter',
+          title: 'X (Twitter) URL',
+          type: 'url',
+        }),
+        defineField({
           name: 'email',
           title: 'Contact Email',
           type: 'email',
