@@ -240,7 +240,7 @@ export default function FooterChrome({ siteFooter }: Props) {
             <h4 className={`text-xs font-bold uppercase tracking-widest ${heading}`}>
               {f.approachHeading}
             </h4>
-            <div className={`space-y-1 text-[13px] leading-[1.4] ${body}`}>
+            <div className={`space-y-2 text-[13px] leading-[1.4] ${body}`}>
               {f.approachBodyLines?.map((line) => (
                 <p key={line}>{line}</p>
               ))}

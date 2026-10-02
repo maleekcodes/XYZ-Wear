@@ -14,6 +14,30 @@ const defaultManifestoLines = [
   "The greatest discoveries are always found in the unknown.",
 ]
 
+const statementBreaks: Record<string, [string, string]> = {
+  [defaultManifestoLines[0]]: [
+    "XYZ London, for those who explore,",
+    "question, and move beyond familiarity.",
+  ],
+  [defaultManifestoLines[1]]: [
+    "The greatest discoveries are always",
+    "found in the unknown.",
+  ],
+}
+
+function renderStatement(line: string) {
+  const parts = statementBreaks[line]
+
+  return parts ? (
+    <>
+      <span className="block whitespace-nowrap">{parts[0]}</span>
+      <span className="block whitespace-nowrap">{parts[1]}</span>
+    </>
+  ) : (
+    line
+  )
+}
+
 export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
   const manifestoLines =
     lines && lines.length > 0 ? lines : defaultManifestoLines
@@ -41,11 +65,11 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
             {manifestoLines.map((line, index) => (
               <h3
                 key={index}
-                className={`text-[18px] font-normal uppercase leading-[1.35] tracking-normal md:text-[30px] lg:text-[40px] xl:text-[48px] ${
+                className={`text-balance text-[14.4px] font-normal uppercase leading-[1.35] tracking-normal md:text-[clamp(20px,2.5vw,38.4px)] ${
                   index === 1 ? "text-[#aaa]" : "text-[#111]"
                 }`}
               >
-                {line}
+                {renderStatement(line)}
               </h3>
             ))}
           </div>
@@ -62,11 +86,11 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
               className="w-full"
             >
               <h3
-                className={`text-[14px] font-normal uppercase leading-[1.35] tracking-normal min-[390px]:text-[16px] sm:text-[24px] ${
+                className={`text-balance text-[clamp(10px,3.2vw,20px)] font-normal uppercase leading-[1.35] tracking-normal sm:text-[24px] ${
                   index === 1 ? "text-[#aaa]" : "text-[#111]"
                 }`}
               >
-                {line}
+                {renderStatement(line)}
               </h3>
             </motion.div>
           ))}
