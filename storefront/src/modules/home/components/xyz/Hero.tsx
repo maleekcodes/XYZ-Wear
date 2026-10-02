@@ -21,19 +21,19 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
 
   const titleContent: ReactNode = headline ? (
     <>
-      <span className="min-[700px]:max-[1199px]:hidden">{headline}</span>
-      <span className="hidden whitespace-pre-line min-[700px]:max-[1199px]:inline">
+      <span className="min-[700px]:max-large:hidden">{headline}</span>
+      <span className="hidden whitespace-pre-line min-[700px]:max-large:inline">
         {headline.replace(/\s+(the known\.?\s*)$/i, "\n$1")}
       </span>
     </>
   ) : (
     <>
-      <span className="min-[700px]:max-[1199px]:hidden">
+      <span className="min-[700px]:max-large:hidden">
         From the unknown
         <br />
         to the known.
       </span>
-      <span className="hidden min-[700px]:max-[1199px]:inline">
+      <span className="hidden min-[700px]:max-large:inline">
         From the unknown to
         <br />
         the known.
@@ -42,14 +42,14 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
   )
 
   return (
-    <section className="relative min-h-screen min-[700px]:max-[1199px]:min-h-[42rem] min-[1200px]:min-h-[max(36rem,calc(100svh-6rem))] flex flex-col min-[700px]:flex-row overflow-hidden">
+    <section className="relative min-h-screen min-[700px]:max-[1439px]:min-h-[55svh] [@media(hover:hover)_and_(pointer:fine)]:min-[1200px]:max-[1439px]:min-h-[80svh] min-[1440px]:min-h-[100svh] flex flex-col min-[700px]:flex-row overflow-hidden">
       {/* Left: Physical (Solid) */}
       <div className="flex-1 bg-concrete flex flex-col justify-center items-center p-12 relative border-r border-white">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="w-48 h-48 bg-deepBlack shadow-2xl rotate-45 min-[700px]:max-[1199px]:h-48 min-[700px]:max-[1199px]:w-48 min-[1200px]:w-80 min-[1200px]:h-80"
+          className="w-48 h-48 bg-deepBlack shadow-2xl rotate-45 min-[700px]:max-[1439px]:h-[clamp(6rem,min(25vw,calc(55svh-6.3rem)),20rem)] min-[700px]:max-[1439px]:w-[clamp(6rem,min(25vw,calc(55svh-6.3rem)),20rem)] min-[1440px]:w-80 min-[1440px]:h-80"
         />
         <div className="absolute bottom-8 left-8 max-[699px]:top-8 max-[699px]:bottom-auto max-[699px]:z-20">
           <span className="text-xs font-mono uppercase tracking-widest text-neutral-400 max-[699px]:text-neutral-700">
@@ -64,7 +64,7 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
-          className="relative flex h-48 w-48 rotate-45 items-center justify-center border-[1px] border-deepBlack min-[700px]:max-[1199px]:h-48 min-[700px]:max-[1199px]:w-48 min-[1200px]:h-80 min-[1200px]:w-80"
+          className="relative flex h-48 w-48 rotate-45 items-center justify-center border-[1px] border-deepBlack min-[700px]:max-[1439px]:h-[clamp(6rem,min(25vw,calc(55svh-6.3rem)),20rem)] min-[700px]:max-[1439px]:w-[clamp(6rem,min(25vw,calc(55svh-6.3rem)),20rem)] min-[1440px]:h-80 min-[1440px]:w-80"
         >
           <div className="absolute inset-0 border-[0.5px] border-neutral-300 transform scale-75" />
           <div className="absolute inset-0 border-[0.5px] border-neutral-200 transform scale-50" />
@@ -83,7 +83,7 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="max-w-2xl text-4xl font-bold leading-tight tracking-tighter min-[700px]:max-[1199px]:text-5xl min-[1200px]:text-7xl"
+          className="max-w-2xl text-4xl font-bold leading-tight tracking-tighter min-[700px]:max-large:text-[clamp(2.5rem,5vw,4.5rem)] min-[1440px]:text-7xl"
         >
           {titleContent}
         </motion.h1>
@@ -92,7 +92,7 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.8 }}
-          className="mx-auto mt-6 max-w-md text-sm font-light tracking-wide min-[1200px]:text-base"
+          className="mx-auto mt-6 max-w-md text-sm font-light tracking-wide min-[700px]:max-large:text-[clamp(0.875rem,1.5vw,1rem)] min-[1440px]:text-base"
         >
           {subheadline ||
             "A fashion house exploring identity through physical and digital expression."}
