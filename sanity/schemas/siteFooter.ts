@@ -15,7 +15,7 @@ export default defineType({
       title: 'Brand column — body lines',
       type: 'array',
       of: [{ type: 'string' }],
-      description: 'Each item becomes its own line in the Philosophy block.',
+      description: 'Each item is a separate paragraph. The first is italic; the second is bold.',
     }),
     defineField({
       name: 'approachHeading',

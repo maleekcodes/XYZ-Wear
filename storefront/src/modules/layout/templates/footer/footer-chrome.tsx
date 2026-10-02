@@ -10,10 +10,13 @@ import { isOOORoute } from "@lib/util/is-ooo-route"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Container } from "@modules/common/components/xyz/Container"
 
-const BRAND_PHILOSOPHY_LEAD =
-  "XYZ London exists to reveal identity through form, not define it by gender."
-const BRAND_PHILOSOPHY_BODY =
-  "We believe fashion is more than fabric and seasonal trends — it is an extension of identity. Expression emerges through form and proportion — beyond labels, gender, and convention. We see physical and digital fashion as parallel expressions of the same philosophy to express identity."
+const BRAND_PHILOSOPHY_LINES = [
+  "From the unknown to the known.",
+  "XYZ London exists to reveal identity through form, not define it.",
+  "We believe fashion is more than fabric and seasonal trends. It is an extension of identity.",
+  "Expression emerges through form and proportion, beyond labels, gender, and convention.",
+  "We see physical and digital fashion as parallel expressions of the same philosophy, extending how identity can be expressed.",
+]
 
 const OUR_APPROACH = [
   "Our garments are designed beyond gender for natural movement, comfort, and longevity, with silhouettes and proportions developed to adapt naturally across different body frames through our engineered fit and sizing philosophy.",
@@ -23,7 +26,7 @@ const OUR_APPROACH = [
 
 const DEFAULT_FOOTER = {
   brandSectionHeading: "Brand Philosophy",
-  brandBodyLines: [BRAND_PHILOSOPHY_LEAD, BRAND_PHILOSOPHY_BODY],
+  brandBodyLines: BRAND_PHILOSOPHY_LINES,
   approachHeading: "Our Approach",
   approachBodyLines: OUR_APPROACH,
   socialHeading: "Follow us",
@@ -221,8 +224,15 @@ export default function FooterChrome({ siteFooter }: Props) {
             <h4 className={`text-xs font-bold uppercase tracking-widest ${heading}`}>
               {f.brandSectionHeading}
             </h4>
-            <div className={`text-[13px] leading-[1.4] ${body}`}>
-              {f.brandBodyLines?.map((line, index) => <p key={index}>{line}</p>)}
+            <div className={`space-y-2 text-[13px] leading-[1.4] ${body}`}>
+              {f.brandBodyLines?.map((line, index) => (
+                <p
+                  key={index}
+                  className={index === 0 ? `italic ${digital ? "text-neutral-500" : "text-neutral-400"}` : index === 1 ? `font-bold ${heading}` : undefined}
+                >
+                  {line.trim()}
+                </p>
+              ))}
             </div>
           </div>
 

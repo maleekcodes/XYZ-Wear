@@ -4,13 +4,11 @@ import { Button } from "@medusajs/ui"
 import dynamic from "next/dynamic"
 import { isEqual } from "lodash"
 import { useParams, useRouter } from "next/navigation"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
-import { useIntersection } from "@lib/hooks/use-in-view"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 
-import MobileActions from "./mobile-actions"
 import ProductPrice from "../product-price"
 
 const PhysicalProductTryOn = dynamic(
@@ -173,10 +171,6 @@ export default function ProductActions({
   const closingDate = formatDate(product.metadata?.pre_order_closing_date)
   const dispatchDate = product.metadata?.pre_order_dispatch_date
 
-  const actionsRef = useRef<HTMLDivElement>(null)
-
-  const inView = useIntersection(actionsRef, "0px")
-
   // add the selected variant to the cart
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) return null
@@ -195,7 +189,7 @@ export default function ProductActions({
 
   return (
     <>
-      <div className="flex flex-col gap-y-6" ref={actionsRef}>
+      <div className="flex flex-col gap-y-6">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-max flex-1">
             <ProductPrice product={product} variant={selectedVariant} />
@@ -315,17 +309,6 @@ export default function ProductActions({
           </Button>
         )}
         <SizeGuide product={product} />
-        <MobileActions
-          product={product}
-          variant={selectedVariant}
-          options={options}
-          updateOptions={setOptionValue}
-          inStock={inStock}
-          handleAddToCart={handleAddToCart}
-          isAdding={isAdding}
-          show={!inView}
-          optionsDisabled={!!disabled || isAdding}
-        />
       </div>
     </>
   )

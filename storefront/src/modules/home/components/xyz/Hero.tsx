@@ -104,7 +104,7 @@ export function Hero({ headline, subheadline, cta, figureLabels }: HeroProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-12 left-1/2 transform -translate-x-1/2 pointer-events-auto"
+        className="absolute bottom-12 left-1/2 transform -translate-x-1/2 pointer-events-auto [@media(min-width:700px)_and_(max-width:820px)_and_(min-height:650px)_and_(max-height:820px)_and_(hover:none)]:bottom-4"
       >
         <button
           type="button"

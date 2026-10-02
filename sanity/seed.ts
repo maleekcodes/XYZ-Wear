@@ -281,8 +281,11 @@ const siteFooter = {
   _type: 'siteFooter',
   brandSectionHeading: 'Brand Philosophy',
   brandBodyLines: [
-    'XYZ London exists to reveal identity through form, not define it by gender.',
-    'We believe fashion is more than fabric and seasonal trends — it is an extension of identity. Expression emerges through form and proportion — beyond labels, gender, and convention. We see physical and digital fashion as parallel expressions of the same philosophy to express identity.',
+    'From the unknown to the known.',
+    'XYZ London exists to reveal identity through form, not define it.',
+    'We believe fashion is more than fabric and seasonal trends. It is an extension of identity.',
+    'Expression emerges through form and proportion, beyond labels, gender, and convention.',
+    'We see physical and digital fashion as parallel expressions of the same philosophy, extending how identity can be expressed.',
   ],
   approachHeading: 'Our Approach',
   approachBodyLines: [

@@ -35,14 +35,14 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-20%" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="hidden max-w-4xl md:block"
+          className="hidden md:block"
         >
-          <div className="space-y-3 md:space-y-5">
+          <div className="space-y-6">
             {manifestoLines.map((line, index) => (
               <h3
                 key={index}
-                className={`text-3xl font-light uppercase leading-tight tracking-tight md:text-5xl ${
-                  index === 1 ? "text-neutral-500" : "text-deepBlack"
+                className={`text-[18px] font-normal uppercase leading-[1.35] tracking-normal md:text-[30px] lg:text-[40px] xl:text-[48px] ${
+                  index === 1 ? "text-[#aaa]" : "text-[#111]"
                 }`}
               >
                 {line}
@@ -51,7 +51,7 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
           </div>
           <div className="mt-6 h-px w-12 bg-neutral-300" />
         </motion.div>
-        <div className="space-y-2.5 md:hidden">
+        <div className="space-y-5 md:hidden">
           {manifestoLines.map((line, index) => (
             <motion.div
               key={index}
@@ -59,11 +59,11 @@ export function Philosophy({ lines, ctaLabel }: PhilosophyProps) {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-20%" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="max-w-4xl"
+              className="w-full"
             >
               <h3
-                className={`text-2xl font-light uppercase leading-tight tracking-tight sm:text-3xl ${
-                  index === 1 ? "text-neutral-500" : "text-deepBlack"
+                className={`text-[14px] font-normal uppercase leading-[1.35] tracking-normal min-[390px]:text-[16px] sm:text-[24px] ${
+                  index === 1 ? "text-[#aaa]" : "text-[#111]"
                 }`}
               >
                 {line}
