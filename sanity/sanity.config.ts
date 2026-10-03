@@ -10,7 +10,27 @@ export default defineConfig({
   projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'bff91fb2',
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title('Content')
+          .items([
+            ...S.documentTypeListItems().filter(
+              (item) => item.getId() !== 'staticPageSeo'
+            ),
+            S.listItem()
+              .title('Static Page SEO')
+              .id('staticPageSeo')
+              .child(
+                S.document()
+                  .schemaType('staticPageSeo')
+                  .documentId('staticPageSeo')
+              ),
+          ]),
+    }),
+    visionTool(),
+  ],
 
   schema: {
     types: schemaTypes,
