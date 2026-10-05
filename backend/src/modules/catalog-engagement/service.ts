@@ -6,8 +6,8 @@ class CatalogEngagementModuleService extends MedusaService({
 }) {
   async findActiveSubscription(input: {
     email: string
-    kind: "waitlist" | "restock"
-    product_id: string
+    kind: "waitlist" | "restock" | "launch"
+    product_id: string | null
     variant_id?: string | null
   }) {
     const rows = await this.listCatalogSubscriptions({
@@ -17,14 +17,16 @@ class CatalogEngagementModuleService extends MedusaService({
       ...(input.variant_id ? { variant_id: input.variant_id } : {}),
       status: "subscribed",
     })
-    return rows.find((row: { variant_id?: string | null }) =>
-      input.variant_id ? row.variant_id === input.variant_id : !row.variant_id
-    ) ?? null
+    return (
+      rows.find((row: { variant_id?: string | null }) =>
+        input.variant_id ? row.variant_id === input.variant_id : !row.variant_id
+      ) ?? null
+    )
   }
 
   async listActiveSubscriptions(input: {
-    kind: "waitlist" | "restock"
-    product_id: string
+    kind: "waitlist" | "restock" | "launch"
+    product_id: string | null
     variant_id?: string | null
   }) {
     return this.listCatalogSubscriptions({

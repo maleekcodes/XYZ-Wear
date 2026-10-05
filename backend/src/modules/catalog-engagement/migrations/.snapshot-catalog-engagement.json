@@ -53,7 +53,8 @@
           "comment": null,
           "enumItems": [
             "waitlist",
-            "restock"
+            "restock",
+            "launch"
           ],
           "mappedType": "enum"
         },
@@ -63,7 +64,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "unique": false,
           "length": null,
           "precision": null,
@@ -104,7 +105,8 @@
           "comment": null,
           "enumItems": [
             "physical",
-            "digital"
+            "digital",
+            "homepage"
           ],
           "mappedType": "enum"
         },
