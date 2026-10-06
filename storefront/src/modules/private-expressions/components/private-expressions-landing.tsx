@@ -38,21 +38,22 @@ function merged(
     | "backToHomeLabel"
   >
 > & { hubspotFormUrl?: string | null } {
-  const fb = STATIC_FALLBACK
+  const fb = content ? undefined : STATIC_FALLBACK
   return {
-    eyebrowLabel: content?.eyebrowLabel?.trim() || fb.eyebrowLabel,
-    headline: content?.headline?.trim() || fb.headline,
-    focalLine: content?.focalLine?.trim() || fb.focalLine,
+    eyebrowLabel: content?.eyebrowLabel?.trim() || fb?.eyebrowLabel || "",
+    headline: content?.headline?.trim() || fb?.headline || "",
+    focalLine: content?.focalLine?.trim() || fb?.focalLine || "",
     narrativeParagraph1:
-      content?.narrativeParagraph1?.trim() || fb.narrativeParagraph1,
+      content?.narrativeParagraph1?.trim() || fb?.narrativeParagraph1 || "",
     narrativeParagraph2:
-      content?.narrativeParagraph2?.trim() || fb.narrativeParagraph2,
-    closingLine: content?.closingLine?.trim() || fb.closingLine,
-    formIntro: content?.formIntro?.trim() || fb.formIntro,
+      content?.narrativeParagraph2?.trim() || fb?.narrativeParagraph2 || "",
+    closingLine: content?.closingLine?.trim() || fb?.closingLine || "",
+    formIntro: content?.formIntro?.trim() || fb?.formIntro || "",
     hubspotFormUrl:
-      content?.hubspotFormUrl?.trim() || fb.hubspotFormUrl || null,
-    contactEmail: content?.contactEmail?.trim() || fb.contactEmail,
-    backToHomeLabel: content?.backToHomeLabel?.trim() || fb.backToHomeLabel,
+      content?.hubspotFormUrl?.trim() || fb?.hubspotFormUrl || null,
+    contactEmail: content?.contactEmail?.trim() || fb?.contactEmail || "",
+    backToHomeLabel:
+      content?.backToHomeLabel?.trim() || fb?.backToHomeLabel || "",
   }
 }
 
@@ -101,9 +102,11 @@ export default function PrivateExpressionsLanding({
           <p className="font-light leading-relaxed text-neutral-600">
             {text.narrativeParagraph1}
           </p>
-          <p className="font-light leading-relaxed text-neutral-600">
-            {text.narrativeParagraph2}
-          </p>
+          {text.narrativeParagraph2 && (
+            <p className="font-light leading-relaxed text-neutral-600">
+              {text.narrativeParagraph2}
+            </p>
+          )}
           <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
             {text.closingLine}
           </p>

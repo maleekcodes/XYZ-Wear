@@ -21,19 +21,9 @@ const DEFAULT_LINES = [
   "Quiet. Personal. Defined.",
 ]
 
-/** Legacy homepage copy from older CMS seed */
-const LEGACY_ACCESS_LINE = /access is limited and reviewed over time\.?/i
-
-function normalizeTeaserLine2(line: string): string {
-  return LEGACY_ACCESS_LINE.test(line.trim())
-    ? "Quiet. Personal. Defined."
-    : line
-}
-
 function resolveLines(props: PrivateGateProps): string[] {
   const a = props.teaserLine1?.trim()
-  const bRaw = props.teaserLine2?.trim()
-  const b = bRaw ? normalizeTeaserLine2(bRaw) : undefined
+  const b = props.teaserLine2?.trim()
   if (a || b) {
     return [a, b].filter((x): x is string => Boolean(x?.length))
   }
