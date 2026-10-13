@@ -79,8 +79,8 @@ export function LaunchNotice() {
       <h2 id="launch-heading" className="text-xs font-medium">
         COMING SOON
       </h2>
-      <div className="mx-auto mt-1 flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-xs min-[1024px]:flex-nowrap min-[1024px]:text-[clamp(8px,0.75vw,12px)]">
-        <p className="leading-normal min-[1024px]:whitespace-nowrap">
+      <div className="mx-auto mt-1 flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-xs min-[1024px]:text-sm">
+        <p className="leading-normal">
           XYZ London is preparing for its official launch. The launch date will
           be announced soon. Our first collection will be available to purchase
           at launch. Be among the first to know.
@@ -101,12 +101,12 @@ export function LaunchNotice() {
             required
             maxLength={254}
             placeholder="Email Address"
-            className="h-6 w-24 min-w-0 border border-neutral-300 bg-white px-1 text-[length:inherit] text-deepBlack placeholder:text-neutral-500 focus:border-deepBlack focus:outline-none focus:ring-0 focus:shadow-none"
+            className="box-border h-6 min-h-0 w-24 min-w-0 border border-neutral-300 bg-white px-1 py-0 text-[length:inherit] leading-none text-deepBlack placeholder:text-neutral-500 focus:border-deepBlack focus:outline-none focus:ring-0 focus:shadow-none"
           />
           <button
             type="submit"
             disabled={state === "saving"}
-            className="h-6 shrink-0 whitespace-nowrap border border-deepBlack bg-deepBlack px-1 text-[length:inherit] text-white hover:bg-neutral-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-deepBlack disabled:opacity-50"
+            className="inline-flex box-border h-6 min-h-0 shrink-0 items-center justify-center whitespace-nowrap border border-deepBlack bg-deepBlack px-1 py-0 text-[length:inherit] leading-none text-white hover:bg-neutral-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-deepBlack disabled:opacity-50"
           >
             {state === "saving" ? "SAVING…" : "GET NOTIFIED"}
           </button>

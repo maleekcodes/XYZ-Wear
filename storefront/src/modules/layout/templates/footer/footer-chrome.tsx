@@ -69,11 +69,10 @@ type Props = {
   siteFooter?: SiteFooterSanity | null
 }
 
-type FooterIcon = "facebook" | "instagram" | "tiktok" | "email" | "gdpr"
+type FooterIcon = "pinterest" | "instagram" | "tiktok" | "email" | "gdpr"
 type FooterIconCrop = { width: number; height: number; x: number; y: number }
 
-const FOOTER_ICON_SPRITE: Record<FooterIcon, FooterIconCrop> = {
-  facebook: { width: 35, height: 36, x: 7, y: 1 },
+const FOOTER_ICON_SPRITE: Record<Exclude<FooterIcon, "pinterest">, FooterIconCrop> = {
   instagram: { width: 37, height: 36, x: 44, y: 1 },
   tiktok: { width: 37, height: 36, x: 81, y: 1 },
   email: { width: 32, height: 24, x: 120, y: 8 },
@@ -87,6 +86,23 @@ function FooterIconImage({
   icon: FooterIcon
   invert?: boolean
 }) {
+  if (icon === "pinterest") {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="block h-9 w-9 shrink-0"
+        focusable="false"
+      >
+        <circle cx="12" cy="12" r="12" fill={invert ? "#fff" : "#000"} />
+        <path
+          fill={invert ? "#000" : "#fff"}
+          d="M12.2 4.5c-4.2 0-6.3 3-6.3 5.5 0 1.5.6 2.9 1.9 3.4.2.1.4 0 .5-.2l.2-.8c.1-.2 0-.3-.1-.5-.4-.5-.7-1.1-.7-2 0-2.5 1.8-4.3 4.5-4.3 2.5 0 3.8 1.5 3.8 3.5 0 2.7-1.2 5-3 5-1 0-1.8-.9-1.5-1.9.3-1.2.9-2.5.9-3.4 0-.8-.4-1.5-1.3-1.5-1 0-1.9 1.1-1.9 2.5 0 .9.3 1.5.3 1.5l-1.2 5.2c-.4 1.5-.1 3.3-.1 3.5 0 .1.2.2.3.1.1-.1 1.2-1.5 1.6-3l.7-2.6c.4.7 1.4 1.3 2.5 1.3 3.2 0 5.3-2.9 5.3-6.7 0-2.9-2.5-5.1-5.9-5.1z"
+        />
+      </svg>
+    )
+  }
+
   if (icon === "instagram") {
     const circle = invert ? "#fff" : "#000"
     const mark = invert ? "#000" : "#fff"
@@ -263,9 +279,9 @@ export default function FooterChrome({ siteFooter }: Props) {
               className="flex items-center gap-3"
             >
               <FooterIconLink
-                href="https://www.facebook.com/profile.php?id=61567883735913"
-                label="Facebook"
-                icon="facebook"
+                href="https://www.pinterest.com/xyzlondon/"
+                label="Pinterest"
+                icon="pinterest"
                 invert={digital}
               />
               <FooterIconLink

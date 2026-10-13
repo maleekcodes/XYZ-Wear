@@ -37,6 +37,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" data-mode="light">
       <head>
+        <meta name="p:domain_verify" content="4c339a9fa823a416ae2831da32613826" />
         <JsonLd data={organizationSchema} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
